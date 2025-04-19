@@ -1,7 +1,38 @@
 footer{
-    color:#841212
+    background-color: #841212;
+    bottom: 0;
+    // position: fixed;
+    width: 100%;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: space-between;   
 }
-nz-icon {
-    margin-right: 6px;
-    font-size: 24px;
-  }
+button{
+    color: none;
+}
+.Icons{
+    display: flex;
+    gap: 30px;
+    font-size:x-large;
+}
+.footer-content{
+    display: flex;
+    gap: 30px;
+    
+    
+}
+i{
+    margin-right: 10px;
+    margin-top: 10px;
+    
+}
+
+h3{
+    
+    margin-top: 10px;
+    margin-left: 10px;
+   
+    padding: 5px;
+    
+
+}

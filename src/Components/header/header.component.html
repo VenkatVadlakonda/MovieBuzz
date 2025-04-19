@@ -1,11 +1,24 @@
 <header>
-    <h1>Movie<span>B</span>uzz</h1>
+  <div class="masking-container">
+    <h1 class="masked-text" routerLink="/dashboard">MovieBuzz</h1>
+  </div>
+
   <nav>
     <ul>
-      <li><a href="">Dashboard</a></li>
-      <li><a href="">Register</a></li>
-      <li><a href="">Login</a></li>
-      <li><a href="">BookHistory</a></li>
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      </li>
+      <li><a routerLink="/register" routerLinkActive="active" *ngIf="!isLoggedIn()">Register</a></li>
+      <li><a routerLink="/login" routerLinkActive="active" *ngIf="!isLoggedIn()">Login</a></li>
+      <li>
+        <a routerLink="/history" routerLinkActive="active" [class.disabled]="!isLoggedIn()">BookHistory</a>
+      </li>
+      <li *ngIf="isLoggedIn()" class="user-info">
+        <span>Hi {{getUsername()}}</span>
+        <span class="timer">Session Expires in: {{timerDisplay}}</span>
+        <a (click)="logout()">Logout</a>
+
+      </li>
     </ul>
   </nav>
 </header>

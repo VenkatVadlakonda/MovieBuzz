@@ -1,18 +1,30 @@
 import { Component } from '@angular/core';
-import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+
 
 
 @Component({
   selector: 'app-footer',
-  imports: [NzIconModule],
+  imports: [NzButtonModule, NzModalModule],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
-  constructor(private iconService: NzIconService) {
-    this.iconService.fetchFromIconfont({
-      scriptUrl: 'https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
-    });
-  }
+isTVisible = false;
+isCVisible = false;
+isPVisible = false;
+
+showModalT() { this.isTVisible = true; }
+handleCancelT() { this.isTVisible = false; }
+handleOkT() { this.isTVisible = false; }
+
+showModalC() { this.isCVisible = true; }
+handleCancelC() { this.isCVisible = false; }
+handleOkC() { this.isCVisible = false; }
+
+showModalP() { this.isPVisible = true; }
+handleCancelP() { this.isPVisible = false; }
+handleOkP() { this.isPVisible = false; }
 
 }

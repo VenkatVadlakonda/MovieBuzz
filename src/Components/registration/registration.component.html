@@ -1,1 +1,143 @@
-<p>registration works!</p>
+   
+   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate class="registration-form">
+    <h2 class="form-title">Create Your Account</h2>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name</label>
+        <input
+          formControlName="firstname"
+          placeholder="Enter your first name"
+          class="form-control"
+        />
+        <div *ngIf="registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched" class="error-message">
+          <i class="fas fa-exclamation-circle"></i> First Name is required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label>Last Name</label>
+        <input
+          formControlName="lastname"
+          placeholder="Enter your last name"
+          class="form-control"
+        />
+        <div *ngIf="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched" class="error-message">
+          <i class="fas fa-exclamation-circle"></i> Last Name is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+        <input formControlName="dob" type="date" required class="form-control" />
+        <div *ngIf="registerForm.get('dob')?.invalid && registerForm.get('dob')?.touched" class="error">
+          Date of Birth is required
+        </div>
+      </div>
+  
+    
+  
+    <div class="form-group">
+      <label>Email</label>
+      <input
+        formControlName="email"
+        placeholder="yourname@gmail.com"
+        class="form-control"
+      />
+      <div *ngIf="registerForm.get('email')?.touched" class="error-message">
+        <span *ngIf="registerForm.get('email')?.errors?.['required']">
+          <i class="fas fa-exclamation-circle"></i> Email is required
+        </span>
+        <span *ngIf="registerForm.get('email')?.errors?.['email']">
+          <i class="fas fa-exclamation-circle"></i> Please enter a valid email
+        </span>
+        <span *ngIf="registerForm.get('email')?.errors?.['invalidGmail']">
+          <i class="fas fa-exclamation-circle"></i> Only Gmail addresses are allowed
+        </span>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input
+        formControlName="phone"
+        placeholder="Enter 10-digit mobile number"
+        class="form-control"
+      />
+      <div *ngIf="registerForm.get('phone')?.touched" class="error-message">
+        <span *ngIf="registerForm.get('phone')?.errors?.['required']">
+          <i class="fas fa-exclamation-circle"></i> Phone number is required
+        </span>
+        <span *ngIf="registerForm.get('phone')?.errors?.['pattern'] || registerForm.get('phone')?.errors?.['invalidPhone']">
+          <i class="fas fa-exclamation-circle"></i> Must be 10 digits starting with 6-9
+        </span>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label>Username</label>
+      <input
+        formControlName="username"
+        placeholder="Choose a username"
+        class="form-control"
+      />
+      <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="error-message">
+        <i class="fas fa-exclamation-circle"></i> Username is required
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label>Password</label>
+      <div class="password-container">
+        <input
+          formControlName="password"
+          [type]="showPassword ? 'text' : 'password'"
+          placeholder="Create a password"
+          (input)="onPasswordInput()"
+          (focus)="passwordFocused=true"
+          (blur)="passwordFocused = false"
+          class="form-control"
+        />
+        <i  [class.fa-eye]="showPassword" 
+        [class.fa-eye-slash]="!showPassword" 
+        class="fas toggle-password"
+        (click)="togglePasswordVisibility()"></i>
+      </div>
+      
+      <div *ngIf="passwordFocused" class="password-strength">
+        <p class="strength-rule" [class.valid]="passwordValid.length">
+          <i class="fas" [class.fa-check]="passwordValid.length" [class.fa-times]="!passwordValid.length"></i>
+          8-12 characters
+        </p>
+        <p class="strength-rule" [class.valid]="passwordValid.alphabet">
+          <i class="fas" [class.fa-check]="passwordValid.alphabet" [class.fa-times]="!passwordValid.alphabet"></i>
+          At least one letter
+        </p>
+        <p class="strength-rule" [class.valid]="passwordValid.number">
+          <i class="fas" [class.fa-check]="passwordValid.number" [class.fa-times]="!passwordValid.number"></i>
+          At least one number
+        </p>
+        <p class="strength-rule" [class.valid]="passwordValid.specialChar">
+          <i class="fas" [class.fa-check]="passwordValid.specialChar" [class.fa-times]="!passwordValid.specialChar"></i>
+          At least one special character
+        </p>
+        <p class="strength-rule" [class.valid]="passwordValid.capital">
+          <i class="fas" [class.fa-check]="passwordValid.capital" [class.fa-times]="!passwordValid.capital"></i>
+          At least one uppercase letter
+        </p>
+      </div>
+    </div>
+  
+    <button 
+      type="submit" 
+      [disabled]="!registerForm.valid || !isPasswordValid()" 
+      class="submit-btn"
+      [class.disabled]="!registerForm.valid || !isPasswordValid()"
+    >
+      Register Now
+    </button>
+  
+    <div class="login-link">
+      Already have an account? <a routerLink="/login">Log in</a>
+    </div>
+  </form>

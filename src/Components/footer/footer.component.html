@@ -1,11 +1,77 @@
 <footer>
-    <div class="footer-content">
-        <h3>Terms & Conditions</h3>
-        <h3>ContactUS</h3>
-        <h3>Privacy Policy</h3>
-    </div>
-    <div class="Icons">
-        <span><i class="fa-brands fa-facebook"></i></span>
-        <span></span>
-    </div>
+  <div class="footer-content">
+    <h3>
+      <button nz-button (click)="showModalT()">
+        <span>Terms & Conditions</span>
+      </button>
+      <nz-modal
+        [(nzVisible)]="isTVisible"
+        nzTitle="Terms & Conditions"
+        (nzOnCancel)="handleCancelT()"
+        (nzOnOk)="handleOkT()"
+      >
+        <ng-container *nzModalContent>
+          <p>
+            By using this movie booking application, users agree to provide
+            accurate personal information during registration and maintain the
+            confidentiality of their login credentials. The platform reserves
+            the right to suspend or terminate accounts found engaging in misuse
+            or fraudulent activity. Bookings made through the app are
+            non-refundable and non-transferable, and are subject to seat
+            availability and age restrictions based on movie ratings. Users must
+            ensure they meet the age criteria for certain films, and entry may
+            be denied by theater staff if valid age proof is not provided.
+          </p>
+        </ng-container>
+      </nz-modal>
+    </h3>
+    <h3>
+      <button nz-button (click)="showModalC()"><span>ContactUs</span></button>
+      <nz-modal
+        [(nzVisible)]="isCVisible"
+        nzTitle="ContactUs"
+        (nzOnCancel)="handleCancelC()"
+        (nzOnOk)="handleOkC()"
+      >
+        <ng-container *nzModalContent>
+          <p>+91 7588575387</p>
+          <p>+91 9390443840</p>
+        </ng-container>
+      </nz-modal>
+    </h3>
+    <h3>
+      <button nz-button (click)="showModalP()">
+        <span>Privacy Policy</span>
+      </button>
+      <nz-modal
+        [(nzVisible)]="isPVisible"
+        nzTitle="Privacy Policy"
+        (nzOnCancel)="handleCancelP()"
+        (nzOnOk)="handleOkP()"
+      >
+        <ng-container *nzModalContent>
+          <p>
+            We value your privacy and are committed to protecting your personal
+            information. When you use our movie booking application, we collect
+            only the necessary data such as your name, email, age, and contact
+            number for the purpose of registration, booking confirmation, and
+            service updates. We do not collect or store sensitive payment
+            details such as card numbers. All personal data is kept confidential
+            and is not shared with third-party services, except as required by
+            law or to complete your booking. We use secure encryption and
+            standard practices to protect your data against unauthorized access.
+            By using our platform, you consent to our data collection and
+            privacy practices. You may contact us at any time to request access
+            to, or deletion of, your stored data.
+          </p>
+        </ng-container>
+      </nz-modal>
+    </h3>
+  </div>
+  <div class="Icons">
+    <div><i class="fa-brands fa-facebook"></i></div>
+    <div><i class="fa-brands fa-instagram"></i></div>
+    <div><i class="fa-brands fa-whatsapp"></i></div>
+    <div><i class="fa-regular fa-envelope"></i></div>
+  </div>
 </footer>
