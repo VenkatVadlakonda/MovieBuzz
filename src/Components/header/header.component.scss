@@ -1,0 +1,23 @@
+header{
+    background-color:#841212;
+    display: flex;
+    justify-content: space-between;
+    
+}
+h1{
+    color: white;
+}
+span{
+    color: black;
+}
+ul{
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+ul li{
+    list-style: none;
+}
+ul li a{
+    text-decoration: none;
+}
