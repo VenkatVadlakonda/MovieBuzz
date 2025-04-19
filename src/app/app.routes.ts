@@ -12,17 +12,12 @@ export const routes: Routes = [
   // { path: '', pathMatch: 'full', redirectTo: '/welcome' },
   // { path: 'welcome', loadChildren: () => import('./pages/welcome/welcome.routes').then(m => m.WELCOME_ROUTES) }
   
-  { 
-    path: 'admin', 
-    canActivate: [authGuard],
-    data: { requiresAdmin: true },
-    children: [
-      { path: 'admindashboard', component: AdmindashboardComponent },
-      
-    ]
-  },
+  
   {
     path:'',redirectTo:'dashboard',pathMatch:'full'
+  },
+  {
+    path:'admin-dashboard',component:AdmindashboardComponent,canActivate:[authGuard]
   },
   {
     path:'dashboard',component:DashboardComponent,canActivate: [authGuard]
@@ -34,7 +29,7 @@ export const routes: Routes = [
     path:'login',component:LoginComponent
   },
   {
-    path:'history',component:BookinghistoryComponent
+    path:'history',component:BookinghistoryComponent,canActivate:[authGuard]
   },
   {
     path:'movie',component:MoviebookComponent
