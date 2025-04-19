@@ -1,38 +1,44 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private isAdmin:boolean=false;
-  private isLoggedIn:boolean=false;
+  private currentUserSubject = new BehaviorSubject<any>(null);
+  currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor() { }
-
-  login(username:string,password:string):boolean{
-    if(username=='admin' && password=='admin123'){
-      this.isAdmin=true;
-      this.isLoggedIn=true;
-      return true
+  constructor() {
+    // Initialize from localStorage if available
+    const session = localStorage.getItem('currentSession');
+    if (session) {
+      this.currentUserSubject.next(JSON.parse(session).user);
     }
-    else if(username && password){
-      this.isAdmin=false;
-      this.isLoggedIn=true;
-      return true;
-    }
-    return false;
-
-  }
-  isAuthenticated(): boolean {
-    return this.isLoggedIn;
   }
 
-  isUserAdmin(): boolean {
-    return this.isAdmin;
+  login(userData: any) {
+    const sessionData = {
+      user: userData,
+      expiresAt: Date.now() + (30 * 60 * 1000) // 30 minutes session
+    };
+    localStorage.setItem('currentSession', JSON.stringify(sessionData));
+    this.currentUserSubject.next(userData);
   }
 
   logout() {
-    this.isLoggedIn = false;
-    this.isAdmin = false;
+    localStorage.removeItem('currentSession');
+    this.currentUserSubject.next(null);
+  }
+
+  getCurrentUser() {
+    return this.currentUserSubject.value;
+  }
+
+  isLoggedIn() {
+    return !!this.currentUserSubject.value;
+  }
+
+  isAdmin() {
+    return this.currentUserSubject.value?.isAdmin;
   }
 }

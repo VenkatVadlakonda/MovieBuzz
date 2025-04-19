@@ -7,7 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
+import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,26 +16,20 @@ import { Subject } from 'rxjs';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent {
   loginForm: FormGroup;
-  moveButton: boolean = false;
-  loginError: string = '';
-  private destroy$ = new Subject<void>();
+  moveButton = false;
+  loginError = '';
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-    });
-
-    // Watch for form changes to trigger button movement
-    this.loginForm.valueChanges.subscribe(() => {
-      if (this.loginForm.invalid) {
-        this.moveButton = !this.moveButton;
-      }
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
 
@@ -45,15 +40,17 @@ export class LoginComponent implements OnDestroy {
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
+    if (this.loginForm.valid && !this.isSubmitting) {
+      this.isSubmitting = true;
       const { username, password } = this.loginForm.value;
       
       // Admin login check
       if (username === 'admin' && password === 'admin123') {
-        this.handleSuccessfulLogin({
+        this.authService.login({
           username: 'admin',
           isAdmin: true
-        }, '/admin-dashboard');
+        });
+        this.router.navigate(['/admin-dashboard']);
         return;
       }
 
@@ -62,30 +59,18 @@ export class LoginComponent implements OnDestroy {
       const user = users.find((u: any) => u.username === username && u.password === password);
 
       if (user) {
-        this.handleSuccessfulLogin({
+        this.authService.login({
+          id: user.id,
           username: user.username,
           email: user.email,
           isAdmin: false
-        }, '/dashboard');
+        });
+        this.router.navigate(['/dashboard']);
       } else {
         this.loginError = 'Invalid username or password';
-        // Trigger button movement on invalid credentials
         this.moveButton = !this.moveButton;
       }
+      this.isSubmitting = false;
     }
-  }
-
-  private handleSuccessfulLogin(userData: any, redirectPath: string) {
-    const sessionData = {
-      user: userData,
-      expiresAt: new Date().getTime() + (5 * 60 * 1000) // 5 minutes
-    };
-    localStorage.setItem('currentSession', JSON.stringify(sessionData));
-    this.router.navigate([redirectPath]);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
