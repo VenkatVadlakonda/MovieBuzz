@@ -9,24 +9,25 @@
       <li>
         <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
       </li>
-      <li>
-        <a routerLink="/register" routerLinkActive="active" [class.disabled]="isLoggedIn">Register</a>
+      <li *ngIf="!isLoggedIn">
+        <a routerLink="/register" routerLinkActive="active" >Register</a>
       </li>
       <li *ngIf="!isLoggedIn">
         <a routerLink="/login" routerLinkActive="active">Login</a>
       </li>
       
-      <li *ngIf="isLoggedIn">
-        <span *ngIf="isLoggedIn" class="welcome">Hi, {{username}}</span>
-        <a (click)="logOut()">Logout</a>
-      </li>
       <li>
         <a routerLink="/history" routerLinkActive="active" [class.disabled]="!isLoggedIn">BookHistory</a>
+      </li>
+      <li *ngIf="isLoggedIn">
+       
+        <a (click)="logOut()">Logout</a>
       </li>
       
       <li *ngIf="isAdminUser">
         <a routerLink="/admin-dashboard" routerLinkActive="active">Admin</a>
       </li>
+      <span *ngIf="isLoggedIn" class="welcome">Hi, {{username}}</span>
     </ul>
   </nav>
 </header>

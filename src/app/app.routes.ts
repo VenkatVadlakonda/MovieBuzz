@@ -20,7 +20,7 @@ export const routes: Routes = [
     path:'admin-dashboard',component:AdmindashboardComponent,canActivate:[authGuard]
   },
   {
-    path:'dashboard',component:DashboardComponent,canActivate: [authGuard]
+    path:'dashboard',component:DashboardComponent
   },
   {
     path:'register',component:RegistrationComponent

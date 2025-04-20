@@ -12,8 +12,9 @@ import { RouterLink } from '@angular/router';
 })
 export class RegistrationComponent{
 
-  registerForm: FormGroup;
+registerForm: FormGroup;
   passwordFocused = false;
+  showPassword = false;
   passwordValid = {
     length: false,
     alphabet: false,
@@ -27,9 +28,9 @@ export class RegistrationComponent{
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
       dob: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email, this.gmailValidator]],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/), this.phoneValidator]],
-      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email, this.domainValidator]],
+      phone: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
+      username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]],
       password: ['', Validators.required]
     });
   }
@@ -41,10 +42,7 @@ export class RegistrationComponent{
         createdDate: new Date().toISOString()
       };
 
-      // Get existing users from localStorage
       const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
-      
-      // Check for duplicates
       const isDuplicate = users.some((user: any) => 
         user.username === newUser.username || 
         user.email === newUser.email
@@ -55,12 +53,8 @@ export class RegistrationComponent{
         return;
       }
 
-      // Generate new ID
-      newUser.id = users.length > 0 ? Math.max(...users.map((u: any) => u.id)) + 1 : 1;
-
-      // Save to localStorage
+      newUser.id = users.length > 0 ? Math.max(...users.map((u: any) => u.id)) + 100 : 1;
       localStorage.setItem('MovieBuzzUsers', JSON.stringify([...users, newUser]));
-
       alert('Registration successful!');
       this.registerForm.reset();
       this.resetPasswordValidation();
@@ -69,7 +63,6 @@ export class RegistrationComponent{
     }
   }
 
-  // Password validation methods
   onPasswordInput() {
     const password = this.registerForm.get('password')?.value || '';
     this.passwordValid = {
@@ -84,28 +77,20 @@ export class RegistrationComponent{
   isPasswordValid() {
     return Object.values(this.passwordValid).every(v => v);
   }
-  // Add this property
-showPassword = false;
 
-// Add this method
-togglePasswordVisibility() {
-  this.showPassword = !this.showPassword;
-}
-
-  // Validators
-  phoneValidator(control: any) {
-    const phone = control.value || '';
-    const regex = /^[6-9]\d{9}$/;
-    return regex.test(phone) ? null : { invalidPhone: true };
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
-  gmailValidator(control: any) {
+  domainValidator(control: any) {
     const email = control.value || '';
-    const endsWithGmail = email.toLowerCase().endsWith('@gmail.com');
-    return endsWithGmail ? null : { invalidGmail: true };
+    const validDomains = ['@gmail.com', '@moviebuzz.com', '@yahoo.com', '@outlook.com'];
+    const endsWithValidDomain = validDomains.some(domain => 
+      email.toLowerCase().endsWith(domain)
+    );
+    return endsWithValidDomain ? null : { invalidDomain: true };
   }
 
-  //reset password validation
   private resetPasswordValidation() {
     this.passwordValid = {
       length: false,
