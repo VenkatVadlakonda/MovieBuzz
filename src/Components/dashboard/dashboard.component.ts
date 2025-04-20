@@ -11,6 +11,8 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 import { Router } from '@angular/router';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { AuthService } from '../../_services/auth.service';
+import { log } from 'ng-zorro-antd/core/logger';
 
 
 @Component({
@@ -42,10 +44,12 @@ export class DashboardComponent implements OnInit {
 
   private movieService = inject(MoviesService);
   private router = inject(Router);
+  private authService=inject(AuthService)
+  private moviesPipe=inject(MoviesPipe)
   
   genreList: string[] = ['Action', 'Drama', 'Comedy', 'Thriller', 'Romance'];
   selectedGenre: string = 'All';
-  constructor(private moviesPipe: MoviesPipe) {}
+  
 
 
   ngOnInit(): void {
@@ -68,7 +72,20 @@ export class DashboardComponent implements OnInit {
       )
       .subscribe({
         next: (data: Movies[]) => {
-          this.moviesData = data;
+          const user=this.authService.getCurrentUser()
+          console.log(user)
+
+          if (user && user.dob) {
+            const userAge = this.getUserAge(user.dob);
+            console.log('User Age:', userAge);
+  
+            this.moviesData = data.filter(movie => {
+              const restriction = Number(movie.AgeRestriction);
+              return !isNaN(restriction)&& userAge >= restriction;
+            });
+          } else {
+            this.moviesData = data;
+          }
           
         },
         error: (err) => {
@@ -85,5 +102,29 @@ export class DashboardComponent implements OnInit {
   get totalMovies(): number {
     return this.moviesPipe.transform(this.moviesData, this.searchMovie, this.selectedGenre).length;
   }
-  
+
+  onMovieClick(id:number){
+    const user=this.authService.getCurrentUser();
+
+    if(!user){
+      alert("Please login to continue")
+      this.router.navigate(['/login'])
+    }else{
+      this.router.navigate(['/movie',id])
+    }
+  }
+  getUserAge(dob:string):number{
+    const dateOfBirth=new Date(dob)
+    const today=new Date()
+    const month=today.getMonth()-dateOfBirth.getMonth()
+    let age=today.getFullYear()-dateOfBirth.getFullYear()
+
+    if(month<0||(month==0 && today.getDate()<dateOfBirth.getDate())){
+      age--
+    }
+    
+    
+    return age
+
+  }
 }

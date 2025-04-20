@@ -63,7 +63,10 @@ export class LoginComponent {
           id: user.id,
           username: user.username,
           email: user.email,
-          isAdmin: false
+          isAdmin: false,
+          dob:user.dob,
+          firstname:user.firstname,
+          lastname:user.lastname
         });
         this.router.navigate(['/dashboard']);
       } else {

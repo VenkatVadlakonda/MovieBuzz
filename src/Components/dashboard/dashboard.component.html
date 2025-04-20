@@ -1,43 +1,4 @@
-<!-- <div class="search">
-  <input type="text" placeholder="search a movie" [(ngModel)]="searchMovie" />
-</div>
 
-<div *ngIf="isLoading; else loadData">
-  <nz-spin nzSimple nzSize="large"></nz-spin>
-</div>
-
-<section class="movies-container">
-  <ng-template #loadData>
-    <div class="movies-grid">
-      <nz-card
-        *ngFor="let movie of paginatedMovies"
-        nzHoverable
-        class="movie-card"
-        [nzCover]="coverTemplate"
-      >
-        <ng-template #coverTemplate>
-          <img alt="{{ movie.MovieName }}" src="{{ movie.PosterImageURL }}" height="400px" />
-        </ng-template>
-        <div class="card-name">
-          <nz-card-meta nzTitle="{{ movie.MovieName }}"></nz-card-meta>
-          <span class="age-restriction">{{ movie.AgeRestriction }}+</span>
-        </div>
-        <div class="card-details">
-          <nz-card-meta nzDescription="{{ movie.Genre }}"></nz-card-meta>
-          <nz-card-meta nzDescription="{{ movie.Duration }}"></nz-card-meta>
-        </div>
-      </nz-card>
-    </div>
-    <nz-pagination
-      [nzPageSize]="pageSize"
-      [nzTotal]="totalMovies"
-      [(nzPageIndex)]="currentPage"
-      [nzShowSizeChanger]="false"
-      class="pagination"
-    ></nz-pagination>
-  </ng-template>
-</section> -->
-<!-- Search Input -->
 <div class="search">
     <input type="text" placeholder="search a movie" [(ngModel)]="searchMovie" />
   </div>
@@ -61,6 +22,7 @@
       <div class="movies-grid">
         <nz-card
           *ngFor="let movie of paginatedMovies | movies:searchMovie:selectedGenre"
+          (click)="onMovieClick(movie.MovieID)"
           nzHoverable
           class="movie-card"
           [nzCover]="coverTemplate"

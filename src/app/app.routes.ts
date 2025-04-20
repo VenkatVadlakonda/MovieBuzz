@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { DashboardComponent } from '../Components/dashboard/dashboard.component';
 import { RegistrationComponent } from '../Components/registration/registration.component';
@@ -32,7 +33,7 @@ export const routes: Routes = [
     path:'history',component:BookinghistoryComponent,canActivate:[authGuard]
   },
   {
-    path:'movie',component:MoviebookComponent
+    path:'movie/:id',loadComponent:()=>import('../Components/moviebook/moviebook.component').then(movies=>movies.MoviebookComponent)
   },
   {
     path:'**',component:NotfoundComponent

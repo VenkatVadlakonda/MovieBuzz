@@ -1,1 +1,67 @@
-<p>bookinghistory works!</p>
+<!-- 
+<section *ngIf="bookingHistory.length > 0; else noHistory">
+
+    <div *ngFor="let booking of bookingHistory" class="main-container">
+        <div class="image-container">
+            <img src={{booking.imageURL}} alt="" height="450px" width="420px">
+        </div>
+        <div class="container">
+            <h1>{{booking.movieName}}</h1>
+            <h4>{{booking.genre}}</h4>
+            <h3>{{booking.time}} | {{booking.date}}</h3>
+            <h1>Tickets: {{booking.Quantity}}</h1>
+            <h2>Total Price: Rs. {{booking.totalPrice}}.00</h2>
+
+        </div>
+        <div class="other-details">
+            <h1>M-Ticket</h1>
+            <div>
+                <h5>Booking ID: {{booking.bookingId}}</h5>
+                h5MovieID: {{booking.movieId}}
+            </div>
+            <div>
+                <nz-qrcode [nzValue]="getBookingQRCode(booking)" nzSize="200"></nz-qrcode>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<ng-template #noHistory>
+    <p>No bookings yet. Book a movie and come back here!</p>
+</ng-template> -->
+<section *ngIf="bookingHistory.length > 0; else noHistory" class="booking-history-wrapper">
+    <div *ngFor="let booking of bookingHistory" class="booking-card">
+      
+      <!-- Poster -->
+      <div class="poster">
+        <img [src]="booking.imageURL" alt="{{booking.movieName}}" />
+      </div>
+  
+      <!-- Info Section -->
+      <div class="booking-details">
+        <h2>{{ booking.movieName }}</h2>
+        <p class="genre">{{ booking.genre }}</p>
+        <p class="datetime">{{ booking.time }} | {{ booking.date }}</p>
+        <p><strong>Tickets:</strong> {{ booking.Quantity }}</p>
+        <p><strong>Total:</strong> ₹{{ booking.totalPrice }}</p>
+      </div>
+  
+      <!-- QR + Meta -->
+      <div class="ticket-meta">
+        <h3>M-Ticket</h3>
+        <p>Booking ID: {{ booking.bookingId }}</p>
+        
+        <nz-qrcode [nzValue]="getBookingQRCode(booking)" nzSize="200"></nz-qrcode>
+      </div>
+      
+    </div>
+  </section>
+  
+  <ng-template #noHistory>
+    <div class="empty-history">
+      <p>No bookings yet. Book a movie and come back here!</p>
+    </div>
+  </ng-template>
+  

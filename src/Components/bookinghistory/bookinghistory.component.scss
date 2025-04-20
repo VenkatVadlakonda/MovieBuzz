@@ -1,0 +1,114 @@
+
+
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .booking-history-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 30px 40px;
+    
+    margin: auto;
+  }
+  
+  .booking-card {
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 24px;
+    gap: 30px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.1s;
+  
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+  }
+  
+  .poster img {
+    width: 240px;
+    height: 360px;
+    border-radius: 12px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
+  
+  .booking-details {
+    flex: 1;
+    min-width: 320px;
+  
+    h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #111;
+    }
+  
+    .genre {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+  
+    .datetime {
+      font-size: 18px;
+      margin-bottom: 12px;
+      font-weight: 500;
+      color: #444;
+    }
+  
+    p {
+      font-size: 18px;
+      margin: 10px 0;
+      color: #333;
+    }
+  }
+  
+  .ticket-meta {
+    min-width: 200px;
+    text-align: center;
+  
+    h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+  
+    p {
+      font-size: 16px;
+      margin: 6px 0;
+      color: #555;
+    }
+  
+    nz-qrcode {
+      margin-top: 12px;
+      transition: transform 0.3s ease;
+  
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+  
