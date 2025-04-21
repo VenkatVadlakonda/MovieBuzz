@@ -1,28 +1,133 @@
-.layout {
-    min-height: 100vh;
+
+.navbar {
+  height: 60px;
+  background-color:  #8787a0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position:fixed;
+  width: 100%;
+}
+
+.navbar .left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar .menu-btn {
+  font-size: 20px;
+  background: none;
+  border: none;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.navbar .brand {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0b2243;
+}
+
+.navbar .right {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.logout-btn {
+  padding: 5px 10px;
+  background-color: #81df81;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 200px;
+  height: calc(100% - 60px);
+  background-color: #061d3b;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 0.3s;
+}
+
+.sidebar.closed {
+  width: 60px;
+  
+  // display: none;
+  span{
+    display: none;
   }
 
-  .logo {
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px;
-  }
+}
+span{
+  margin-left: 5px;
+}
 
-  nz-header {
-    background: #fff;
-    padding: 0;
-  }
 
-  nz-content {
-    margin: 24px 16px 0;
-  }
+.collapse-btn {
+  background: #0b2243;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  
+}
 
-  .inner-content {
-    padding: 24px;
-    background: #fff;
-    min-height: 360px;
-  }
+/* Main Content */
+.main-content {
+  margin-left: 200px;
+  padding: 20px;
+  background-color: #f2f4f7;
+  height: calc(100vh - 60px);
+  transition: margin-left 0.3s;
+}
 
-  nz-footer {
-    text-align: center;
-  }
+.main-content.expanded {
+  margin-left: 60px;
+}
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  gap: 25px; /* Increased spacing between items */
+  align-items: center; /* Center align all sidebar content */
+}
+
+.sidebar nav a {
+  padding: 10px 15px;
+  color: yellow;
+  text-decoration: none;
+  font-size: 14px;
+  width: 100%; 
+  text-align: center; 
+}
+
+.sidebar nav a.active {
+  background-color: #0b2243;
+  border-left: 4px solid yellow;
+  border-radius: 4px;
+}
+
+.admin-greeting {
+  text-align: center;
+  font-size: 14px;
+  position: relative;
+  color: #00ff88; /* Optional: make the name text green too */
+}
+
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  margin-left: 6px;
+  vertical-align: middle;
+}

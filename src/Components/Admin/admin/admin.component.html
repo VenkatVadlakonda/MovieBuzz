@@ -1,42 +1,36 @@
-<!-- <div class="admin-container">
-    <header>
-      <h1>Admin Panel</h1>
-      <button (click)="logout()">Logout</button>
-    </header>
-    
-    <div class="admin-content">
-      <p>Welcome to the admin interface</p>
-     
-    </div>
-  </div> -->
+<!-- Top Navbar -->
+<div class="navbar">
+  <div class="left">
+    <button class="menu-btn" (click)="toggleSidebar()">☰</button>
+    <span class="brand">MovieBuzz</span>
+  </div>
+  <div class="right">
+    <span><i class="fa-solid fa-user-tie"></i> Hi, Admin</span>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</div>
 
-  <nz-layout class="layout">
-    <nz-sider nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">
-      <div class="logo"></div>
-      <ul nz-menu nzTheme="dark" nzMode="inline">
-        <li nz-menu-item>
-          <nz-icon nzType="user" />
-          <span>nav 1</span>
-        </li>
-        <li nz-menu-item>
-          <nz-icon nzType="video-camera" />
-          <span>nav 2</span>
-        </li>
-        <li nz-menu-item>
-          <nz-icon nzType="upload" />
-          <span>nav 3</span>
-        </li>
-        <li nz-menu-item>
-          <nz-icon nzType="user" />
-          <span>nav 4</span>
-        </li>
-      </ul>
-    </nz-sider>
-    <nz-layout>
-      <nz-header></nz-header>
-      <nz-content>
-        <div class="inner-content">Content</div>
-      </nz-content>
-      <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
-    </nz-layout>
-  </nz-layout>
+<!-- Sidebar -->
+<div class="sidebar" [class.closed]="isSidebarClosed">
+  <nav>
+    <p class="admin-greeting">
+      <i class="fa-solid fa-user-tie"></i> Hi, Admin
+      <span class="status-dot"></span>
+    </p>
+    <a routerLink="/admin-dashboard" routerLinkActive="active">
+      <i class="fa-solid fa-film"></i> <span>Dashboard</span>
+    </a>
+    <a routerLink="/admin-user" routerLinkActive="active">
+      <i class="fa-regular fa-user"></i> <span>Registered Users</span>
+    </a>
+    <a routerLink="/admin-history" routerLinkActive="active">
+      <i class="fa-solid fa-ticket"></i> <span>Booking History</span>
+    </a>
+  </nav>
+  
+  <button class="collapse-btn" (click)="toggleSidebar()">&lt;</button>
+</div>
+
+<div class="main-content" [class.expanded]="isSidebarClosed">
+  <router-outlet></router-outlet>
+</div>

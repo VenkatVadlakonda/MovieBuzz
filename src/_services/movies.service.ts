@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, retry } from 'rxjs';
 import { Movies } from '../_models/movies.modal';
+import { log } from 'ng-zorro-antd/core/logger';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,16 @@ export class MoviesService {
   }
   updateAvaliableSeats(movieID:number,seats:number):Observable<any>{
     return this.http.patch(`${this.apiUrl}/${movieID}`,{AvailableSeats:seats})
+  }
+
+  addMovie(movie:Movies):Observable<Movies>{
+    return this.http.post<Movies>(this.apiUrl,movie)
+  }
+
+  updateMovie(movie:Movies):Observable<Movies>{
+    console.log("ID:",movie.MovieID)
+    const url=`http://localhost:3000/MovieBuzz/${movie.MovieID}`
+    return this.http.put<Movies>(url,movie)
   }
   
 }

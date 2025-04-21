@@ -10,9 +10,8 @@ export interface Movies{
     PosterImageURL:string,
     TrailerURL: string,
     IsActive: boolean,
-    showDate:Date,
+    showDate:any,
     showTime: string[],
-    CreatedOn:Date,
+    CreatedOn:any,
     AvailableSeats:number
-
 }

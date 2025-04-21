@@ -9,12 +9,10 @@ import { NotfoundComponent } from '../Components/notfound/notfound.component';
 import { authGuard } from '../_auth/auth.guard';
 import { AdmindashboardComponent } from '../Components/Admin/admindashboard/admindashboard.component';
 import { AdminComponent } from '../Components/Admin/admin/admin.component';
+import { AdminusersviewComponent } from '../Components/Admin/adminusersview/adminusersview.component';
+import { AdminhistoryComponent } from '../Components/Admin/adminhistory/adminhistory.component';
 
 export const routes: Routes = [
-  // { path: '', pathMatch: 'full', redirectTo: '/welcome' },
-  // { path: 'welcome', loadChildren: () => import('./pages/welcome/welcome.routes').then(m => m.WELCOME_ROUTES) }
-  
-  
   {
     path:'',redirectTo:'dashboard',pathMatch:'full'
   },
@@ -23,6 +21,13 @@ export const routes: Routes = [
   },
   {
     path:'admin-dashboard',component:AdmindashboardComponent
+  },
+  {
+    path:'admin-user',
+    component:AdminusersviewComponent
+  },
+  {
+    path:'admin-history',component:AdminhistoryComponent
   },
   
   {

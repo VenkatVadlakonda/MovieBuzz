@@ -5,6 +5,7 @@ import { FooterComponent } from '../Components/footer/footer.component';
 import { AdminComponent } from "../Components/Admin/admin/admin.component";
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../_services/auth.service';
+import { AdmindashboardComponent } from '../Components/Admin/admindashboard/admindashboard.component';
 
 @Component({
   selector: 'app-root',

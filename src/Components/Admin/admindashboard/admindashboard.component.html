@@ -1,1 +1,56 @@
-<p>admindashboard works!</p>
+
+
+   <div class="search-item">
+    <input type="text" placeholder="Search for Movie..." [(ngModel)]="searchItem">
+  </div>
+  
+  <div class="movie-container">
+    <div *ngFor="let movie of moviesData | adminmovies:searchItem"
+         class="movie-card"
+         [class.inactive]="!movie.IsActive">
+      
+      <img [src]="movie.PosterImageURL" alt="{{ movie.MovieName }}" />
+      <h4>{{ movie.MovieName }}</h4>
+      <p><strong>Genre:</strong> {{ movie.Genre }}</p>
+      <p><strong>Age:</strong> {{ movie.AgeRestriction }}+</p>
+      <p><strong>Duration:</strong> {{ movie.Duration }} min</p>
+  
+      <div class="actions">
+        <button (click)="modifyMovie(movie)">Modify</button>
+        <button (click)="onToggleActive(movie)"
+                [ngClass]="movie.IsActive ? 'inactive-btn' : 'active-btn'">
+          {{ movie.IsActive ? 'x' : 'active' }}
+        </button>
+      </div>
+    </div>
+  
+    <div class="movie-card add-card" (click)="modalOpen()">
+      <h1>+</h1>
+      <p>Add Movie</p>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="selectedMovie">
+    <div class="modal">
+      <h2>{{ isEdit ? 'Edit Movie' : 'Add Movie' }}</h2>
+  
+      <input [(ngModel)]="selectedMovie.MovieName" placeholder="Movie Name" />
+      <input [(ngModel)]="selectedMovie.Genre" placeholder="Genre (comma separated)" />
+      <input [(ngModel)]="selectedMovie.AgeRestriction" type="number" placeholder="Age Restriction" />
+      <input [(ngModel)]="selectedMovie.Duration" type="number" placeholder="Duration (minutes)" />
+      <textarea [(ngModel)]="selectedMovie.Description" placeholder="Description"></textarea>
+      <input [(ngModel)]="selectedMovie.Price" type="number" placeholder="Price" />
+      <input [(ngModel)]="selectedMovie.PosterImageURL" placeholder="Poster Image URL" />
+      <input [(ngModel)]="selectedMovie.TrailerURL" placeholder="Trailer URL" />
+      <input [(ngModel)]="selectedMovie.showDate" type="date" />
+      <input [(ngModel)]="showTimeInput" placeholder="Show Times (comma separated)" />
+      <input [(ngModel)]="selectedMovie.AvailableSeats" type="number" placeholder="Available Seats" />
+  
+      <div class="modal-actions">
+        <button (click)="saveMovie(selectedMovie!)">{{ isEdit ? 'Update' : 'Add' }}</button>
+        <button (click)="selectedMovie = null">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+
