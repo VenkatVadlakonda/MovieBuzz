@@ -1,36 +1,4 @@
-<!-- 
-<section *ngIf="bookingHistory.length > 0; else noHistory">
 
-    <div *ngFor="let booking of bookingHistory" class="main-container">
-        <div class="image-container">
-            <img src={{booking.imageURL}} alt="" height="450px" width="420px">
-        </div>
-        <div class="container">
-            <h1>{{booking.movieName}}</h1>
-            <h4>{{booking.genre}}</h4>
-            <h3>{{booking.time}} | {{booking.date}}</h3>
-            <h1>Tickets: {{booking.Quantity}}</h1>
-            <h2>Total Price: Rs. {{booking.totalPrice}}.00</h2>
-
-        </div>
-        <div class="other-details">
-            <h1>M-Ticket</h1>
-            <div>
-                <h5>Booking ID: {{booking.bookingId}}</h5>
-                h5MovieID: {{booking.movieId}}
-            </div>
-            <div>
-                <nz-qrcode [nzValue]="getBookingQRCode(booking)" nzSize="200"></nz-qrcode>
-            </div>
-
-        </div>
-    </div>
-
-</section>
-
-<ng-template #noHistory>
-    <p>No bookings yet. Book a movie and come back here!</p>
-</ng-template> -->
 <section *ngIf="bookingHistory.length > 0; else noHistory" class="booking-history-wrapper">
     <div *ngFor="let booking of bookingHistory" class="booking-card">
       
@@ -53,7 +21,7 @@
         <h3>M-Ticket</h3>
         <p>Booking ID: {{ booking.bookingId }}</p>
         
-        <nz-qrcode [nzValue]="getBookingQRCode(booking)" nzSize="200"></nz-qrcode>
+        <nz-qrcode [nzValue]="getBookingQRCode(booking)" nzColor="black" nzSize="180"></nz-qrcode>
       </div>
       
     </div>

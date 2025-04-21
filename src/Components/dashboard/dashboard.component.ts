@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit {
   
             this.moviesData = data.filter(movie => {
               const restriction = Number(movie.AgeRestriction);
-              return !isNaN(restriction)&& userAge >= restriction;
+              return userAge >= restriction;
             });
           } else {
             this.moviesData = data;

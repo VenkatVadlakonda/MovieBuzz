@@ -18,6 +18,8 @@ import { AuthService } from '../../_services/auth.service';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  passwordFocused = false;
+  showPassword = false; 
   moveButton = false;
   loginError = '';
   isSubmitting = false;
@@ -38,6 +40,9 @@ export class LoginComponent {
       this.moveButton = !this.moveButton;
     }
   }
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit() {
     if (this.loginForm.valid && !this.isSubmitting) {
@@ -50,7 +55,7 @@ export class LoginComponent {
           username: 'admin',
           isAdmin: true
         });
-        this.router.navigate(['/admin-dashboard']);
+        this.router.navigate(['/admin']);
         return;
       }
 

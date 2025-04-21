@@ -1,3 +1,12 @@
-<app-header></app-header>
-<router-outlet> </router-outlet>
-<app-footer></app-footer>
+
+<ng-container *ngIf="authService.isAdmin() && authService.isLoggedIn(); else userInterface">
+    <app-admin></app-admin>
+  </ng-container>
+  
+  <ng-template #userInterface>
+    <app-header></app-header>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+    <app-footer></app-footer>
+  </ng-template>

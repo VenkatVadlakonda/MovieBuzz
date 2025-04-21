@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -7,27 +8,42 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   currentUser$ = this.currentUserSubject.asObservable();
+  private router=inject(Router)
 
   constructor() {
-    // Initialize from localStorage if available
+    
     const session = localStorage.getItem('currentSession');
     if (session) {
       this.currentUserSubject.next(JSON.parse(session).user);
     }
+    
   }
 
   login(userData: any) {
     const sessionData = {
       user: userData,
-      expiresAt: Date.now() + (30 * 60 * 1000) // 30 minutes session
+      expiresAt: Date.now() + (30 * 60 * 1000) 
     };
     localStorage.setItem('currentSession', JSON.stringify(sessionData));
     this.currentUserSubject.next(userData);
+
+    if(userData.isAdmin){
+       this.router.navigate(['/admin'])
+    }
+    else{
+      this.router.navigate(['/dashboard'])
+    }
   }
 
-  logout() {
+  logout(redirect:boolean=false) {
     localStorage.removeItem('currentSession');
     this.currentUserSubject.next(null);
+    if(redirect){
+      this.router.navigate(['/dashboard'])
+    }
+    else{
+      this.router.navigate(['/login'])
+    }
   }
 
   getCurrentUser() {

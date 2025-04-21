@@ -16,23 +16,81 @@
         id="username"
         placeholder="Enter your username"
         formControlName="username"
-        [class.invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+        [class.invalid]="
+          loginForm.get('username')?.invalid &&
+          loginForm.get('username')?.touched
+        "
       />
-      <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="error-message">
+      <div
+        *ngIf="
+          loginForm.get('username')?.invalid &&
+          loginForm.get('username')?.touched
+        "
+        class="error-message"
+      >
         Username is required
       </div>
 
-      <label for="password">Password</label>
-      <input
-        type="password"
+      <!-- <label for="password">Password</label> -->
+      <!-- <input
+        [type]="showPassword ? 'text' : 'password'"
         id="password"
         placeholder="Enter your password"
+        (focus)="passwordFocused = true"
+        (blur)="passwordFocused = false"
         formControlName="password"
-        [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+        [class.invalid]="
+          loginForm.get('password')?.invalid &&
+          loginForm.get('password')?.touched
+        "
       />
-      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-message">
+      <i
+        [class.fa-eye]="showPassword"
+        [class.fa-eye-slash]="!showPassword"
+        class="fas toggle-password"
+        (click)="togglePasswordVisibility()"
+      ></i> -->
+      <label for="password">Password</label>
+      <div class="password-wrapper">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          placeholder="Enter your password"
+          (focus)="passwordFocused = true"
+          (blur)="passwordFocused = false"
+          formControlName="password"
+          [class.invalid]="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+        />
+        <i
+          [class.fa-eye]="showPassword"
+          [class.fa-eye-slash]="!showPassword"
+          class="fas toggle-password"
+          (click)="togglePasswordVisibility()"
+        ></i>
+      </div>
+
+      <div
+        *ngIf="
+          loginForm.get('password')?.invalid &&
+          loginForm.get('password')?.touched
+        "
+        class="error-message"
+      >
         Password is required
       </div>
+
+      <!-- <div
+        *ngIf="
+          loginForm.get('password')?.invalid &&
+          loginForm.get('password')?.touched
+        "
+        class="error-message"
+      >
+        Password is required
+      </div> -->
 
       <div *ngIf="loginError" class="error-message server-error">
         {{ loginError }}

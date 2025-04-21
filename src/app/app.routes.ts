@@ -7,7 +7,8 @@ import { BookinghistoryComponent } from '../Components/bookinghistory/bookinghis
 import { MoviebookComponent } from '../Components/moviebook/moviebook.component';
 import { NotfoundComponent } from '../Components/notfound/notfound.component';
 import { authGuard } from '../_auth/auth.guard';
-import { AdmindashboardComponent } from '../Components/AdminComponents/admindashboard/admindashboard.component';
+import { AdmindashboardComponent } from '../Components/Admin/admindashboard/admindashboard.component';
+import { AdminComponent } from '../Components/Admin/admin/admin.component';
 
 export const routes: Routes = [
   // { path: '', pathMatch: 'full', redirectTo: '/welcome' },
@@ -18,8 +19,12 @@ export const routes: Routes = [
     path:'',redirectTo:'dashboard',pathMatch:'full'
   },
   {
-    path:'admin-dashboard',component:AdmindashboardComponent,canActivate:[authGuard]
+    path:'admin',component:AdminComponent,canActivate:[authGuard]
   },
+  {
+    path:'admin-dashboard',component:AdmindashboardComponent
+  },
+  
   {
     path:'dashboard',component:DashboardComponent
   },
@@ -30,10 +35,13 @@ export const routes: Routes = [
     path:'login',component:LoginComponent
   },
   {
-    path:'history',component:BookinghistoryComponent,canActivate:[authGuard]
+    path:'history',
+    loadComponent:()=>import('../Components/bookinghistory/bookinghistory.component').then(history=>history.BookinghistoryComponent),
+    canActivate:[authGuard]
   },
   {
-    path:'movie/:id',loadComponent:()=>import('../Components/moviebook/moviebook.component').then(movies=>movies.MoviebookComponent)
+    path:'movie/:id',
+    loadComponent:()=>import('../Components/moviebook/moviebook.component').then(movies=>movies.MoviebookComponent)
   },
   {
     path:'**',component:NotfoundComponent

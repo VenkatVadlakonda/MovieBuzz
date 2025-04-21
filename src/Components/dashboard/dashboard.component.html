@@ -3,7 +3,6 @@
     <input type="text" placeholder="search a movie" [(ngModel)]="searchMovie" />
   </div>
   
-  <!-- Genre Dropdown -->
   <div class="search">
     <select [(ngModel)]="selectedGenre">
       <option value="All">All Genres</option>
@@ -11,12 +10,11 @@
     </select>
   </div>
   
-  <!-- Loading Spinner -->
+ 
   <div *ngIf="isLoading; else loadData">
     <nz-spin nzSimple nzSize="large"></nz-spin>
   </div>
   
-  <!-- Movies Section -->
   <section class="movies-container">
     <ng-template #loadData>
       <div class="movies-grid">
