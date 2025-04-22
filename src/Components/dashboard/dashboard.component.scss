@@ -11,9 +11,10 @@ nz-spin {
     text-align: center;
 }
 .search input{
-    width: 55%;
+    width: 35%;
     padding: 10px;
     border-radius: 5px;
+   
 }
   .card-details{
     display: flex;
@@ -46,8 +47,7 @@ nz-pagination {
     @media (min-width: 600px) {
         grid-template-columns: repeat(3, 1fr);
       }
-      
-      /* Laptop/Desktop (4+ cards) */
+     
       @media (min-width: 900px) {
         grid-template-columns: repeat(4, 1fr);
       }
@@ -85,4 +85,10 @@ nz-pagination {
       margin-bottom: 4px;
     }
   }
-  
+  span{
+    margin-left: 10px;
+    border-radius: 5px;
+  }
+  select{
+    padding: 10px;
+  }

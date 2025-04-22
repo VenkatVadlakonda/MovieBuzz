@@ -42,63 +42,44 @@ export class AdmindashboardComponent implements OnInit {
       this.isEdit = true;
     }
 
-    // saveMovie(movie: Movies): void {
-    //   const movieToSave = {
-    //     ...movie,
-    //     showTime: this.showTimeInput.split(',').map(t => t.trim()),
-    //     CreatedOn: new Date().toISOString(),
-    //     showDate: new Date(movie.showDate),
-    //   };
-
-    //   if (this.isEdit) {
-    //     movieToSave.MovieID=movie.MovieID
-    //     this.movieService.updateMovie(movieToSave).subscribe(() => {
-    //       this.getMovies();
-    //       this.selectedMovie = null;
-    //     });
-    //   } else {
-    //     const id = Math.max(...this.moviesData.map(m => m.MovieID)) + 1;
-    //     movieToSave.MovieID = id;
-    //     this.movieService.addMovie(movieToSave).subscribe(() => {
-    //       this.getMovies();
-    //       this.selectedMovie = null;
-    //     });
-    //   }
-
-    //   this.showTimeInput = '';
-    // }
+    
     saveMovie(movie: Movies): void {
-      // Convert show times into an array
+     
       const movieToSave = {
         ...movie,
-        showTime: this.showTimeInput.split(',').map(t => t.trim()), // Split and trim the show times
+        id:movie.MovieID,
+        showTime: this.showTimeInput.split(',').map(t => t.trim()),
         CreatedOn: new Date().toISOString(),
-        showDate: new Date(movie.showDate).toISOString(), // Ensure it's an ISO string
+        showDate: new Date(movie.showDate).toISOString(),
+        
       };
 
       if (this.isEdit) {
-        movieToSave.MovieID = movie.MovieID;  // Ensure MovieID is retained for updating
+        movieToSave.MovieID = movie.MovieID;  
         this.movieService.updateMovie(movieToSave).subscribe(
-          () => {
-            // On success, refresh the movie list
-            this.getMovies();
-            this.selectedMovie = null; // Close the modal
-          },
-          (error) => {
-            console.error('Error updating movie:', error); // Log any errors
+          {
+            next:() => {
+           
+              this.getMovies();
+              this.selectedMovie = null; 
+            },
+            error:(error) => {
+              console.error('Error updating movie:', error); 
+            }
           }
         );
-      } else {
-        const id = Math.max(...this.moviesData.map(m => m.MovieID)) + 1;  // Generate new ID
-        movieToSave.MovieID = id;
+      } else if(!this.isEdit){
+        const id = Math.max(...this.moviesData.map(m => m.MovieID)) + 1;  
+        movieToSave.id = id;
+        movieToSave.MovieID=id
         this.movieService.addMovie(movieToSave).subscribe(
           () => {
-            // On success, refresh the movie list
+            
             this.getMovies();
-            this.selectedMovie = null; // Close the modal
+            this.selectedMovie = null;
           },
           (error) => {
-            console.error('Error adding movie:', error); // Log any errors
+            console.error('Error adding movie:', error); 
           }
         );
       }

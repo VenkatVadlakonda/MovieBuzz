@@ -1,17 +1,16 @@
 
 <div class="search">
     <input type="text" placeholder="search a movie" [(ngModel)]="searchMovie" />
+    <span>
+      <select [(ngModel)]="selectedGenre">
+        <option value="All">All Genres</option>
+        <option *ngFor="let genre of genreList" [value]="genre">{{ genre }}</option>
+      </select>
+    </span>
   </div>
-  
-  <div class="search">
-    <select [(ngModel)]="selectedGenre">
-      <option value="All">All Genres</option>
-      <option *ngFor="let genre of genreList" [value]="genre">{{ genre }}</option>
-    </select>
-  </div>
-  
+
  
-  <div *ngIf="isLoading; else loadData">
+  <div *ngIf="isLoading; else loadData">  
     <nz-spin nzSimple nzSize="large"></nz-spin>
   </div>
   

@@ -13,8 +13,8 @@ import { RouterLink } from '@angular/router';
 export class RegistrationComponent{
 
 registerForm: FormGroup;
-  passwordFocused = false;
-  showPassword = false;
+  passwordFocused:boolean = false;
+  showPassword:boolean = false;
   passwordValid = {
     length: false,
     alphabet: false,
@@ -27,7 +27,7 @@ registerForm: FormGroup;
     this.registerForm = this.fb.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
-      dob: ['', Validators.required],
+      dob: ['', Validators.required,this.dobValidator.bind(this)],
       email: ['', [Validators.required, Validators.email, this.domainValidator]],
       phone: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
       username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]],
@@ -36,6 +36,19 @@ registerForm: FormGroup;
   }
 
   onSubmit() {
+    const dob=this.registerForm.get('dob')
+    const val=new Date(dob?.value)
+
+    if(isNaN(val.getTime())){
+      alert("Please enter valid date of birth")
+    }
+    const year=val.getFullYear()
+    if(year>2025){
+      alert("Invalid Year! selected year not more than 2021")
+    }
+    if(year>2021){
+      alert("Your DOB should be before or equal to 2021")
+    }
     if (this.registerForm.valid && this.isPasswordValid()) {
       const newUser = {
         ...this.registerForm.value,
@@ -84,12 +97,43 @@ registerForm: FormGroup;
 
   domainValidator(control: any) {
     const email = control.value || '';
-    const validDomains = ['@gmail.com', '@moviebuzz.com', '@yahoo.com', '@outlook.com'];
+    const validDomains = ['@gmail.com', '@moviebuzz.com', '@yahoo.com', '@outlook.com','@vivejaitservices.com'];
     const endsWithValidDomain = validDomains.some(domain => 
       email.toLowerCase().endsWith(domain)
     );
     return endsWithValidDomain ? null : { invalidDomain: true };
   }
+ 
+  dobValidator(control: any) {
+    const value = control.value;
+    if (!value) return null;
+  
+    const dob = new Date(value);
+    if (isNaN(dob.getTime())) return null;
+  
+    const year = dob.getFullYear();
+  
+    if (year > 2025) return { invalidYear: true };
+    if (year > 2021) return { recentYear: true };
+    if(year<1900) return {invalidYear:true}
+  
+    return null;
+  }
+  onDobChange() {
+    const dobValue = new Date(this.registerForm.get('dob')?.value);
+    const year = dobValue.getFullYear();
+  
+    if (year > 2025) {
+      alert('Invalid year! Cannot be beyond 2025.');
+    } else if (year > 2021) {
+      alert('Year should be 2021 or earlier.');
+    }
+    else if(year<1900){
+      alert("You are died! No entry for Ghosts")
+    }
+  }
+  
+  
 
   private resetPasswordValidation() {
     this.passwordValid = {

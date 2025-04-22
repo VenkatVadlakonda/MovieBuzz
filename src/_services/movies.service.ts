@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, retry } from 'rxjs';
+import { catchError, Observable, retry } from 'rxjs';
 import { Movies } from '../_models/movies.modal';
 import { log } from 'ng-zorro-antd/core/logger';
 
@@ -26,8 +26,25 @@ export class MoviesService {
 
   updateMovie(movie:Movies):Observable<Movies>{
     console.log("ID:",movie.MovieID)
-    const url=`http://localhost:3000/MovieBuzz/${movie.MovieID}`
-    return this.http.put<Movies>(url,movie)
+    // return this.http.put<Movies>(`${this.apiUrl}`,movie)
+    return this.http.put<Movies>(`${this.apiUrl}/${movie.MovieID}`, movie)
+
   }
+
+  // updateMovie(movie:Movies):Observable<Movies>{
+  //   console.log("ID:",movie.MovieID);
+    
+  //   console.log("Full URL",`${this.apiUrl}?MovieID=${movie.MovieID}`);
+  //   return this.http.put<Movies>(`${this.apiUrl}/${movie.MovieID}`,movie).pipe(
+  //     retry(2),
+  //     catchError(err=>{
+  //       console.log("Error:",err);
+  //       throw err;
+  //     })
+  //   )
+    
+
+    
+  // }
   
 }

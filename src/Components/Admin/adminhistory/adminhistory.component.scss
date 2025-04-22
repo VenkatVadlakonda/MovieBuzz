@@ -1,0 +1,46 @@
+h2{
+  margin-top: 50px;
+}
+.movie-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 10px;
+
+}
+
+.movie-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  transition: transform 0.3s;
+}
+
+.movie-card img {
+  width: 98%;
+  height: 250px;
+  border-radius: 8px;
+}
+
+.movie-card h4 {
+  margin: 10px 0 5px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.movie-card p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.movie-card .actions {
+  margin-top: 10px;
+}
+
+@media (max-width: 500px) {
+  .modal {
+    width: 90%;
+    padding: 1.2rem;
+  }
+}

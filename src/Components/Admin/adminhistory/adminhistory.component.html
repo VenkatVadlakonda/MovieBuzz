@@ -1,1 +1,19 @@
-<p>adminhistory works!</p>
+
+<h2>Total Bookings: {{TotalCount}}<h1>
+<div class="movie-container">
+  <div *ngFor="let movie of bookings "
+       class="movie-card"
+       >
+    
+    <img [src]="movie.imageURL" alt="{{ movie.movieName }}" />
+    <h4>{{ movie.movieName }}</h4>
+    <p><strong>Booking ID:</strong> {{movie.bookingId}}</p>
+    <p><strong>Genre:</strong> {{ movie.genre }}</p>
+    <p><strong>Booked By:</strong> {{movie.Username}}</p>
+    <p><strong>Show:</strong> {{ movie. time}} | {{movie.date}}</p>
+    <p><strong>Quantity:</strong> {{movie.Quantity}}</p>
+    <p><strong>Total Price:</strong> {{ movie.totalPrice }} </p>
+
+  </div>
+
+  <h1>{{book}}</h1>

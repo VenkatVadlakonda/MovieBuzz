@@ -1,0 +1,17 @@
+table{
+    margin-top: 50px;
+    width: 100%;  
+}
+tr,th{
+    border-bottom: 1px solid #ddd;
+    
+}
+th,td{
+    padding: 10px;
+    margin: 20px;
+    text-align: left;
+}
+tr:nth-child(odd) {background-color: #ccccd7;}
+tr:hover{
+    background-color: #838398;
+}

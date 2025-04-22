@@ -20,14 +20,16 @@ export const routes: Routes = [
     path:'admin',component:AdminComponent,canActivate:[authGuard]
   },
   {
-    path:'admin-dashboard',component:AdmindashboardComponent
+    path:'admin-dashboard',
+    loadComponent:()=>import('../Components/Admin/admindashboard/admindashboard.component').then(dash=>dash.AdmindashboardComponent)
   },
   {
     path:'admin-user',
-    component:AdminusersviewComponent
+    loadComponent:()=>import('../Components/Admin/adminusersview/adminusersview.component').then(user=>user.AdminusersviewComponent)
   },
   {
-    path:'admin-history',component:AdminhistoryComponent
+    path:'admin-history',
+    loadComponent:()=>import('../Components/Admin/adminhistory/adminhistory.component').then(history=>history.AdminhistoryComponent)
   },
   
   {

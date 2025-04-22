@@ -1,1 +1,17 @@
-<p>adminusersview works!</p>
+<table>
+    <tr>
+        <th>FullName</th>
+        <th>DOB</th>
+        <th>MailID</th>
+        <th>Phoneno</th>
+        <th>createdDate</th>
+    </tr>
+    <tr *ngFor="let user of users">
+        <td>{{user.firstname+''+user.lastname}}</td>
+        <td>{{user.dob}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.phone}}</td>
+        <td>{{user.createdDate}}</td>
+    </tr>
+</table>
+<h3>Total Number of Users Registered: {{TotalUsers}}</h3>

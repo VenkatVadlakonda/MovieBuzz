@@ -47,7 +47,7 @@
       <input [(ngModel)]="selectedMovie.AvailableSeats" type="number" placeholder="Available Seats" />
   
       <div class="modal-actions">
-        <button (click)="saveMovie(selectedMovie!)">{{ isEdit ? 'Update' : 'Add' }}</button>
+        <button (click)="saveMovie(selectedMovie)">{{ isEdit ? 'Update' : 'Add' }}</button>
         <button (click)="selectedMovie = null">Cancel</button>
       </div>
     </div>

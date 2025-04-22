@@ -5,7 +5,7 @@
   padding: 20px;
 }
 .search-item {
-  margin-top: 70px;
+  margin-top: 70px; 
   text-align: center;
 }
 .search-item input {
@@ -86,10 +86,13 @@
   opacity: 0.5;
   pointer-events: none;
   position: relative;
+  z-index: -1;
+  
 }
 
 .movie-card.inactive .actions {
   pointer-events: all;
+  
 }
 
 .movie-card.inactive::after {

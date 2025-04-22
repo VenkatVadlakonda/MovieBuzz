@@ -11,6 +11,7 @@ import {
   generateShowDates,
 } from '../../_utils/moviebook.utils';
 import { MoviebookService } from '../../_services/moviebook.service';
+import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-moviebook',
@@ -34,18 +35,25 @@ export class MoviebookComponent implements OnInit {
   private router = inject(ActivatedRoute);
   private movieService = inject(MoviesService);
   private safe = inject(DomSanitizer);
+  
+
+
 
   constructor(
     private modal: NzModalService,
-    private bookingService: MoviebookService
+    private bookingService: MoviebookService,
+    private authService:AuthService
   ) {}
+ 
 
   ngOnInit(): void {
     this.movieID = Number(this.router.snapshot.paramMap.get('id'));
     this.getMovie();
     this.showDates = generateShowDates();
     this.selectedDate = this.showDates[0];
+
   }
+  
 
   getMovie(): void {
     this.movieService.getAllMovies().subscribe((movies: Movies[]) => {
@@ -95,6 +103,7 @@ export class MoviebookComponent implements OnInit {
   }
 
   storeBooking(): void {
+    const user=this.authService.getCurrentUser()
     const newBooking = {
       bookingId: this.bookingService.getNextBookingId(),
       movieId: this.movieID,
@@ -105,6 +114,8 @@ export class MoviebookComponent implements OnInit {
       time: this.selectedTime,
       Quantity: this.ticketCount,
       totalPrice: this.totalPrice,
+      userId:user.id,
+      Username:user.username
     };
 
     this.bookingService.saveBooking(newBooking);
@@ -122,6 +133,7 @@ export class MoviebookComponent implements OnInit {
     }
 
     const remainingSeats = this.movieData.AvailableSeats - this.ticketCount;
+    const user=this.authService.getCurrentUser()
 
     if (remainingSeats < 0) {
       alert('Not enough seats available!');
@@ -144,6 +156,8 @@ export class MoviebookComponent implements OnInit {
             time: this.selectedTime,
             Quantity: this.ticketCount,
             totalPrice: this.totalPrice,
+            userId:user.id,
+            username:user.username
           };
 
           this.bookingService.saveBooking(newBooking);
