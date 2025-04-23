@@ -11,7 +11,9 @@
 
  
   <div *ngIf="isLoading; else loadData">  
-    <nz-spin nzSimple nzSize="large"></nz-spin>
+    <div id="preloader">
+      <div id="loader"></div>
+    </div>
   </div>
   
   <section class="movies-container">

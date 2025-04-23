@@ -20,7 +20,7 @@
         <a routerLink="/history" routerLinkActive="active" [class.disabled]="!isLoggedIn">BookHistory</a>
       </li>
       <li *ngIf="isLoggedIn">
-        <span *ngIf="isLoggedIn" class="welcome">Hi, {{username}}</span>
+        <span *ngIf="isLoggedIn" class="welcome"><i class="fa-regular fa-user"></i> Hi, {{username}}</span>
         <a (click)="logOut()">Logout</a>
       </li>
       

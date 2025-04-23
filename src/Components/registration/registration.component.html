@@ -10,7 +10,10 @@
           class="form-control"
         />
         <div *ngIf="registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched" class="error-message">
-          <i class="fas fa-exclamation-circle"></i> First Name is required
+          <i class="fas fa-exclamation-circle"></i> First Name is required 
+        </div>
+        <div *ngIf="registerForm.get('firstname')?.errors?.['minlength']" class="error-message">
+          <i class="fas fa-exclamation-circle"></i> Min 4 characters required
         </div>
       </div>
   
@@ -22,22 +25,14 @@
           class="form-control"
         />
         <div *ngIf="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched" class="error-message">
-          <i class="fas fa-exclamation-circle"></i> Last Name is required
+          <i class="fas fa-exclamation-circle"></i> Last Name is required 
+        </div>
+        <div *ngIf="registerForm.get('lastname')?.errors?.['minlength']" class="error-message">
+          <i class="fas fa-exclamation-circle"></i> Min 4 characters required
         </div>
       </div>
     </div>
   
-    <!-- <div class="form-group">
-      <label>Date of Birth</label>
-      <input 
-        formControlName="dob" 
-        type="date" 
-        class="form-control" 
-      />
-      <div *ngIf="registerForm.get('dob')?.invalid && registerForm.get('dob')?.touched" class="error-message">
-        <i class="fas fa-exclamation-circle"></i> Date of Birth is required
-      </div>
-    </div> -->
     <div class="form-group">
       <label for="dob">Date of Birth</label>
       <input 
@@ -53,7 +48,7 @@
       </div>
       
       <div *ngIf="registerForm.get('dob')?.hasError('invalidYear') && registerForm.get('dob')?.touched" class="error-message">
-        <i class="fas fa-exclamation-circle"></i> Invalid year! Year cannot be beyond 2025.
+        <i class="fas fa-exclamation-circle"></i> Invalid year!.
       </div>
       
       <div *ngIf="registerForm.get('dob')?.hasError('recentYear') && registerForm.get('dob')?.touched" class="error-message">
@@ -102,7 +97,7 @@
       <label>Username</label>
       <input
         formControlName="username"
-        placeholder="Choose a username (4-30 characters)"
+        placeholder="Enter username"
         class="form-control"
       />
       <div *ngIf="registerForm.get('username')?.touched" class="error-message">
@@ -139,7 +134,7 @@
       <div *ngIf="passwordFocused" class="password-strength">
         <p class="strength-rule" [class.valid]="passwordValid.length">
           <i class="fas" [class.fa-check]="passwordValid.length" [class.fa-times]="!passwordValid.length"></i>
-          8-12 characters
+          AtLeast 8+ characters
         </p>
         <p class="strength-rule" [class.valid]="passwordValid.alphabet">
           <i class="fas" [class.fa-check]="passwordValid.alphabet" [class.fa-times]="!passwordValid.alphabet"></i>
@@ -162,7 +157,7 @@
   
     <button 
       type="submit" 
-      [disabled]="!registerForm.valid || !isPasswordValid()" 
+      
       class="submit-btn"
       [class.disabled]="!registerForm.valid || !isPasswordValid()"
     >
@@ -173,3 +168,5 @@
       Already have an account? <a routerLink="/login">Log in</a>
     </div>
   </form>
+
+  

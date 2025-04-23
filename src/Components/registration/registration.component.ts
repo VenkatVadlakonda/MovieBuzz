@@ -25,9 +25,9 @@ registerForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
-      dob: ['', Validators.required,this.dobValidator.bind(this)],
+      firstname: ['', [Validators.required,Validators.minLength(4)]],
+      lastname: ['', [Validators.required,Validators.minLength(4)]],
+      dob: ['', [Validators.required,this.dobValidator.bind(this)]],
       email: ['', [Validators.required, Validators.email, this.domainValidator]],
       phone: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
       username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]],
@@ -36,19 +36,8 @@ registerForm: FormGroup;
   }
 
   onSubmit() {
-    const dob=this.registerForm.get('dob')
-    const val=new Date(dob?.value)
+    
 
-    if(isNaN(val.getTime())){
-      alert("Please enter valid date of birth")
-    }
-    const year=val.getFullYear()
-    if(year>2025){
-      alert("Invalid Year! selected year not more than 2021")
-    }
-    if(year>2021){
-      alert("Your DOB should be before or equal to 2021")
-    }
     if (this.registerForm.valid && this.isPasswordValid()) {
       const newUser = {
         ...this.registerForm.value,
@@ -58,11 +47,11 @@ registerForm: FormGroup;
       const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
       const isDuplicate = users.some((user: any) => 
         user.username === newUser.username || 
-        user.email === newUser.email
+        user.email === newUser.email || user.phone===newUser.phone
       );
 
       if (isDuplicate) {
-        alert('Username or email already exists!');
+        alert('Username or email or phone number already exists!');
         return;
       }
 
@@ -79,7 +68,7 @@ registerForm: FormGroup;
   onPasswordInput() {
     const password = this.registerForm.get('password')?.value || '';
     this.passwordValid = {
-      length: password.length >= 8 && password.length <= 12,
+      length: password.length >= 8,
       alphabet: /[a-zA-Z]/.test(password),
       number: /\d/.test(password),
       specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
@@ -109,28 +98,25 @@ registerForm: FormGroup;
     if (!value) return null;
   
     const dob = new Date(value);
-    if (isNaN(dob.getTime())) return null;
-  
+    
     const year = dob.getFullYear();
   
-    if (year > 2025) return { invalidYear: true };
-    if (year > 2021) return { recentYear: true };
-    if(year<1900) return {invalidYear:true}
-  
+    if (year >= 2025 || year<1930 || year>=2022) return { invalidYear: true };
+    if (year < 1930 && year > 2021) return { recentYear: true };
     return null;
   }
   onDobChange() {
     const dobValue = new Date(this.registerForm.get('dob')?.value);
     const year = dobValue.getFullYear();
   
-    if (year > 2025) {
-      alert('Invalid year! Cannot be beyond 2025.');
+    if (year > 2025 ) {
+      alert('Invalid year! I think you are not born yet!😁 ');
     } else if (year > 2021) {
-      alert('Year should be 2021 or earlier.');
+      alert('Age should be above 3 year 🤗');
+    }else if(year<1930){
+      alert('You are died! No entry for Ghosts 👻')
     }
-    else if(year<1900){
-      alert("You are died! No entry for Ghosts")
-    }
+   
   }
   
   
@@ -144,4 +130,6 @@ registerForm: FormGroup;
       capital: false
     };
   }
+
+
 }

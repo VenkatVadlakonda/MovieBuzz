@@ -26,25 +26,9 @@ export class MoviesService {
 
   updateMovie(movie:Movies):Observable<Movies>{
     console.log("ID:",movie.MovieID)
-    // return this.http.put<Movies>(`${this.apiUrl}`,movie)
     return this.http.put<Movies>(`${this.apiUrl}/${movie.MovieID}`, movie)
 
   }
 
-  // updateMovie(movie:Movies):Observable<Movies>{
-  //   console.log("ID:",movie.MovieID);
-    
-  //   console.log("Full URL",`${this.apiUrl}?MovieID=${movie.MovieID}`);
-  //   return this.http.put<Movies>(`${this.apiUrl}/${movie.MovieID}`,movie).pipe(
-  //     retry(2),
-  //     catchError(err=>{
-  //       console.log("Error:",err);
-  //       throw err;
-  //     })
-  //   )
-    
-
-    
-  // }
   
 }
