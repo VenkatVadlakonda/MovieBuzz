@@ -11,7 +11,6 @@ export class AuthService {
   private router=inject(Router)
 
   constructor() {
-    
     const session = localStorage.getItem('currentSession');
     if (session) {
       this.currentUserSubject.next(JSON.parse(session).user);
@@ -19,6 +18,7 @@ export class AuthService {
     
   }
 
+  //user login, login session open for 30mins and if user logs in display user UI if admin , admin UI
   login(userData: any) {
     const sessionData = {
       user: userData,
@@ -35,6 +35,7 @@ export class AuthService {
     }
   }
 
+  //logout
   logout(redirect:boolean=false) {
     localStorage.removeItem('currentSession');
     this.currentUserSubject.next(null);
@@ -46,6 +47,7 @@ export class AuthService {
     }
   }
 
+  //get logged user object
   getCurrentUser() {
     return this.currentUserSubject.value;
   }

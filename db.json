@@ -2,29 +2,29 @@
   "MovieBuzz": [
     {
       "MovieID": 100,
-      "MovieName": "Baahubali 2",
+      "MovieName": "Baahubali Part 2",
       "Genre": "Action,Drama",
-      "AgeRestriction": 13,
-      "Duration": 171,
+      "AgeRestriction": 15,
+      "Duration": 180,
       "Description": "The epic conclusion to the Baahubali saga, revealing the mystery behind Amarendra Baahubali's death.",
       "Price": 250,
       "PosterImageURL": "https://rukminim3.flixcart.com/image/850/1000/l2hwwi80/poster/y/n/y/small-poster-bahubali-part-2-baahubali-2-first-look-bahubali-the-original-imagdtv9fk6us8f3.jpeg?q=90&crop=true",
       "TrailerURL": "https://www.youtube.com/watch?v=G62HrubdD6o",
       "IsActive": true,
-      "showDate": "2025-05-01",
+      "showDate": "2025-05-01T00:00:00.000Z",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
-      "CreatedOn": "2025-04-19",
-      "AvailableSeats": 100,
+      "CreatedOn": "2025-04-23T16:59:13.129Z",
+      "AvailableSeats": 98,
       "id": "100"
     },
     {
       "MovieID": 101,
-      "MovieName": "Pushpa: The Rule",
+      "MovieName": "Pushpa: The Rise",
       "Genre": "Action, Crime",
       "AgeRestriction": 16,
       "Duration": 179,
@@ -35,13 +35,13 @@
       "IsActive": true,
       "showDate": "2025-05-02T00:00:00.000Z",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
-      "CreatedOn": "2025-04-23T10:02:10.590Z",
-      "AvailableSeats": 100,
+      "CreatedOn": "2025-04-23T16:59:33.073Z",
+      "AvailableSeats": 99,
       "id": "101"
     },
     {
@@ -57,13 +57,13 @@
       "IsActive": true,
       "showDate": "2025-05-03",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
-      "AvailableSeats": 100,
+      "AvailableSeats": 97,
       "id": "102"
     },
     {
@@ -79,13 +79,13 @@
       "IsActive": true,
       "showDate": "2025-05-04",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
-      "AvailableSeats": 100,
+      "AvailableSeats": 93,
       "id": "103"
     },
     {
@@ -98,13 +98,13 @@
       "Price": 230,
       "PosterImageURL": "https://m.media-amazon.com/images/M/MV5BNTU0ZjYxOWItOWViMC00YWVlLWJlMGUtZjc1YWU0NTlhY2ZhXkEyXkFqcGc@._V1_.jpg",
       "TrailerURL": "https://www.youtube.com/watch?v=4GPvYMKtrtI",
-      "IsActive": false,
+      "IsActive": true,
       "showDate": "2025-05-05",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
       "AvailableSeats": 100,
@@ -123,10 +123,10 @@
       "IsActive": true,
       "showDate": "2025-05-01",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
       "AvailableSeats": 100,
@@ -145,10 +145,10 @@
       "IsActive": true,
       "showDate": "2025-05-02T00:00:00.000Z",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-23T10:02:23.573Z",
       "AvailableSeats": 100,
@@ -167,10 +167,10 @@
       "IsActive": true,
       "showDate": "2025-05-03",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
       "AvailableSeats": 100,
@@ -186,13 +186,13 @@
       "Price": 240,
       "PosterImageURL": "data:image/jpeg;base64,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",
       "TrailerURL": "https://www.youtube.com/watch?v=wJO_vIDZn-I",
-      "IsActive": false,
+      "IsActive": true,
       "showDate": "2025-05-04",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
       "AvailableSeats": 100,
@@ -211,10 +211,10 @@
       "IsActive": true,
       "showDate": "2025-05-05",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
       "AvailableSeats": 100,
@@ -233,10 +233,10 @@
       "IsActive": true,
       "showDate": "2025-05-06",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
       "AvailableSeats": 100,
@@ -255,10 +255,10 @@
       "IsActive": true,
       "showDate": "2025-05-06",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
       "AvailableSeats": 100,
@@ -277,10 +277,10 @@
       "IsActive": true,
       "showDate": "2025-05-07",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
       "AvailableSeats": 100,
@@ -299,10 +299,10 @@
       "IsActive": true,
       "showDate": "2025-05-07",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
       "AvailableSeats": 100,
@@ -321,10 +321,10 @@
       "IsActive": true,
       "showDate": "2025-05-08",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
       "AvailableSeats": 100,
@@ -343,18 +343,18 @@
       "IsActive": true,
       "showDate": "2025-05-08",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
-      "AvailableSeats": 100,
+      "AvailableSeats": 98,
       "id": "117"
     },
     {
       "MovieID": 118,
-      "MovieName": "Karthikeya 2",
+      "MovieName": "Karthikeya2",
       "Genre": "Adventure, Mystery",
       "AgeRestriction": 13,
       "Duration": 145,
@@ -363,14 +363,14 @@
       "PosterImageURL": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK4wNDLTrLLkEfLhrE0O2duRiNni_kndcMLg&s",
       "TrailerURL": "https://www.youtube.com/watch?v=d5s_IGuOJEc",
       "IsActive": true,
-      "showDate": "2025-05-09",
+      "showDate": "2025-05-09T00:00:00.000Z",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
-      "CreatedOn": "2025-04-19",
+      "CreatedOn": "2025-04-23T14:15:01.511Z",
       "AvailableSeats": 100,
       "id": "118"
     },
@@ -393,7 +393,7 @@
         "10:00"
       ],
       "CreatedOn": "2025-04-19",
-      "AvailableSeats": 100,
+      "AvailableSeats": 94,
       "id": "119"
     },
     {
@@ -409,13 +409,13 @@
       "IsActive": true,
       "showDate": "2025-05-10",
       "showTime": [
-        "11:00",
-        "2:45",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
-      "AvailableSeats": 100,
+      "AvailableSeats": 98,
       "id": "120"
     },
     {
@@ -432,10 +432,10 @@
       "IsActive": true,
       "showDate": "2025-04-22T00:00:00.000Z",
       "showTime": [
-        "11:00",
-        "2:30",
-        "6:30",
-        "10:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "AvailableSeats": 100,
       "id": "121"
@@ -455,10 +455,10 @@
       "IsActive": true,
       "showDate": "2025-04-23T00:00:00.000Z",
       "showTime": [
-        "10:00",
-        "11:00",
-        "12:00",
-        "1:00"
+        "11:00 AM",
+        "2:45 PM",
+        "6:30 PM",
+        "10:00 PM"
       ],
       "AvailableSeats": 100
     }

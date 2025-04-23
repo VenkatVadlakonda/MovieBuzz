@@ -2,12 +2,10 @@
 <section *ngIf="bookingHistory.length > 0; else noHistory" class="booking-history-wrapper">
     <div *ngFor="let booking of bookingHistory" class="booking-card">
       
-      <!-- Poster -->
       <div class="poster">
         <img [src]="booking.imageURL" alt="{{booking.movieName}}" />
       </div>
   
-      <!-- Info Section -->
       <div class="booking-details">
         <h2>{{ booking.movieName }}</h2>
         <p class="genre">{{ booking.genre }}</p>
@@ -16,7 +14,7 @@
         <p><strong>Total:</strong> ₹{{ booking.totalPrice }}</p>
       </div>
   
-      <!-- QR + Meta -->
+
       <div class="ticket-meta">
         <h3>M-Ticket</h3>
         <p>Booking ID: {{ booking.bookingId }}</p>

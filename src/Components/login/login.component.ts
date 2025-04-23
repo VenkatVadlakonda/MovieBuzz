@@ -44,12 +44,12 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
+  //on submit if user user UI if admin adminUI
   onSubmit() {
     if (this.loginForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
       const { username, password } = this.loginForm.value;
       
-      // Admin login check
       if (username === 'admin' && password === 'admin123') {
         this.authService.login({
           username: 'admin',
@@ -59,7 +59,6 @@ export class LoginComponent {
         return;
       }
 
-      // Regular user check
       const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
       const user = users.find((u: any) => u.username === username && u.password === password);
 

@@ -137,6 +137,12 @@ select {
   -webkit-animation: spin 1.5s linear infinite;
   animation: spin 1.5s linear infinite;
 }
+.inactive {
+  filter: blur(2px);
+  pointer-events: auto; 
+  cursor: not-allowed;
+}
+
 @-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);

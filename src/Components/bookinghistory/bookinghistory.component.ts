@@ -18,8 +18,6 @@ export class BookinghistoryComponent implements OnInit {
     this.bookingHistory = data ? JSON.parse(data) : [];
     const bookings=data?JSON.parse(data):[]
     this.bookingHistory=bookings.filter((movie:any)=>movie.userId==users.user.id)
-
-    
   }
   getBookingQRCode(booking: any): string {
     const details = {

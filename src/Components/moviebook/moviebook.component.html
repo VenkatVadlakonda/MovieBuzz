@@ -1,3 +1,4 @@
+<!--displays video-->
 <section *ngIf="movieData">
   <div class="videoUrl">
     <iframe
@@ -11,6 +12,8 @@
     >
     </iframe>
   </div>
+
+  <!--Selected Movie-->
   <div class="container">
     <h1>{{ movieData.MovieName }}</h1>
     <h2>{{ movieData.Genre }}</h2>
@@ -18,28 +21,42 @@
     <h4>{{ movieData.Description }}</h4>
     <span>Price: Rs. {{ movieData.Price }}.00</span>
     <div>
-        <label for="date">Select Date</label>
+      <label for="date">Select Date</label>
       <select [(ngModel)]="selectedDate" class="dropdown">
-        <option *ngFor="let date of showDates" [value]="date">{{ date }}</option>
+        <option *ngFor="let date of showDates" [value]="date">
+          {{ date }}
+        </option>
       </select>
       <label for="time">Select Time</label>
       <select [(ngModel)]="selectedTime" class="dropdown">
-    
-        <option *ngFor="let time of movieData?.showTime" [value]="time">{{ time }}</option>
+        <option
+          *ngFor="let time of movieData?.showTime"
+          [value]="time"
+          [disabled]="isTimeDisabled(time)"
+        >
+          {{ time }}
+        </option>
       </select>
-      
+
       <div class="btn-control">
         <div class="qty">
-          <button (click)="decreaseQuantity()" [disabled]="ticketCount === 0">-</button>
+          <button (click)="decreaseQuantity()" [disabled]="ticketCount === 0">
+            -
+          </button>
           <p class="qty-value">{{ ticketCount }}</p>
-          <button (click)="increaseQuantity()" [disabled]="ticketCount === 6">+</button>
+          <button (click)="increaseQuantity()" [disabled]="ticketCount === 6 || ticketCount >= movieData?.AvailableSeats">
+            +
+          </button>
         </div>
-       
-        <button class="book-btn" (click)="showBookingSummary()" [disabled]="!selectedDate || !selectedTime || ticketCount === 0">
+
+        <button
+          class="book-btn"
+          (click)="showBookingSummary()"
+          [disabled]="!selectedDate || !selectedTime || ticketCount === 0"
+        >
           Book Now
         </button>
       </div>
-      
     </div>
   </div>
 </section>

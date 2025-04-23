@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class MoviebookService {
-
+  //storing booking data in localstorage
   saveBooking(booking: any): void {
     const history = JSON.parse(localStorage.getItem('bookingHistory') || '[]');
     history.push(booking);

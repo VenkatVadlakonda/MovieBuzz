@@ -59,12 +59,10 @@
 
 .sidebar.closed {
   width: 60px;
-  
-  // display: none;
+
   span{
     display: none;
   }
-
 }
 span{
   margin-left: 5px;
@@ -80,7 +78,6 @@ span{
   
 }
 
-/* Main Content */
 .main-content {
   margin-left: 200px;
   padding: 20px;
@@ -96,8 +93,8 @@ span{
   display: flex;
   flex-direction: column;
   padding: 20px 10px;
-  gap: 25px; /* Increased spacing between items */
-  align-items: center; /* Center align all sidebar content */
+  gap: 25px; 
+  align-items: center; 
 }
 
 .sidebar nav a {
@@ -119,7 +116,7 @@ span{
   text-align: center;
   font-size: 14px;
   position: relative;
-  color: #00ff88; /* Optional: make the name text green too */
+  color: #00ff88;
 }
 
 .status-dot {

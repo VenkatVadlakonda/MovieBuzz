@@ -63,8 +63,9 @@
 
 .movie-card.inactive {
   opacity: 0.5;
-  filter: blur(1px);
   pointer-events: none;
+  position: relative;
+  z-index: 10;
 }
 
 .add-card {
@@ -84,9 +85,7 @@
 }
 .movie-card.inactive {
   opacity: 0.5;
-  pointer-events: none;
   position: relative;
-  z-index: -1;
   
 }
 
@@ -114,6 +113,9 @@
   border: none;
   padding: 6px 12px;
   cursor: pointer;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
 }
 
 .inactive-btn {
@@ -122,8 +124,11 @@
   border: none;
   padding: 6px 12px;
   cursor: pointer;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
 }
-/* Backdrop */
+
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -137,7 +142,7 @@
   z-index: 1000;
 }
 
-/* Modal */
+
 .modal {
   background: #fff;
   padding: 2rem;
@@ -201,7 +206,6 @@
   opacity: 0.9;
 }
 
-/* Add simple fade-in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -212,8 +216,6 @@
     transform: translateY(0);
   }
 }
-
-/* Optional: Responsive */
 @media (max-width: 500px) {
   .modal {
     width: 90%;

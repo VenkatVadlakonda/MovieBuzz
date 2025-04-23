@@ -1,4 +1,4 @@
-
+<!--Search filter based on moviename and genre-->
 <div class="search">
     <input type="text" placeholder="search a movie" [(ngModel)]="searchMovie" />
     <span>
@@ -9,21 +9,24 @@
     </span>
   </div>
 
- 
+ <!--displays preloader when the data is loading-->
   <div *ngIf="isLoading; else loadData">  
     <div id="preloader">
       <div id="loader"></div>
     </div>
   </div>
   
+  
   <section class="movies-container">
     <ng-template #loadData>
+      <!--Movie Cards-->
       <div class="movies-grid">
         <nz-card
           *ngFor="let movie of paginatedMovies | movies:searchMovie:selectedGenre"
-          (click)="onMovieClick(movie.MovieID)"
-          nzHoverable
+          (click)="onMovieClick(movie)"
+          [nzHoverable]="movie.IsActive"
           class="movie-card"
+          [class.inactive]="!movie.IsActive"
           [nzCover]="coverTemplate"
         >
           <ng-template #coverTemplate>
@@ -39,7 +42,8 @@
           </div>
         </nz-card>
       </div>
-  
+      
+      <!--Pagination only 4 cards will display here-->
       <nz-pagination
         [nzPageSize]="pageSize"
         [nzTotal]="totalMovies"

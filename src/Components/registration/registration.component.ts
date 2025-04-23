@@ -35,9 +35,9 @@ registerForm: FormGroup;
     });
   }
 
+  
   onSubmit() {
     
-
     if (this.registerForm.valid && this.isPasswordValid()) {
       const newUser = {
         ...this.registerForm.value,
@@ -65,6 +65,7 @@ registerForm: FormGroup;
     }
   }
 
+  //password validation
   onPasswordInput() {
     const password = this.registerForm.get('password')?.value || '';
     this.passwordValid = {
@@ -84,6 +85,7 @@ registerForm: FormGroup;
     this.showPassword = !this.showPassword;
   }
 
+  //email validator
   domainValidator(control: any) {
     const email = control.value || '';
     const validDomains = ['@gmail.com', '@moviebuzz.com', '@yahoo.com', '@outlook.com','@vivejaitservices.com'];
@@ -93,6 +95,7 @@ registerForm: FormGroup;
     return endsWithValidDomain ? null : { invalidDomain: true };
   }
  
+  //dob validator
   dobValidator(control: any) {
     const value = control.value;
     if (!value) return null;
@@ -118,8 +121,6 @@ registerForm: FormGroup;
     }
    
   }
-  
-  
 
   private resetPasswordValidation() {
     this.passwordValid = {
@@ -130,6 +131,4 @@ registerForm: FormGroup;
       capital: false
     };
   }
-
-
 }

@@ -31,25 +31,6 @@
         Username is required
       </div>
 
-      <!-- <label for="password">Password</label> -->
-      <!-- <input
-        [type]="showPassword ? 'text' : 'password'"
-        id="password"
-        placeholder="Enter your password"
-        (focus)="passwordFocused = true"
-        (blur)="passwordFocused = false"
-        formControlName="password"
-        [class.invalid]="
-          loginForm.get('password')?.invalid &&
-          loginForm.get('password')?.touched
-        "
-      />
-      <i
-        [class.fa-eye]="showPassword"
-        [class.fa-eye-slash]="!showPassword"
-        class="fas toggle-password"
-        (click)="togglePasswordVisibility()"
-      ></i> -->
       <label for="password">Password</label>
       <div class="password-wrapper">
         <input
@@ -81,16 +62,6 @@
       >
         Password is required
       </div>
-
-      <!-- <div
-        *ngIf="
-          loginForm.get('password')?.invalid &&
-          loginForm.get('password')?.touched
-        "
-        class="error-message"
-      >
-        Password is required
-      </div> -->
 
       <div *ngIf="loginError" class="error-message server-error">
         {{ loginError }}

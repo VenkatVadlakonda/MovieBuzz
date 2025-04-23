@@ -36,12 +36,10 @@ export class DashboardComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string | null = null;
   searchMovie: string = '';
-
-  
-
   currentPage: number = 1;
-  pageSize: number = 4; // movies per page
+  pageSize: number = 4;
 
+  //injecting services
   private movieService = inject(MoviesService);
   private router = inject(Router);
   private authService=inject(AuthService)
@@ -49,12 +47,10 @@ export class DashboardComponent implements OnInit {
   
   genreList: string[] = ['Action', 'Drama', 'Comedy', 'Thriller', 'Romance'];
   selectedGenre: string = 'All';
-  
-
-
   ngOnInit(): void {
     this.getMoviesData();
   }
+  //Movies Data
   getMoviesData(): void {
     this.isLoading = true;
     this.errorMessage = null;
@@ -85,14 +81,15 @@ export class DashboardComponent implements OnInit {
             });
           } else {
             this.moviesData = data;
-          }
-          
+          } 
         },
         error: (err) => {
           alert(err);
         },
       });
   }
+
+  //pagination logic for page display 4 movie cards
   get paginatedMovies(): Movies[] {
     const filtered = this.moviesPipe.transform(this.moviesData, this.searchMovie, this.selectedGenre);
     const startIndex = (this.currentPage - 1) * this.pageSize;
@@ -103,16 +100,21 @@ export class DashboardComponent implements OnInit {
     return this.moviesPipe.transform(this.moviesData, this.searchMovie, this.selectedGenre).length;
   }
 
-  onMovieClick(id:number){
+  onMovieClick(movie:Movies){
     const user=this.authService.getCurrentUser();
-
+    if(!movie.IsActive){
+      alert('This movie is not active')
+      return
+    }
     if(!user){
       alert("Please login to continue")
       this.router.navigate(['/login'])
     }else{
-      this.router.navigate(['/movie',id])
-    }
+      this.router.navigate(['/movie',movie.MovieID])
+    } 
   }
+
+  //age filtering
   getUserAge(dob:string):number{
     const dateOfBirth=new Date(dob)
     const today=new Date()
@@ -122,8 +124,6 @@ export class DashboardComponent implements OnInit {
     if(month<0||(month==0 && today.getDate()<dateOfBirth.getDate())){
       age--
     }
-    
-    
     return age
 
   }
