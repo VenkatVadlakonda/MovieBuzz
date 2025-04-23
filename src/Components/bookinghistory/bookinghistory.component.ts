@@ -13,14 +13,17 @@ export class BookinghistoryComponent implements OnInit {
   bookingHistory: BookingsHistory[] = [];
 
   ngOnInit(): void {
-    const users=JSON.parse(localStorage.getItem('currentSession')||'{}')
+    const users = JSON.parse(localStorage.getItem('currentSession') || '{}');
     const data = localStorage.getItem('bookingHistory');
     this.bookingHistory = data ? JSON.parse(data) : [];
-    const bookings=data?JSON.parse(data):[]
-    this.bookingHistory=bookings.filter((movie:any)=>movie.userId==users.user.id)
+    const bookings = data ? JSON.parse(data) : [];
+    this.bookingHistory = bookings.filter(
+      (movie: any) => movie.userId == users.user.id
+    );
   }
   getBookingQRCode(booking: any): string {
     const details = {
+      UserName: booking.Username || '',
       Movie: booking.movieName || '',
       Genre: booking.genre || '',
       Date: booking.date || '',
@@ -28,7 +31,6 @@ export class BookinghistoryComponent implements OnInit {
       Tickets: booking.Quantity || booking.tickets || 0,
       Total: booking.totalPrice || booking.total || 0,
       BookingID: booking.bookingId || booking.bookingID || '',
-     
     };
 
     return JSON.stringify(details, null, 2);
