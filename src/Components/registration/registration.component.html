@@ -13,9 +13,9 @@
         <div *ngIf="registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched" class="error-message">
           <i class="fas fa-exclamation-circle"></i> First Name is required 
         </div>
-        <div *ngIf="registerForm.get('firstname')?.errors?.['minlength']" class="error-message">
+        <!-- <div *ngIf="registerForm.get('firstname')?.errors?.['minlength']" class="error-message">
           <i class="fas fa-exclamation-circle"></i> Min 4 characters required
-        </div>
+        </div> -->
       </div>
   
       <div class="form-group">
@@ -28,9 +28,9 @@
         <div *ngIf="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched" class="error-message">
           <i class="fas fa-exclamation-circle"></i> Last Name is required 
         </div>
-        <div *ngIf="registerForm.get('lastname')?.errors?.['minlength']" class="error-message">
+        <!-- <div *ngIf="registerForm.get('lastname')?.errors?.['minlength']" class="error-message">
           <i class="fas fa-exclamation-circle"></i> Min 4 characters required
-        </div>
+        </div> -->
       </div>
     </div>
   

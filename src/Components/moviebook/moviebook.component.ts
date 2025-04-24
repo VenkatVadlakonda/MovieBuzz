@@ -35,9 +35,9 @@ export class MoviebookComponent implements OnInit {
   private router = inject(ActivatedRoute);
   private movieService = inject(MoviesService);
   private safe = inject(DomSanitizer);
-  private bookingService=inject(MoviebookService)
-  private authService=inject(AuthService)
-  private modal=inject(NzModalService)
+  private bookingService = inject(MoviebookService);
+  private authService = inject(AuthService);
+  private modal = inject(NzModalService);
 
   //display movie based on ID
   ngOnInit(): void {
@@ -45,9 +45,7 @@ export class MoviebookComponent implements OnInit {
     this.getMovie();
     this.showDates = generateShowDates();
     this.selectedDate = this.showDates[0];
-
   }
-  
 
   //displays the movie based on selected ID
   getMovie(): void {
@@ -100,7 +98,7 @@ export class MoviebookComponent implements OnInit {
 
   //after successfull booking storing the data
   storeBooking(): void {
-    const user=this.authService.getCurrentUser()
+    const user = this.authService.getCurrentUser();
     const remainingSeats = this.movieData.AvailableSeats - this.ticketCount;
     if (remainingSeats < 0) {
       alert('Not enough seats available!');
@@ -116,28 +114,21 @@ export class MoviebookComponent implements OnInit {
       time: this.selectedTime,
       Quantity: this.ticketCount,
       totalPrice: this.totalPrice,
-      userId:user.id,
-      Username:user.username
+      userId: user.id,
+      Username: user.username,
     };
 
-    
     this.movieService
-    .updateAvaliableSeats(this.movieID, remainingSeats)
-    .subscribe(() => {
-
-      this.movieData.AvailableSeats = remainingSeats;
-    });
+      .updateAvaliableSeats(this.movieID, remainingSeats)
+      .subscribe(() => {
+        this.movieData.AvailableSeats = remainingSeats;
+      });
     this.bookingService.saveBooking(newBooking);
 
-      alert('Booking Successful!');
-      this.ticketCount = 0;
-      this.selectedDate = '';
-      this.selectedTime = '';
-
-    // alert('Booking Successful!');
-    // this.ticketCount = 0;
-    // this.selectedDate = '';
-    // this.selectedTime = '';
+    alert('Booking Successful!');
+    this.ticketCount = 0;
+    this.selectedDate = '';
+    this.selectedTime = '';
   }
 
   //booking a movie
@@ -148,7 +139,7 @@ export class MoviebookComponent implements OnInit {
     }
 
     const remainingSeats = this.movieData.AvailableSeats - this.ticketCount;
-    const user=this.authService.getCurrentUser()
+    const user = this.authService.getCurrentUser();
 
     if (remainingSeats < 0) {
       alert('Not enough seats available!');
@@ -171,8 +162,8 @@ export class MoviebookComponent implements OnInit {
             time: this.selectedTime,
             Quantity: this.ticketCount,
             totalPrice: this.totalPrice,
-            userId:user.id,
-            username:user.username
+            userId: user.id,
+            username: user.username,
           };
 
           this.bookingService.saveBooking(newBooking);
@@ -181,34 +172,27 @@ export class MoviebookComponent implements OnInit {
         });
     }
   }
-  
+
   //if the is past it wil disable
   isTimeDisabled(time: string): boolean {
     const now = new Date();
     now.setSeconds(0);
     now.setMilliseconds(0);
-  
-   
+
     const dateTimeString = `${this.selectedDate} ${time}`;
     const selectedDateTime = new Date(dateTimeString);
-  
- 
+
     if (isNaN(selectedDateTime.getTime())) return false;
-  
-   
     const today = new Date();
     const isToday =
       selectedDateTime.getDate() === today.getDate() &&
       selectedDateTime.getMonth() === today.getMonth() &&
       selectedDateTime.getFullYear() === today.getFullYear();
-  
+
     return isToday && selectedDateTime <= now;
   }
-  
-  
   getTodayDate(): string {
     const today = new Date();
     return today.toISOString().split('T')[0];
   }
-  
 }
