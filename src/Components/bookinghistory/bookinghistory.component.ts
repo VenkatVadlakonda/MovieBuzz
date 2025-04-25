@@ -23,7 +23,7 @@ export class BookinghistoryComponent implements OnInit {
   }
   getBookingQRCode(booking: any): string {
     const details = {
-      UserName: booking.userName || '',
+      UserName: booking.Username || '',
       Movie: booking.movieName || '',
       Genre: booking.genre || '',
       Date: booking.date || '',

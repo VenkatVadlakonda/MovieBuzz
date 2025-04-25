@@ -19,12 +19,12 @@
         "10:00 PM"
       ],
       "CreatedOn": "2025-04-23T16:59:13.129Z",
-      "AvailableSeats": 95,
+      "AvailableSeats": 92,
       "id": "100"
     },
     {
       "MovieID": 101,
-      "MovieName": "Pushpa: The Rise",
+      "MovieName": "Pushpa: The Rule",
       "Genre": "Action, Crime",
       "AgeRestriction": 16,
       "Duration": 179,
@@ -40,8 +40,8 @@
         "6:30 PM",
         "10:00 PM"
       ],
-      "CreatedOn": "2025-04-23T16:59:33.073Z",
-      "AvailableSeats": 92,
+      "CreatedOn": "2025-04-25T11:58:48.295Z",
+      "AvailableSeats": 90,
       "id": "101"
     },
     {
@@ -85,7 +85,7 @@
         "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
-      "AvailableSeats": 89,
+      "AvailableSeats": 85,
       "id": "103"
     },
     {
@@ -120,7 +120,7 @@
       "Price": 200,
       "PosterImageURL": "https://m.media-amazon.com/images/M/MV5BYWVlMjVhZWYtNWViNC00ODFkLTk1MmItYjU1MDY5ZDdhMTU3XkEyXkFqcGdeQXVyODIwMDI1NjM@._V1_FMjpg_UX1000_.jpg",
       "TrailerURL": "https://www.youtube.com/watch?v=sOEg_YZQsTI",
-      "IsActive": true,
+      "IsActive": false,
       "showDate": "2025-05-01",
       "showTime": [
         "11:00 AM",
@@ -151,7 +151,7 @@
         "10:00 PM"
       ],
       "CreatedOn": "2025-04-23T10:02:23.573Z",
-      "AvailableSeats": 100,
+      "AvailableSeats": 97,
       "id": "106"
     },
     {
@@ -327,7 +327,7 @@
         "10:00 PM"
       ],
       "CreatedOn": "2025-04-19",
-      "AvailableSeats": 97,
+      "AvailableSeats": 94,
       "id": "116"
     },
     {
@@ -393,7 +393,7 @@
         "10:00"
       ],
       "CreatedOn": "2025-04-25T04:07:19.069Z",
-      "AvailableSeats": 94,
+      "AvailableSeats": 92,
       "id": "119"
     },
     {
