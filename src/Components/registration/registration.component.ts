@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UsersService } from '../../_services/users.service';
 import { User } from '../../_models/user.modal';
 
@@ -31,6 +31,7 @@ export class RegistrationComponent implements OnInit{
   };
   apiData:User[]=[]
   private usersAdd=inject(UsersService)
+  private router=inject(Router)
   
 
   constructor(private fb: FormBuilder) {
@@ -108,6 +109,7 @@ export class RegistrationComponent implements OnInit{
       alert('Registration successful!');
       this.registerForm.reset();
       this.resetPasswordValidation();
+      this.router.navigate(['/login'])
     } else {
       alert('Please fill all fields correctly.');
     }
@@ -165,7 +167,7 @@ export class RegistrationComponent implements OnInit{
     return null;
   }
   onDobChange() {
-    const dobValue = new Date(this.registerForm.get('dob')?.value);
+    const dobValue = new Date(this.registerForm.get('dateOfBirth')?.value);
     const year = dobValue.getFullYear();
 
     if (year > 2025) {

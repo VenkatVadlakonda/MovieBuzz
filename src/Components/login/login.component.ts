@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit{
       const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
       const user = users.find((u: any) => u.userName === userName && u.password === password);
       const userapi=this.userData.find((users)=>users.userName===userName&& users.password===password)
-
+      
       if (user || userapi) {
         this.authService.login({
           id: user.id,
@@ -84,6 +84,7 @@ export class LoginComponent implements OnInit{
         });
         this.router.navigate(['/dashboard']);
       } else {
+        alert("Username and password not exists")
         this.loginError = 'Invalid username or password';
         this.moveButton = !this.moveButton;
       }

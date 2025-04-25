@@ -13,8 +13,12 @@ import { AdminusersviewComponent } from '../Components/Admin/adminusersview/admi
 import { AdminhistoryComponent } from '../Components/Admin/adminhistory/adminhistory.component';
 
 export const routes: Routes = [
+ 
   {
     path:'',redirectTo:'dashboard',pathMatch:'full'
+  },
+  {
+    path:'admin',redirectTo:'admin-dashboard',pathMatch:'full'
   },
   {
     path:'admin',component:AdminComponent,canActivate:[authGuard]
