@@ -14,7 +14,7 @@ import { AuthService } from '../../_services/auth.service';
 export class HeaderComponent implements OnInit,OnDestroy{
   isLoggedIn: boolean = false;
   isAdminUser: boolean = false;
-  username: string = '';
+  userName: string = '';
   private destroy$ = new Subject<void>();
 
   private authService = inject(AuthService);
@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit,OnDestroy{
   updateAuthStatus(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
     this.isAdminUser = this.authService.isAdmin();
-    this.username = this.authService.getCurrentUser()?.username || '';
+    this.userName = this.authService.getCurrentUser()?.userName || '';
   }
 
   logOut(): void {

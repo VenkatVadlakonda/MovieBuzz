@@ -6,11 +6,11 @@
       <div class="form-group">
         <label>First Name</label>
         <input
-          formControlName="firstname"
+          formControlName="firstName"
           placeholder="Enter your first name"
           class="form-control"
         />
-        <div *ngIf="registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched" class="error-message">
+        <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="error-message">
           <i class="fas fa-exclamation-circle"></i> First Name is required 
         </div>
         <!-- <div *ngIf="registerForm.get('firstname')?.errors?.['minlength']" class="error-message">
@@ -21,11 +21,11 @@
       <div class="form-group">
         <label>Last Name</label>
         <input
-          formControlName="lastname"
+          formControlName="lastName"
           placeholder="Enter your last name"
           class="form-control"
         />
-        <div *ngIf="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched" class="error-message">
+        <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="error-message">
           <i class="fas fa-exclamation-circle"></i> Last Name is required 
         </div>
         <!-- <div *ngIf="registerForm.get('lastname')?.errors?.['minlength']" class="error-message">
@@ -38,21 +38,21 @@
       <label for="dob">Date of Birth</label>
       <input 
         id="dob"
-        formControlName="dob" 
+        formControlName="dateOfBirth" 
         type="date" 
         class="form-control"
         (change)="onDobChange()" 
       />
     
-      <div *ngIf="registerForm.get('dob')?.hasError('required') && registerForm.get('dob')?.touched" class="error-message">
+      <div *ngIf="registerForm.get('dateOfBirth')?.hasError('required') && registerForm.get('dateOfBirth')?.touched" class="error-message">
         <i class="fas fa-exclamation-circle"></i> Date of Birth is required.
       </div>
       
-      <div *ngIf="registerForm.get('dob')?.hasError('invalidYear') && registerForm.get('dob')?.touched" class="error-message">
+      <div *ngIf="registerForm.get('dateOfBirth')?.hasError('invalidYear') && registerForm.get('dateOfBirth')?.touched" class="error-message">
         <i class="fas fa-exclamation-circle"></i> Invalid year!.
       </div>
       
-      <div *ngIf="registerForm.get('dob')?.hasError('recentYear') && registerForm.get('dob')?.touched" class="error-message">
+      <div *ngIf="registerForm.get('dateOfBirth')?.hasError('recentYear') && registerForm.get('dateOfBirth')?.touched" class="error-message">
         <i class="fas fa-exclamation-circle"></i> Year must be 2021 or earlier.
       </div>
     </div>
@@ -60,18 +60,18 @@
     <div class="form-group">
       <label>Email</label>
       <input
-        formControlName="email"
+        formControlName="emailId"
         placeholder="yourname@gmail.com"
         class="form-control"
       />
-      <div *ngIf="registerForm.get('email')?.touched" class="error-message">
-        <span *ngIf="registerForm.get('email')?.errors?.['required']">
+      <div *ngIf="registerForm.get('emailId')?.touched" class="error-message">
+        <span *ngIf="registerForm.get('emailId')?.errors?.['required']">
           <i class="fas fa-exclamation-circle"></i> Email is required
         </span>
-        <span *ngIf="registerForm.get('email')?.errors?.['email']">
+        <span *ngIf="registerForm.get('emailId')?.errors?.['emailId']">
           <i class="fas fa-exclamation-circle"></i> Please enter a valid email
         </span>
-        <span *ngIf="registerForm.get('email')?.errors?.['invalidDomain']">
+        <span *ngIf="registerForm.get('emailId')?.errors?.['invalidDomain']">
           <i class="fas fa-exclamation-circle"></i> Only valid domain addresses are allowed
         </span>
       </div>
@@ -80,15 +80,15 @@
     <div class="form-group">
       <label>Phone Number</label>
       <input
-        formControlName="phone"
+        formControlName="phoneNo"
         placeholder="Enter 10-digit mobile number"
         class="form-control"
       />
-      <div *ngIf="registerForm.get('phone')?.touched" class="error-message">
-        <span *ngIf="registerForm.get('phone')?.errors?.['required']">
+      <div *ngIf="registerForm.get('phoneNo')?.touched" class="error-message">
+        <span *ngIf="registerForm.get('phoneNo')?.errors?.['required']">
           <i class="fas fa-exclamation-circle"></i> Phone number is required
         </span>
-        <span *ngIf="registerForm.get('phone')?.errors?.['pattern']">
+        <span *ngIf="registerForm.get('phoneNo')?.errors?.['pattern']">
           <i class="fas fa-exclamation-circle"></i> Must be 10 digits starting with 6-9
         </span>
       </div>
@@ -97,18 +97,18 @@
     <div class="form-group">
       <label>Username</label>
       <input
-        formControlName="username"
+        formControlName="userName"
         placeholder="Enter username"
         class="form-control"
       />
-      <div *ngIf="registerForm.get('username')?.touched" class="error-message">
-        <span *ngIf="registerForm.get('username')?.errors?.['required']">
+      <div *ngIf="registerForm.get('userName')?.touched" class="error-message">
+        <span *ngIf="registerForm.get('userName')?.errors?.['required']">
           <i class="fas fa-exclamation-circle"></i> Username is required
         </span>
-        <span *ngIf="registerForm.get('username')?.errors?.['minlength']">
+        <span *ngIf="registerForm.get('userName')?.errors?.['minlength']">
           <i class="fas fa-exclamation-circle"></i> Must be at least 4 characters
         </span>
-        <span *ngIf="registerForm.get('username')?.errors?.['maxlength']">
+        <span *ngIf="registerForm.get('userName')?.errors?.['maxlength']">
           <i class="fas fa-exclamation-circle"></i> Must be less than 30 characters
         </span>
       </div>

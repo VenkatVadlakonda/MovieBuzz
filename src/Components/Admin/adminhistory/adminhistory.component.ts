@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { BookingsHistory } from '../../../_models/booking.modal';
 import { FormsModule } from '@angular/forms';
-import {AdminhistoryPipe} from '../../../_pipes/adminhistory.pipe'
+import { AdminhistoryPipe } from '../../../_pipes/adminhistory.pipe';
+
 
 @Component({
   selector: 'app-adminhistory',
@@ -13,7 +14,7 @@ import {AdminhistoryPipe} from '../../../_pipes/adminhistory.pipe'
 })
 export class AdminhistoryComponent implements OnInit{
   book:any;
-  history:string="";
+  history:string='';
   bookings:BookingsHistory[]=JSON.parse(localStorage.getItem('bookingHistory')||'[]')
   TotalCount:number=0
   ngOnInit(): void {

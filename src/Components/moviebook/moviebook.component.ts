@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Movies } from '../../_models/movies.modal';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MoviesService } from '../../_services/movies.service';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -33,6 +33,7 @@ export class MoviebookComponent implements OnInit {
   bookingId: number = 200;
 
   private router = inject(ActivatedRoute);
+  private route=inject(Router)
   private movieService = inject(MoviesService);
   private safe = inject(DomSanitizer);
   private bookingService = inject(MoviebookService);
@@ -115,7 +116,7 @@ export class MoviebookComponent implements OnInit {
       Quantity: this.ticketCount,
       totalPrice: this.totalPrice,
       userId: user.id,
-      Username: user.username,
+      Username: user.userName,
     };
 
     this.movieService
@@ -126,6 +127,7 @@ export class MoviebookComponent implements OnInit {
     this.bookingService.saveBooking(newBooking);
 
     alert('Booking Successful!');
+    this.route.navigate(['/history'])
     this.ticketCount = 0;
     this.selectedDate = '';
     this.selectedTime = '';
@@ -163,7 +165,7 @@ export class MoviebookComponent implements OnInit {
             Quantity: this.ticketCount,
             totalPrice: this.totalPrice,
             userId: user.id,
-            username: user.username,
+            Username: user.userName,
           };
 
           this.bookingService.saveBooking(newBooking);

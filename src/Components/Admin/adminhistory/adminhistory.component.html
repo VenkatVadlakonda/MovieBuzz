@@ -12,9 +12,9 @@
     <th>Quantity</th>
     <th>Totalprice</th>
   </tr>
-  <tr *ngFor="let booking of bookings | adminhistory : history">
+  <tr *ngFor="let booking of bookings | adminhistory:history ">
     <td>{{ booking.bookingId }}</td>
-    <td>{{ booking.Username }}</td>
+    <td>{{ booking.Username}}</td>
     <td>{{ booking.movieId }}</td>
     <td>{{ booking.movieName }}</td>
     <td>{{ booking.date }}</td>

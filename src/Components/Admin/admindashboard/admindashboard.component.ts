@@ -18,7 +18,7 @@ export class AdmindashboardComponent implements OnInit {
   searchItem: string = '';
   selectedMovie: Movies | null = null;
   isEdit: boolean = false;
-  showTimeInput: string = ''; // For comma-separated times
+  showTimeInput: string = ''; 
   private movieService = inject(MoviesService);
 
   ngOnInit(): void {
@@ -43,14 +43,14 @@ export class AdmindashboardComponent implements OnInit {
   saveMovie(movie: Movies): void {
     const movieToSave = {
       ...movie,
-      id: movie.MovieID,
+      id: Number(movie.MovieID),
       showTime: this.showTimeInput.split(',').map((t) => t.trim()),
       CreatedOn: new Date().toISOString(),
       showDate: new Date(movie.showDate).toISOString(),
     };
 
     if (this.isEdit) {
-      movieToSave.MovieID = movie.MovieID;
+      movieToSave.id = movie.MovieID;
       this.movieService.updateMovie(movieToSave).subscribe({
         next: () => {
           this.getMovies();
@@ -61,17 +61,17 @@ export class AdmindashboardComponent implements OnInit {
         },
       });
     } else if (!this.isEdit) {
-      const id = Math.max(...this.moviesData.map((m) => m.MovieID)) + 1;
-      movieToSave.id = id;
-      movieToSave.MovieID = id;
+      
       this.movieService.addMovie(movieToSave).subscribe(
-        () => {
+       {
+        next:() => {
           this.getMovies();
           this.selectedMovie = null;
         },
-        (error) => {
+        error:(error) => {
           console.error('Error adding movie:', error);
         }
+       }
       );
     }
     console.log('Updating movie:', movieToSave);
@@ -90,7 +90,7 @@ export class AdmindashboardComponent implements OnInit {
       TrailerURL: '',
       CreatedOn: new Date().toISOString(),
       IsActive: true,
-      showDate: new Date().toISOString(),
+      showDate: new Date().toString(),
       showTime: [],
       AvailableSeats: 0,
     };

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,6 +9,8 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../_services/auth.service';
+import { User } from '../../_models/user.modal';
+import { UsersService } from '../../_services/users.service';
 
 @Component({
   selector: 'app-login',
@@ -16,13 +18,16 @@ import { AuthService } from '../../_services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   loginForm: FormGroup;
   passwordFocused:boolean = false;
   showPassword:boolean = false; 
   moveButton:boolean = false;
   loginError:string = '';
   isSubmitting:boolean = false;
+  userData:User[]=[]
+
+  private userService=inject(UsersService)
 
   constructor(
     private fb: FormBuilder,
@@ -30,9 +35,13 @@ export class LoginComponent {
     private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
+      userName: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
+  }
+
+  ngOnInit(): void {
+    this.userService.getAllUsers().subscribe(data=>this.userData=data)
   }
 
   onHover() {
@@ -48,11 +57,11 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
-      const { username, password } = this.loginForm.value;
+      const { userName, password } = this.loginForm.value;
       
-      if (username === 'admin' && password === 'admin123') {
+      if (userName === 'admin' && password === 'admin123') {
         this.authService.login({
-          username: 'admin',
+          userName: 'admin',
           isAdmin: true
         });
         this.router.navigate(['/admin']);
@@ -60,17 +69,18 @@ export class LoginComponent {
       }
 
       const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
-      const user = users.find((u: any) => u.username === username && u.password === password);
+      const user = users.find((u: any) => u.userName === userName && u.password === password);
+      const userapi=this.userData.find((users)=>users.userName===userName&& users.password===password)
 
-      if (user) {
+      if (user || userapi) {
         this.authService.login({
           id: user.id,
-          username: user.username,
-          email: user.email,
+          userName: user.userName,
+          emailId: user.email,
           isAdmin: false,
-          dob:user.dob,
-          firstname:user.firstname,
-          lastname:user.lastname
+          dateOfBirth:user.dob,
+          firstName:user.firstName,
+          lastName:user.lastName
         });
         this.router.navigate(['/dashboard']);
       } else {

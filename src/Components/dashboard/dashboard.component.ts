@@ -71,8 +71,8 @@ export class DashboardComponent implements OnInit {
           const user=this.authService.getCurrentUser()
           console.log(user)
 
-          if (user && user.dob) {
-            const userAge = this.getUserAge(user.dob);
+          if (user && user.dateOfBirth) {
+            const userAge = this.getUserAge(user.dateOfBirth);
             console.log('User Age:', userAge);
   
             this.moviesData = data.filter(movie => {

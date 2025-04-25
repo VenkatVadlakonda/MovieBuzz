@@ -28,7 +28,7 @@ export class AuthService {
     this.currentUserSubject.next(userData);
 
     if(userData.isAdmin){
-       this.router.navigate(['/admin-dashboard'])
+       this.router.navigate(['/admin'])
     }
     else{
       this.router.navigate(['/dashboard'])

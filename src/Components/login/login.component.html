@@ -15,16 +15,16 @@
         type="text"
         id="username"
         placeholder="Enter your username"
-        formControlName="username"
+        formControlName="userName"
         [class.invalid]="
-          loginForm.get('username')?.invalid &&
-          loginForm.get('username')?.touched
+          loginForm.get('userName')?.invalid &&
+          loginForm.get('userName')?.touched
         "
       />
       <div
         *ngIf="
-          loginForm.get('username')?.invalid &&
-          loginForm.get('username')?.touched
+          loginForm.get('userName')?.invalid &&
+          loginForm.get('userName')?.touched
         "
         class="error-message"
       >

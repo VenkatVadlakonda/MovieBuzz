@@ -5,10 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'adminhistory',
 })
 export class AdminhistoryPipe implements PipeTransform {
-  transform(bookings: BookingsHistory[], history: string): BookingsHistory[] {
-    return bookings.filter((data) =>
-      data.Username.toLowerCase().includes(history.toLowerCase())
-    );
+  transform(bookings: BookingsHistory[],history:string): BookingsHistory[] {
+    return bookings.filter(data=>data.Username.toLowerCase().includes(history.toLowerCase()))  
   }
 }
 

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,6 +9,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { UsersService } from '../../_services/users.service';
+import { User } from '../../_models/user.modal';
 
 @Component({
   selector: 'app-registration',
@@ -16,7 +18,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss',
 })
-export class RegistrationComponent {
+export class RegistrationComponent implements OnInit{
   registerForm: FormGroup;
   passwordFocused: boolean = false;
   showPassword: boolean = false;
@@ -27,18 +29,21 @@ export class RegistrationComponent {
     specialChar: false,
     capital: false,
   };
+  apiData:User[]=[]
+  private usersAdd=inject(UsersService)
+  
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
-      firstname: ['', [Validators.required]],
-      lastname: ['', [Validators.required]],
-      dob: ['', [Validators.required, this.dobValidator.bind(this)]],
-      email: [
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      dateOfBirth: ['', [Validators.required, this.dobValidator.bind(this)]],
+      emailId: [
         '',
         [Validators.required, Validators.email, this.domainValidator],
       ],
-      phone: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
-      username: [
+      phoneNo: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
+      userName: [
         '',
         [
           Validators.required,
@@ -46,42 +51,67 @@ export class RegistrationComponent {
           Validators.maxLength(30),
         ],
       ],
-      password: ['', Validators.required],
+      password
+      : ['', Validators.required],
     });
+  }
+  ngOnInit(): void {
+    this.usersAdd.getAllUsers().subscribe(data=>this.apiData=data)
+    
   }
 
   onSubmit() {
     if (this.registerForm.valid && this.isPasswordValid()) {
       const newUser = {
         ...this.registerForm.value,
-        createdDate: new Date().toISOString(),
+        createdOn: new Date().toISOString(),
       };
+      const addUser={...this.registerForm.value}
 
       const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
       const isDuplicate = users.some(
         (user: any) =>
-          user.username === newUser.username ||
-          user.email === newUser.email ||
-          user.phone === newUser.phone
+          user.userName === newUser.userName ||
+          user.emailId === newUser.emailId ||
+          user.phoneNo === newUser.phoneNo
       );
+      const isDup=this.apiData.some(
+        user=>user.userName===addUser.userName ||  user.emailId === newUser.emailId ||  user.phoneNo === newUser.phoneNo
+      )
 
-      if (isDuplicate) {
+      if (isDuplicate || isDup) {
         alert('Username or email or phone number already exists!');
         return;
       }
 
       newUser.id =
-        users.length > 0 ? Math.max(...users.map((u: any) => u.id)) + 100 : 1;
+        users.length > 0 ? Math.max(...users.map((u: any) => u.id)) + 1 : 101;
       localStorage.setItem(
         'MovieBuzzUsers',
         JSON.stringify([...users, newUser])
       );
+      this.usersAdd.addUsers(addUser).subscribe({
+        next:res=>{
+          console.log("Registration successfull from API")
+        },
+        error:(err)=>{
+          if(err.status===400 && err.error=="User already exists"){
+            alert("Username or email or phoneno alredy exists")
+          }else{
+            alert("something went wrong")
+            console.log(err);
+            
+          }
+        }
+
+      })
       alert('Registration successful!');
       this.registerForm.reset();
       this.resetPasswordValidation();
     } else {
       alert('Please fill all fields correctly.');
     }
+    
   }
 
   //password validation
