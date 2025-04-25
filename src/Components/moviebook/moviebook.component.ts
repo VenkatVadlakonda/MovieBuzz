@@ -33,7 +33,7 @@ export class MoviebookComponent implements OnInit {
   bookingId: number = 200;
 
   private router = inject(ActivatedRoute);
-  private route=inject(Router)
+  private route = inject(Router);
   private movieService = inject(MoviesService);
   private safe = inject(DomSanitizer);
   private bookingService = inject(MoviebookService);
@@ -56,10 +56,6 @@ export class MoviebookComponent implements OnInit {
         const videoID = extractYouTubeVideoID(this.movieData.TrailerURL);
         const embed = `https://www.youtube.com/embed/${videoID}`;
         this.trailerurl = this.safe.bypassSecurityTrustResourceUrl(embed);
-      }
-
-      if (this.movieData?.showTime?.length) {
-        this.selectedTime = this.movieData.showTime[0];
       }
     });
   }
@@ -127,7 +123,7 @@ export class MoviebookComponent implements OnInit {
     this.bookingService.saveBooking(newBooking);
 
     alert('Booking Successful!');
-    this.route.navigate(['/history'])
+    this.route.navigate(['/history']);
     this.ticketCount = 0;
     this.selectedDate = '';
     this.selectedTime = '';
