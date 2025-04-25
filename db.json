@@ -54,7 +54,7 @@
       "Price": 240,
       "PosterImageURL": "https://m.media-amazon.com/images/M/MV5BODUwNDNjYzctODUxNy00ZTA2LWIyYTEtMDc5Y2E5ZjBmNTMzXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_FMjpg_UX1000_.jpg",
       "TrailerURL": "https://www.youtube.com/watch?v=f_vbAtFSEc0",
-      "IsActive": true,
+      "IsActive": false,
       "showDate": "2025-05-03",
       "showTime": [
         "11:00 AM",
@@ -415,7 +415,7 @@
         "10:00 PM"
       ],
       "CreatedOn": "2025-04-25T04:03:20.725Z",
-      "AvailableSeats": 95,
+      "AvailableSeats": 92,
       "id": "120"
     },
     {

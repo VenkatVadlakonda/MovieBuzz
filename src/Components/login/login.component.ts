@@ -76,9 +76,9 @@ export class LoginComponent implements OnInit{
         this.authService.login({
           id: user.id,
           userName: user.userName,
-          emailId: user.email,
+          emailId: user.emailId,
           isAdmin: false,
-          dateOfBirth:user.dob,
+          dateOfBirth:user.dateOfBirth,
           firstName:user.firstName,
           lastName:user.lastName
         });
