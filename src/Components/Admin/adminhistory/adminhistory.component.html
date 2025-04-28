@@ -6,8 +6,8 @@
   <tr>
     <th>BookingID</th>
     <th>UserName</th>
-    <th>MovieID</th>
     <th>MovieName</th>
+    <th>Show Time</th>
     <th>Booking Date</th>
     <th>Quantity</th>
     <th>Totalprice</th>
@@ -15,8 +15,8 @@
   <tr *ngFor="let booking of bookings | adminhistory:history ">
     <td>{{ booking.bookingId }}</td>
     <td>{{ booking.Username}}</td>
-    <td>{{ booking.movieId }}</td>
     <td>{{ booking.movieName }}</td>
+    <td>{{ booking.time }}</td>
     <td>{{ booking.date }}</td>
     <td>{{ booking.Quantity }}</td>
     <td>Rs. {{ booking.totalPrice }}/-</td>

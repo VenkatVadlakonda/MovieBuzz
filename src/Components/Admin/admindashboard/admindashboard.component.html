@@ -10,7 +10,7 @@
 <!--Movie Cards-->
 <div class="movie-container">
   <div
-    *ngFor="let movie of moviesData | adminmovies : searchItem"
+    *ngFor="let movie of moviesData.reverse()| adminmovies : searchItem"
     class="movie-card"
     [class.inactive]="!movie.IsActive"
   >
@@ -19,6 +19,7 @@
     <p><strong>Genre:</strong> {{ movie.Genre }}</p>
     <p><strong>Age:</strong> {{ movie.AgeRestriction }}+</p>
     <p><strong>Duration:</strong> {{ movie.Duration }} min</p>
+    <p><strong>AvaliableSeats:</strong> {{ movie.AvailableSeats }}</p>
 
     <div class="actions">
       <button (click)="modifyMovie(movie)">Modify</button>

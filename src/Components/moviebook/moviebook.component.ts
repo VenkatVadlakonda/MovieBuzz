@@ -65,6 +65,7 @@ export class MoviebookComponent implements OnInit {
       this.ticketCount++;
       this.calculateTotal();
     }
+    
   }
 
   decreaseQuantity(): void {
@@ -133,6 +134,10 @@ export class MoviebookComponent implements OnInit {
   bookNow(): void {
     if (this.ticketCount === 0) {
       alert('Please select at least 1 ticket');
+      return;
+    }
+    if (this.ticketCount > 6) {
+      alert('Maximum limit reached');
       return;
     }
 
