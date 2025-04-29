@@ -41,7 +41,23 @@ export class LoginComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.userService.getAllUsers().subscribe(data=>this.userData=data)
+    this.userService.getAllUsers().subscribe({
+      next: (data: any) => {
+        // Handle different response formats
+        if (Array.isArray(data)) {
+          this.userData = data;
+        } else if (data && Array.isArray(data.data)) {
+          this.userData = data.data;
+        } else {
+          console.error('Unexpected API response format:', data);
+          this.userData = [];
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching users:', err);
+        this.userData = [];
+      }
+    });
   }
 
   onHover() {
@@ -59,31 +75,41 @@ export class LoginComponent implements OnInit{
       this.isSubmitting = true;
       const { userName, password } = this.loginForm.value;
       
-      if (userName === 'admin' && password === 'admin123') {
+      if (userName === 'Admin' && password === 'Admin@123') {
         this.authService.login({
-          userName: 'admin',
+          userName: 'Admin',
           isAdmin: true
         });
+        alert("Admin Login Successfull")
         this.router.navigate(['/admin']);
         return;
       }
 
       const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
-      const user = users.find((u: any) => u.userName === userName && u.password === password);
-      const userapi=this.userData.find((users)=>users.userName===userName&& users.password===password)
+      const user = users.find((u: User) => u.userName === userName && u.password === password);
+      const userapi=this.userData.find((users:User)=>users.userName===userName&& users.password===password)
       
-      if (user || userapi) {
+      if (user) {
         this.authService.login({
           id: user.id,
           userName: user.userName,
+          password:user.password,
           emailId: user.emailId,
           isAdmin: false,
           dateOfBirth:user.dateOfBirth,
           firstName:user.firstName,
           lastName:user.lastName
         });
+        alert("Login Successfull")
         this.router.navigate(['/dashboard']);
-      } else {
+      }else if(userapi){
+        this.authService.login({
+          ...userapi
+        });
+        
+        this.router.navigate(['/dashboard']);
+      }
+       else {
         alert("Username and password not exists")
         this.loginError = 'Invalid username or password';
         this.moveButton = !this.moveButton;

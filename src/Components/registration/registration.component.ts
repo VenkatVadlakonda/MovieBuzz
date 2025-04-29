@@ -57,7 +57,23 @@ export class RegistrationComponent implements OnInit{
     });
   }
   ngOnInit(): void {
-    this.usersAdd.getAllUsers().subscribe(data=>this.apiData=data)
+    this.usersAdd.getAllUsers().subscribe({
+      next: (data: any) => {
+        // Handle different response formats
+        if (Array.isArray(data)) {
+          this.apiData = data;
+        } else if (data && Array.isArray(data.data)) {
+          this.apiData = data.data;
+        } else {
+          console.error('Unexpected API response format:', data);
+          this.apiData = [];
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching users:', err);
+        this.apiData = [];
+      }
+    });
     
   }
 
@@ -174,7 +190,7 @@ export class RegistrationComponent implements OnInit{
       alert('Invalid year! I think you are not born yet!😁 ');
     } else if (year > 2021) {
       alert('Age should be above 3 year 🤗');
-    } else if (year < 1930) {
+    } else if (year>1000 && year < 1930) {
       alert('You are died! No entry for Ghosts 👻');
     }
   }
