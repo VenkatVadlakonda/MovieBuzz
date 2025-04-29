@@ -1,4 +1,5 @@
 export interface User {
+fullName: any;
   firstName: string;
   lastName: string;
   dateOfBirth: string;

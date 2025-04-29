@@ -1,4 +1,7 @@
 <!--All registered user details-->
+<div class="search">
+    <input type="text" placeholder="search user" [(ngModel)]="search">
+</div>
 <table>
     <tr>
         <th>FullName</th>
@@ -7,12 +10,12 @@
         <th>Phoneno</th>
         <th>CreatedOn</th>
     </tr>
-    <tr *ngFor="let user of AllUsers">
+    <tr *ngFor="let user of AllUsers | adminuser:search">
         <td>{{user.fullName}}</td>
-        <td>{{user.dateOfBirth}}</td>
+        <td>{{user.dateOfBirth | date}}</td>
         <td>{{user.emailId}}</td>
         <td>{{user.phoneNo}}</td>
-        <td>{{user.createdOn}}</td>
+        <td>{{user.createdOn }}</td>
     </tr>
 </table>
-<h3>Total Number of Users Registered: {{TotalUsers}}</h3>
+<h3>Total Number of Users Registered: {{AllUsers.length}}</h3>

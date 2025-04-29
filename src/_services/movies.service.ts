@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry } from 'rxjs';
+import { catchError, Observable, retry, switchMap } from 'rxjs';
 import { Movies } from '../_models/movies.modal';
 import { log } from 'ng-zorro-antd/core/logger';
 
@@ -34,6 +34,8 @@ export class MoviesService {
     return this.http.put<Movies>(`${this.apiUrl}/${movie.MovieID}`, movie)
 
   }
+
+ 
 
   
 }

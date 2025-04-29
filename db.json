@@ -120,7 +120,7 @@
       "Price": 200,
       "PosterImageURL": "https://m.media-amazon.com/images/M/MV5BYWVlMjVhZWYtNWViNC00ODFkLTk1MmItYjU1MDY5ZDdhMTU3XkEyXkFqcGdeQXVyODIwMDI1NjM@._V1_FMjpg_UX1000_.jpg",
       "TrailerURL": "https://www.youtube.com/watch?v=sOEg_YZQsTI",
-      "IsActive": false,
+      "IsActive": true,
       "showDate": "2025-05-01",
       "showTime": [
         "11:00 AM",

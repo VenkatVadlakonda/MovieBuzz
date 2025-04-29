@@ -1,5 +1,4 @@
 table{
-    margin-top: 50px;
     width: 100%;  
 }
 tr,th{
@@ -14,4 +13,19 @@ th,td{
 tr:nth-child(odd) {background-color: #ccccd7;}
 tr:hover{
     background-color: #838398;
+}
+.search{
+    margin-top: 60px;
+    margin-bottom: 20px;
+    text-align: center;
+   
+}
+.search input{
+    width: 55%;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+}
+*{
+    padding: 10px;
 }
