@@ -63,12 +63,12 @@ export class MoviesService {
     return this.http.get<Booking>("https://localhost:7084/Bookings/admin")
   }
 
-  addMovieAPI(movieWithShows: any): Observable<any> {
-    return this.http.post(`${this.url}/with-shows`, movieWithShows);
+  addMovieAPI(movieShows: any): Observable<any> {
+    return this.http.post(`${this.url}/with-shows`, movieShows);
   }
 
-  updateMovieAPI(movieId: number, movieWithShows: any): Observable<any> {
-    return this.http.put(`${this.url}/with-shows/${movieId}`, movieWithShows);
+  updateMovieAPI(movieId: number, movieShows: any): Observable<any> {
+    return this.http.put(`${this.url}/with-shows/${movieId}`, movieShows);
   }
 
   toggleStatus(movieId: number): Observable<any> {

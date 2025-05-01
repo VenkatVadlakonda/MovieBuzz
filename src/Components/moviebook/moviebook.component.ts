@@ -95,10 +95,9 @@ export class MoviebookComponent implements OnInit {
   }
 
   private processShowData(): void {
-    // Extract unique dates from shows
+
     this.showDates = [...new Set(this.shows.map((show) => show.showDate))];
 
-    // Set default selected date to first available date
     if (this.showDates.length > 0) {
       this.selectedDate = this.showDates[0];
       this.onDateChange();
@@ -106,15 +105,13 @@ export class MoviebookComponent implements OnInit {
   }
 
   onDateChange(): void {
-    // Filter shows for selected date
+  
     const showsForDate = this.shows.filter(
       (show) => show.showDate === this.selectedDate
     );
 
-    // Extract times for selected date
     this.showTimes = showsForDate.map((show) => show.showTime);
 
-    // Reset time selection
     this.selectedTime = '';
     this.selectedShow = null;
     this.ticketCount = 0;
@@ -122,7 +119,7 @@ export class MoviebookComponent implements OnInit {
   }
 
   onTimeChange(): void {
-    // Find the selected show
+ 
     this.selectedShow =
       this.shows.find(
         (show) =>
@@ -130,7 +127,7 @@ export class MoviebookComponent implements OnInit {
           show.showTime === this.selectedTime
       ) || null;
 
-    // Reset ticket count when time changes
+
     this.ticketCount = 0;
     this.totalPrice = 0;
   }
