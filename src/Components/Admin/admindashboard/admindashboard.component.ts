@@ -69,23 +69,6 @@ export class AdmindashboardComponent implements OnInit {
     this.showTimeInput = '';
   }
 
-  // onEditMovie(movie: any): void {
-  //   this.selectedMovie = { ...movie };
-  //   this.showTimeInput = movie.shows?.map((s: any) => s.showTime).join(', ') || '';
-  //   this.selectedMovie.showDate = movie.shows?.[0]?.showDate || '';
-  //   this.selectedMovie.availableSeats = movie.shows?.[0]?.availableSeats || 0;
-  //   this.isEdit = true;
-  //   this.selectedMovie = { ...movie };
-  //   this.showList = movie.shows?.map((s: any) => ({
-  //     showDate: s.showDate,
-  //     showTime: s.showTime,
-  //     availableSeats: s.availableSeats,
-  //     showId: s.showId,
-  //     movieId: s.movieId
-  //   })) || [];
-  //   this.isEdit = true;
-  // }
-
   onEditMovie(movie: any): void {
     this.selectedMovie = { ...movie };
     this.showList = movie.shows?.map((s: any) => ({
@@ -98,164 +81,11 @@ export class AdmindashboardComponent implements OnInit {
   
     this.isEdit = true;
   }
-  
 
   onCancel(): void {
     this.selectedMovie = null;
     this.isEdit = false;
   }
-
-  // saveMovie(movie: any): void {
-  //   debugger
-  //   const showTimes = this.showTimeInput.split(',')
-  //       .map(time => time.trim())
-  //       .filter(time => time.length > 0)
-  //       .map(time => {
-  //           // Convert to proper time format (e.g., "2:30 PM")
-  //           if (!time.match(/[AP]M$/i)) {
-  //               // Add AM/PM if not present
-  //               return time + ' AM'; // or some default
-  //           }
-  //           return time;
-  //       });
-
-  //   const moviePayload = {
-  //       movie: {
-  //           movieName: movie.movieName,
-  //           genre: movie.genre,
-  //           ageRestriction: movie.ageRestriction,
-  //           duration: movie.duration,
-  //           description: movie.description,
-  //           price: movie.price,
-  //           posterImageUrl: movie.posterImageUrl,
-  //           trailerUrl: movie.trailerUrl
-  //       },
-  //       shows: showTimes.map(time => ({
-  //           showTime: time,
-  //           showDate: movie.showDate, // Ensure this is in "YYYY-MM-DD" format
-  //           availableSeats: movie.availableSeats || 100 // default value
-  //       }))
-  //   };
-
-  //   const shows = this.showTimeInput.split(',').map((time, index) => {
-  //     const baseShow = {
-  //       showTime: time.trim(),
-  //       showDate: new Date(movie.showDate).toISOString().split('T')[0],
-  //       availableSeats: movie.availableSeats,
-  //     };
-
-  //     if (this.isEdit && movie.shows && movie.shows[index]) {
-  //       return {
-  //         ...baseShow,
-  //         movieId: movie.movieId,
-  //         showId: movie.shows[index].showId
-  //       };
-  //     }
-
-  //     return baseShow;
-  //   });
-
-  //   const finalPayload = { ...moviePayload, shows };
-
-  //   if (this.isEdit && movie.movieId) {
-  //     debugger
-  //     this.movieService.updateMovieAPI(movie.movieId, finalPayload).subscribe({
-  //       next: (data) => {
-  //         console.log(data)
-  //         this.getMovies();
-  //         this.onCancel();
-  //       },
-  //       error: (err) => console.error('Update failed', err)
-  //     });
-  //   } else {
-  //     this.movieService.addMovieAPI(finalPayload).subscribe({
-        
-  //       next: (data) => {
-  //         console.log(data)
-  //         this.getMovies();
-  //         this.onCancel();
-  //       },
-  //       error: (err) => console.error('Add failed', err)
-  //     });
-  //   }
-  // }
-
-  // saveMovie(movie: any): void {
-  //   const formattedShowDate = this.formatDateToYYYYMMDD(movie.showDate); // FIXED
-  
-  //   const inputShowTimes = this.showTimeInput.split(',')
-  //     .map(time => time.trim())
-  //     .filter(time => time.length > 0)
-  //     .map(time => {
-  //       // Ensure time is in "hh:mm AM/PM" format
-  //       if (!time.match(/[AP]M$/i)) {
-  //         return time + ' AM'; // default fallback
-  //       }
-  //       return time;
-  //     });
-  
-  //   // Prepare shows payload
-  //   const shows: any[] = [];
-  
-  //   inputShowTimes.forEach(inputTime => {
-  //     const matchedExistingShow = movie.shows?.find((s: any) =>
-  //       s.showTime === inputTime && s.showDate === formattedShowDate
-  //     );
-  
-  //     if (matchedExistingShow) {
-  //       // Preserve existing showId and movieId
-  //       shows.push({
-  //         showId: matchedExistingShow.showId,
-  //         movieId: movie.movieId,
-  //         showTime: matchedExistingShow.showTime,
-  //         showDate: matchedExistingShow.showDate,
-  //         availableSeats: movie.availableSeats, // Update seats if needed
-  //       });
-  //     } else {
-  //       // New show to be added
-  //       shows.push({
-  //         showTime: inputTime,
-  //         showDate: formattedShowDate,
-  //         availableSeats: movie.availableSeats || 100,
-  //       });
-  //     }
-  //   });
-  
-  //   const finalPayload = {
-  //     movie: {
-  //       movieName: movie.movieName,
-  //       genre: movie.genre,
-  //       ageRestriction: movie.ageRestriction,
-  //       duration: movie.duration,
-  //       description: movie.description,
-  //       price: movie.price,
-  //       posterImageUrl: movie.posterImageUrl,
-  //       trailerUrl: movie.trailerUrl,
-  //     },
-  //     shows: shows
-  //   };
-    
-  
-  //   if (this.isEdit && movie.movieId) {
-  //     this.movieService.updateMovieAPI(movie.movieId, finalPayload).subscribe({
-  //       next: () => {
-  //         this.getMovies();
-  //         this.onCancel();
-  //       },
-  //       error: (err) => console.error('Update failed', err)
-  //     });
-  //   } else {
-  //     this.movieService.addMovieAPI(finalPayload).subscribe({
-  //       next: () => {
-  //         this.getMovies();
-  //         this.onCancel();
-  //       },
-  //       error: (err) => console.error('Add failed', err)
-  //     });
-  //   }
-  //   console.log('Sending payload:', JSON.stringify(finalPayload, null, 2));
-
-  // }
 
   saveMovie(movie: any): void {
     if (!this.showList.length) {
@@ -263,7 +93,7 @@ export class AdmindashboardComponent implements OnInit {
       return;
     }
   
-    // Convert date format if necessary
+    
     this.showList = this.showList.map(show => ({
       showDate: this.formatDateToYYYYMMDD(show.showDate),
       showTime: show.showTime.trim(),
@@ -271,7 +101,6 @@ export class AdmindashboardComponent implements OnInit {
       ...(this.isEdit ? { showId: show.showId, movieId: movie.movieId } : {})
     }));
   
-    // Construct the final payload
     const finalPayload = {
       movie: {
         movieName: movie.movieName,
@@ -283,7 +112,7 @@ export class AdmindashboardComponent implements OnInit {
         posterImageUrl: movie.posterImageUrl,
         trailerUrl: movie.trailerUrl,
       },
-      shows: this.showList // Use `showList` instead of `showTimeInput`
+      shows: this.showList 
     };
   
     console.log('Sending payload:', JSON.stringify(finalPayload, null, 2));
@@ -317,19 +146,11 @@ export class AdmindashboardComponent implements OnInit {
     return dateStr; 
   }
   
-  
-  
-  
-
-
-
   onToggleActive(movie: any): void {
     this.movieService.toggleStatus(movie.movieId).subscribe({
       next: () => this.getMovies(),
       error: (err) => console.error('Toggle status failed', err),
     });
   }
-
- 
 
 }

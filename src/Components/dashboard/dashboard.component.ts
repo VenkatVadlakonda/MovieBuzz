@@ -45,52 +45,14 @@ export class DashboardComponent implements OnInit {
   private authService = inject(AuthService);
   private moviesPipe = inject(MoviesPipe);
 
-  genreList: string[] = ['Action', 'Drama', 'Comedy', 'Thriller', 'Romance'];
+  genreList: string[] = ['Action', 'Drama', 'Comedy', 'Thriller', 'Romance','Horror','Crime'];
   selectedGenre: string = 'All';
   ngOnInit(): void {
     // this.getMoviesData();
     this.getAPIMovies();
   }
 
-  // getAPIMovies(){
-  //   this.isLoading = true;
-  //   this.errorMessage = null;
-  //   this.movieService
-  //     .getMoviesAPI()
-  //     .pipe(
-  //       catchError((error) => {
-  //         console.error('Error Occured:', error);
-  //         this.errorMessage = 'Failed to fetch the Movies Data';
-  //         return throwError(() => new Error(error));
-  //       }),
-  //       finalize(() => {
-  //         this.isLoading = false;
-  //       })
-  //     )
-  //     .subscribe({
-  //       next: (data: Movies[]) => {
-  //         const user=this.authService.getCurrentUser()
-  //         console.log(user)
-  //         console.log(user?.dateOfBirth)
 
-  //         if (user && user.dateOfBirth) {
-  //           const userAge = this.getUserAge(user?.dateOfBirth);
-  //           console.log('User Age:', userAge);
-
-  //           this.movieAPI = data.filter(movie => {
-  //             const restriction = Number(movie.AgeRestriction);
-  //             return userAge >= restriction;
-  //           });
-  //         } else {
-  //           this.movieAPI = data;
-  //         }
-  //       },
-  //       error: (err) => {
-  //         alert(err);
-  //       },
-  //     });
-
-  // }
   //Movies Data
 
   getAPIMovies() {
@@ -148,44 +110,7 @@ export class DashboardComponent implements OnInit {
         },
       });
   }
-  // getMoviesData(): void {
-  //   this.isLoading = true;
-  //   this.errorMessage = null;
-  //   this.movieService
-  //     .getAllMovies()
-  //     .pipe(
-  //       catchError((error) => {
-  //         console.error('Error Occured:', error);
-  //         this.errorMessage = 'Failed to fetch the Movies Data';
-  //         return throwError(() => new Error(error));
-  //       }),
-  //       finalize(() => {
-  //         this.isLoading = false;
-  //       })
-  //     )
-  //     .subscribe({
-  //       next: (data: Movies[]) => {
-  //         const user=this.authService.getCurrentUser()
-  //         console.log(user)
-  //         console.log(user?.dateOfBirth)
-
-  //         if (user && user.dateOfBirth) {
-  //           const userAge = this.getUserAge(user?.dateOfBirth);
-  //           console.log('User Age:', userAge);
-
-  //           this.moviesData = data.filter(movie => {
-  //             const restriction = Number(movie.AgeRestriction);
-  //             return userAge >= restriction;
-  //           });
-  //         } else {
-  //           this.moviesData = data;
-  //         }
-  //       },
-  //       error: (err) => {
-  //         alert(err);
-  //       },
-  //     });
-  // }
+  
 
   //pagination logic for page display 4 movie cards
   get paginatedMovies(): any[] {

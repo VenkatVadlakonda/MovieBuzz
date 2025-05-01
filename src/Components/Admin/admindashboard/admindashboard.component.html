@@ -17,20 +17,6 @@
       <input class="form-input" placeholder="Poster URL" [(ngModel)]="selectedMovie.posterImageUrl" name="poster">
       <input class="form-input" placeholder="Trailer URL" [(ngModel)]="selectedMovie.trailerUrl" name="trailer">
       
-      <!-- <div class="form-group">
-        <label>Show Date</label>
-        <input type="date" class="form-input" [(ngModel)]="selectedMovie.showDate" name="showdate" required>
-      </div>
-      
-      <div class="form-group">
-        <label>Show Times</label>
-        <input class="form-input" placeholder="Show Times" [(ngModel)]="showTimeInput" name="showtimes" required>
-      </div>
-      
-      <div class="form-group">
-        <label>Available Seats per Show</label>
-        <input type="number" class="form-input" [(ngModel)]="selectedMovie.availableSeats" name="seats" min="1" value="100">
-      </div> -->
       <div *ngFor="let show of showList; let i = index" class="form-group">
         <label>Show Date</label>
         <input type="date" class="form-input" [(ngModel)]="show.showDate" name="showDate{{i}}" required>
