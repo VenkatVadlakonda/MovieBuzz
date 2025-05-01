@@ -14,7 +14,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { AuthService } from '../../_services/auth.service';
 import { log } from 'ng-zorro-antd/core/logger';
 
-
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -25,7 +24,7 @@ import { log } from 'ng-zorro-antd/core/logger';
     FormsModule,
     NzPaginationModule,
     MoviesPipe,
-    
+
     NzSelectModule,
   ],
   templateUrl: './dashboard.component.html',
@@ -33,6 +32,7 @@ import { log } from 'ng-zorro-antd/core/logger';
 })
 export class DashboardComponent implements OnInit {
   moviesData: Movies[] = [];
+  movieAPI: any;
   isLoading: boolean = false;
   errorMessage: string | null = null;
   searchMovie: string = '';
@@ -42,23 +42,65 @@ export class DashboardComponent implements OnInit {
   //injecting services
   private movieService = inject(MoviesService);
   private router = inject(Router);
-  private authService=inject(AuthService)
-  private moviesPipe=inject(MoviesPipe)
-  
+  private authService = inject(AuthService);
+  private moviesPipe = inject(MoviesPipe);
+
   genreList: string[] = ['Action', 'Drama', 'Comedy', 'Thriller', 'Romance'];
   selectedGenre: string = 'All';
   ngOnInit(): void {
-    this.getMoviesData();
+    // this.getMoviesData();
+    this.getAPIMovies();
   }
+
+  // getAPIMovies(){
+  //   this.isLoading = true;
+  //   this.errorMessage = null;
+  //   this.movieService
+  //     .getMoviesAPI()
+  //     .pipe(
+  //       catchError((error) => {
+  //         console.error('Error Occured:', error);
+  //         this.errorMessage = 'Failed to fetch the Movies Data';
+  //         return throwError(() => new Error(error));
+  //       }),
+  //       finalize(() => {
+  //         this.isLoading = false;
+  //       })
+  //     )
+  //     .subscribe({
+  //       next: (data: Movies[]) => {
+  //         const user=this.authService.getCurrentUser()
+  //         console.log(user)
+  //         console.log(user?.dateOfBirth)
+
+  //         if (user && user.dateOfBirth) {
+  //           const userAge = this.getUserAge(user?.dateOfBirth);
+  //           console.log('User Age:', userAge);
+
+  //           this.movieAPI = data.filter(movie => {
+  //             const restriction = Number(movie.AgeRestriction);
+  //             return userAge >= restriction;
+  //           });
+  //         } else {
+  //           this.movieAPI = data;
+  //         }
+  //       },
+  //       error: (err) => {
+  //         alert(err);
+  //       },
+  //     });
+
+  // }
   //Movies Data
-  getMoviesData(): void {
+
+  getAPIMovies() {
     this.isLoading = true;
     this.errorMessage = null;
     this.movieService
-      .getAllMovies()
+      .getMoviesAPI()
       .pipe(
         catchError((error) => {
-          console.error('Error Occured:', error);
+          console.error('Error Occurred:', error);
           this.errorMessage = 'Failed to fetch the Movies Data';
           return throwError(() => new Error(error));
         }),
@@ -67,65 +109,127 @@ export class DashboardComponent implements OnInit {
         })
       )
       .subscribe({
-        next: (data: Movies[]) => {
-          const user=this.authService.getCurrentUser()
-          console.log(user)
-          console.log(user?.dateOfBirth)
+        next: (data: any) => {
+          console.log('API Response:', data);
+
+          let moviesArray: any[] = [];
+
+          if (Array.isArray(data)) {
+            moviesArray = data;
+          } else if (data && Array.isArray(data.data)) {
+            moviesArray = data.data;
+          } else if (data && typeof data === 'object') {
+            moviesArray = [data];
+          }
+          console.log('Movie', moviesArray);
+
+          const user = this.authService.getCurrentUser();
+          console.log('User:', user);
+          console.log('User DOB:', user?.dateOfBirth);
 
           if (user && user.dateOfBirth) {
-            const userAge = this.getUserAge(user?.dateOfBirth);
+            const userAge = this.getUserAge(user.dateOfBirth);
             console.log('User Age:', userAge);
-  
-            this.moviesData = data.filter(movie => {
-              const restriction = Number(movie.AgeRestriction);
+
+            this.movieAPI = moviesArray.filter((movie) => {
+              const restriction = Number(movie.AgeRestriction || 0); // Default to 0 if undefined
               return userAge >= restriction;
             });
           } else {
-            this.moviesData = data;
-          } 
+            this.movieAPI = moviesArray;
+          }
+
+          console.log('Filtered Movies:', this.movieAPI); // Log the final result
         },
         error: (err) => {
-          alert(err);
+          console.error('Error:', err);
+          this.errorMessage = err.message || 'Failed to fetch movies';
+          this.movieAPI = []; // Ensure it's always an array
         },
       });
   }
+  // getMoviesData(): void {
+  //   this.isLoading = true;
+  //   this.errorMessage = null;
+  //   this.movieService
+  //     .getAllMovies()
+  //     .pipe(
+  //       catchError((error) => {
+  //         console.error('Error Occured:', error);
+  //         this.errorMessage = 'Failed to fetch the Movies Data';
+  //         return throwError(() => new Error(error));
+  //       }),
+  //       finalize(() => {
+  //         this.isLoading = false;
+  //       })
+  //     )
+  //     .subscribe({
+  //       next: (data: Movies[]) => {
+  //         const user=this.authService.getCurrentUser()
+  //         console.log(user)
+  //         console.log(user?.dateOfBirth)
+
+  //         if (user && user.dateOfBirth) {
+  //           const userAge = this.getUserAge(user?.dateOfBirth);
+  //           console.log('User Age:', userAge);
+
+  //           this.moviesData = data.filter(movie => {
+  //             const restriction = Number(movie.AgeRestriction);
+  //             return userAge >= restriction;
+  //           });
+  //         } else {
+  //           this.moviesData = data;
+  //         }
+  //       },
+  //       error: (err) => {
+  //         alert(err);
+  //       },
+  //     });
+  // }
 
   //pagination logic for page display 4 movie cards
-  get paginatedMovies(): Movies[] {
-    const filtered = this.moviesPipe.transform(this.moviesData, this.searchMovie, this.selectedGenre);
+  get paginatedMovies(): any[] {
+    const filtered = this.moviesPipe.transform(
+      this.movieAPI,
+      this.searchMovie,
+      this.selectedGenre
+    );
     const startIndex = (this.currentPage - 1) * this.pageSize;
     return filtered.slice(startIndex, startIndex + this.pageSize);
   }
-  
+
   get totalMovies(): number {
-    return this.moviesPipe.transform(this.moviesData, this.searchMovie, this.selectedGenre).length;
+    return this.moviesPipe.transform(
+      this.movieAPI,
+      this.searchMovie,
+      this.selectedGenre
+    ).length;
   }
 
-  onMovieClick(movie:Movies){
-    const user=this.authService.getCurrentUser();
-    if(!movie.IsActive){
-      alert('This movie is not active')
-      return
+  onMovieClick(movie: any) {
+    const user = this.authService.getCurrentUser();
+    if (!movie.isActive) {
+      alert('This movie is not active');
+      return;
     }
-    if(!user){
-      alert("Please login to continue")
-      this.router.navigate(['/login'])
-    }else{
-      this.router.navigate(['/movie',movie.MovieID])
-    } 
+    if (!user) {
+      alert('Please login to continue');
+      this.router.navigate(['/login']);
+    } else {
+      this.router.navigate(['/movie', movie.movieId]);
+    }
   }
 
   //age filtering
-  getUserAge(dob:string):number{
-    const dateOfBirth=new Date(dob)
-    const today=new Date()
-    const month=today.getMonth()-dateOfBirth.getMonth()
-    let age=today.getFullYear()-dateOfBirth.getFullYear()
+  getUserAge(dob: string): number {
+    const dateOfBirth = new Date(dob);
+    const today = new Date();
+    const month = today.getMonth() - dateOfBirth.getMonth();
+    let age = today.getFullYear() - dateOfBirth.getFullYear();
 
-    if(month<0||(month==0 && today.getDate()<dateOfBirth.getDate())){
-      age--
+    if (month < 0 || (month == 0 && today.getDate() < dateOfBirth.getDate())) {
+      age--;
     }
-    return age
-
+    return age;
   }
 }

@@ -1,92 +1,90 @@
-<!--Search filtering-->
-<div class="search-item">
-  <input
-    type="text"
-    placeholder="Search for Movie..."
-    [(ngModel)]="searchItem"
-  />
-</div>
 
-<!--Movie Cards-->
-<div class="movie-container">
-  <div
-    *ngFor="let movie of moviesData.reverse()| adminmovies : searchItem"
-    class="movie-card"
-    [class.inactive]="!movie.IsActive"
-  >
-    <img [src]="movie.PosterImageURL" alt="{{ movie.MovieName }}" />
-    <h4>{{ movie.MovieName }}</h4>
-    <p><strong>Genre:</strong> {{ movie.Genre }}</p>
-    <p><strong>Age:</strong> {{ movie.AgeRestriction }}+</p>
-    <p><strong>Duration:</strong> {{ movie.Duration }} min</p>
-    <p><strong>AvaliableSeats:</strong> {{ movie.AvailableSeats }}</p>
+<div class="admin-dashboard">
+  
+  <button class="add-movie-btn" (click)="onAddMovie()"><i class="fa-solid fa-square-plus"></i> Add New Movie</button>
+  <span class="search">
+    <input type="text" placeholder="search..." [(ngModel)]="search">
+  </span>
 
-    <div class="actions">
-      <button (click)="modifyMovie(movie)">Modify</button>
-      <button
-        (click)="onToggleActive(movie)"
-        [ngClass]="movie.IsActive ? 'inactive-btn' : 'active-btn'"
-      >
-        {{ movie.IsActive ? "X" : "active" }}
-      </button>
-    </div>
+  <div class="movie-form" *ngIf="selectedMovie">
+    <form (ngSubmit)="saveMovie(selectedMovie)">
+      <input class="form-input" placeholder="Movie Name" [(ngModel)]="selectedMovie.movieName" name="name">
+      <input class="form-input" placeholder="Genre" [(ngModel)]="selectedMovie.genre" name="genre">
+      <input type="number" class="form-input" placeholder="Age Restriction" [(ngModel)]="selectedMovie.ageRestriction" name="age">
+      <input type="number" class="form-input" placeholder="Duration" [(ngModel)]="selectedMovie.duration" name="duration">
+      <textarea class="form-textarea" placeholder="Description" [(ngModel)]="selectedMovie.description" name="desc"></textarea>
+      <input type="number" class="form-input" placeholder="Price" [(ngModel)]="selectedMovie.price" name="price">
+      <input class="form-input" placeholder="Poster URL" [(ngModel)]="selectedMovie.posterImageUrl" name="poster">
+      <input class="form-input" placeholder="Trailer URL" [(ngModel)]="selectedMovie.trailerUrl" name="trailer">
+      
+      <!-- <div class="form-group">
+        <label>Show Date</label>
+        <input type="date" class="form-input" [(ngModel)]="selectedMovie.showDate" name="showdate" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Show Times</label>
+        <input class="form-input" placeholder="Show Times" [(ngModel)]="showTimeInput" name="showtimes" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Available Seats per Show</label>
+        <input type="number" class="form-input" [(ngModel)]="selectedMovie.availableSeats" name="seats" min="1" value="100">
+      </div> -->
+      <div *ngFor="let show of showList; let i = index" class="form-group">
+        <label>Show Date</label>
+        <input type="date" class="form-input" [(ngModel)]="show.showDate" name="showDate{{i}}" required>
+      
+        <label>Show Time</label>
+        <input type="text" class="form-input" [(ngModel)]="show.showTime" name="showTime{{i}}" required>
+      
+        <label>Seats</label>
+        <input type="number" class="form-input" [(ngModel)]="show.availableSeats" name="seats{{i}}" required>
+      
+      
+      </div>
+      
+      <button (click)="addShow()">+ Add Show</button>
+      
+      
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">{{ isEdit ? 'Update' : 'Add' }}</button>
+        <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
   </div>
 
-  <div class="movie-card add-card" (click)="modalOpen()">
-    <h1>+</h1>
-    <p>Add Movie</p>
-  </div>
-</div>
-<!--Modals for modify and add movies-->
-<div class="modal-backdrop" *ngIf="selectedMovie">
-  <div class="modal">
-    <h2>{{ isEdit ? "Edit Movie" : "Add Movie" }}</h2>
-
-    <input [(ngModel)]="selectedMovie.MovieName" placeholder="Movie Name" />
-    <input
-      [(ngModel)]="selectedMovie.Genre"
-      placeholder="Genre (comma separated)"
-    />
-    <input
-      [(ngModel)]="selectedMovie.AgeRestriction"
-      type="number"
-      placeholder="Age Restriction"
-    />
-    <input
-      [(ngModel)]="selectedMovie.Duration"
-      type="number"
-      placeholder="Duration (minutes)"
-    />
-    <textarea
-      [(ngModel)]="selectedMovie.Description"
-      placeholder="Description"
-    ></textarea>
-    <input
-      [(ngModel)]="selectedMovie.Price"
-      type="number"
-      placeholder="Price"
-    />
-    <input
-      [(ngModel)]="selectedMovie.PosterImageURL"
-      placeholder="Poster Image URL"
-    />
-    <input [(ngModel)]="selectedMovie.TrailerURL" placeholder="Trailer URL" />
-    <input [(ngModel)]="selectedMovie.showDate" type="date" />
-    <input
-      [(ngModel)]="showTimeInput"
-      placeholder="Show Times (comma separated)"
-    />
-    <input
-      [(ngModel)]="selectedMovie.AvailableSeats"
-      type="number"
-      placeholder="Available Seats"
-    />
-
-    <div class="modal-actions">
-      <button (click)="saveMovie(selectedMovie)">
-        {{ isEdit ? "Update" : "Add" }}
-      </button>
-      <button (click)="selectedMovie = null">Cancel</button>
-    </div>
+  <div class="movie-table-container" *ngIf="!selectedMovie">
+    <table class="movie-table" >
+      <thead>
+        <tr>
+          <th>Movie Name</th>
+          <th>Genre</th>
+          <th>Price</th>
+          <th>Age</th>
+          <th>Duration</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let movie of movies | adminmovies:search">
+          <td>{{ movie.movieName }}</td>
+          <td>{{ movie.genre }}</td>
+          <td>${{ movie.price }}</td>
+          <td>{{ movie.ageRestriction }}+</td>
+          <td>{{ movie.duration }} mins</td>
+          <td [class.active]="movie.isActive" [class.inactive]="!movie.isActive">
+            {{ movie.isActive ? 'Active' : 'Inactive' }}
+          </td>
+          <td class="action-buttons">
+            <button class="edit-btn" (click)="onEditMovie(movie)"><i class="fa-regular fa-pen-to-square"></i></button>
+            <button class="toggle-btn" (click)="onToggleActive(movie)">
+              {{ movie.isActive ? '❌' : '✔' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

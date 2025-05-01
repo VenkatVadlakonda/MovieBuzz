@@ -22,13 +22,13 @@ export class AdminusersviewComponent implements OnInit{
     this.TotalUsers=this.users.length
     this.userServices.getAllUsers().subscribe({
       next: (data: any) => {
-        // Ensure data is an array before assigning
+        
         if (Array.isArray(data)) {
           this.AllUsers = data;
-        } else if (data && data.data) { // If your API wraps the array in a data property
+        } else if (data && data.data) {
           this.AllUsers = data.data;
         }
-        this.TotalUsers = this.AllUsers.length; // Update count with actual API data
+        this.TotalUsers = this.AllUsers.length;
       },
       error: (err) => {
         console.error('Error fetching users:', err);

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { User } from '../_models/user.modal';
 
 @Injectable({
@@ -19,10 +19,12 @@ export class UsersService {
     const reg = 'https://localhost:7084/Users/register';
     return this.http.post<User>(reg, user);
   }
-  loginUser(user: User): Observable<User> {
+  loginUser(user: any): Observable<any> {
     if (user.userName === 'Admin') {
-      return of({...user, isAdmin: true}); // Return mock response
+      return of({...user, isAdmin: true}); 
     }
     return this.http.post<User>('https://localhost:7084/Users/login', user);
   }
+
+  
 }

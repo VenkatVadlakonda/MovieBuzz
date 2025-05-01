@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, switchMap } from 'rxjs';
-import { Movies } from '../_models/movies.modal';
+import { catchError, map, Observable, retry, switchMap } from 'rxjs';
+import { MovieAPI, Movies } from '../_models/movies.modal';
 import { log } from 'ng-zorro-antd/core/logger';
+import { Booking } from '../_models/booking.modal';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,47 @@ export class MoviesService {
     return this.http.put<Movies>(`${this.apiUrl}/${movie.MovieID}`, movie)
 
   }
+  private url="https://localhost:7084/Movies"
+
+  //getting movies form API
+  getMoviesAPI():Observable<any>{
+    return this.http.get<any>(this.url)
+  }
+
+  getMovieByID(id:number):Observable<{success:boolean,data:MovieAPI,message:string}>{
+    return this.http.get<{success:boolean,data:MovieAPI,message:string}>(`${this.url}/${id}`)
+  }
+
+  getShows(id:number):Observable<{success:boolean,data:MovieAPI,message:string}>{
+    return this.http.get<{success:boolean,data:MovieAPI,message:string}>(`https://localhost:7084/Shows/movie/${id}`)
+  }
+
+  
+  bookingMovie(movie:Booking):Observable<Booking>{
+    return this.http.post<Booking>("https://localhost:7084/Bookings",movie)
+  }
+
+  getBookings(id:number):Observable<any>{
+    return this.http.get<any>(`https://localhost:7084/Bookings/user/${id}`)
+  }
+
+  getAllBookingsForAdmin():Observable<Booking>{
+    return this.http.get<Booking>("https://localhost:7084/Bookings/admin")
+  }
+
+  addMovieAPI(movieWithShows: any): Observable<any> {
+    return this.http.post(`${this.url}/with-shows`, movieWithShows);
+  }
+
+  updateMovieAPI(movieId: number, movieWithShows: any): Observable<any> {
+    return this.http.put(`${this.url}/with-shows/${movieId}`, movieWithShows);
+  }
+
+  toggleStatus(movieId: number): Observable<any> {
+    return this.http.patch(`${this.url}/${movieId}/toggle-status`, {});
+  }
+
+
 
  
 

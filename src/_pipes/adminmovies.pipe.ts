@@ -5,16 +5,16 @@ import { Movies } from '../_models/movies.modal';
   name: 'adminmovies',
 })
 export class AdminmoviesPipe implements PipeTransform {
-  transform(moviesData: Movies[], searchItem: string): Movies[] {
-    return moviesData.filter(
+  transform(movies: any[], search: string): any {
+    return movies.filter(
       (data) =>
-        data.MovieName.toLocaleLowerCase().includes(
-          searchItem.toLocaleLowerCase()
+        data.movieName.toLocaleLowerCase().includes(
+          search.toLocaleLowerCase()
         ) ||
-        data.Genre.split(', ')
+        data.genre.split(', ')
           .toString()
           .toLocaleLowerCase()
-          .includes(searchItem.toLocaleLowerCase())
+          .includes(search.toLocaleLowerCase())
     );
   }
 }

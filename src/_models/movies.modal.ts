@@ -1,3 +1,5 @@
+
+
 export interface Movies{
 
     MovieID:number,
@@ -15,3 +17,38 @@ export interface Movies{
     CreatedOn:any,
     AvailableSeats:number
 }
+
+export interface MovieAPI {
+    movieId: number;
+    movieName: string;
+    genre: string;
+    ageRestriction: number;
+    duration: number;
+    description: string;
+    price: number;
+    posterImageUrl: string;
+    trailerUrl: string;
+    isActive: boolean;
+    showTime:ShowTime[]
+  }
+  
+  export interface ShowTime {
+    showId: number;
+    movieId: number;
+    showTime: string;    
+    showDate: string;    
+    availableSeats: number;
+    
+
+
+   
+    movieName: string;
+    genre: string;
+    ageRestriction: number;
+    duration: number;
+    description: string;
+    price: number;      
+    posterImageUrl: string;
+    trailerUrl: string;
+    isActive: boolean;
+  }

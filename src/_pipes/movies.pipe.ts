@@ -1,5 +1,5 @@
 import { Injectable, Pipe, PipeTransform } from '@angular/core';
-import { Movies } from '../_models/movies.modal';
+import { MovieAPI, Movies } from '../_models/movies.modal';
 
 @Pipe({
   name: 'movies',
@@ -8,20 +8,20 @@ import { Movies } from '../_models/movies.modal';
 @Injectable({ providedIn: 'root' }) 
 export class MoviesPipe implements PipeTransform {
 
-  transform(moviesData: Movies[], searchMovie: string,selectedGenre?:string|null): Movies[] {
-    if (!moviesData) return [];
+  transform(movieAPI: MovieAPI[], searchMovie: string,selectedGenre?:string|null): MovieAPI[] {
+    if (!movieAPI) return [];
 
-    let filtered = moviesData;
+    let filtered = movieAPI;
 
     if (searchMovie) {
       filtered = filtered.filter(movie =>
-        movie.MovieName.toLowerCase().includes(searchMovie.toLowerCase())
+        movie.movieName.toLowerCase().includes(searchMovie.toLowerCase())
       );
     }
 
     if (selectedGenre && selectedGenre !== 'All') {
       filtered = filtered.filter(movie =>
-        movie.Genre.toLowerCase().split(',').map(g => g.trim()).includes(selectedGenre.toLowerCase())
+        movie.genre.toLowerCase().split(',').map((g:any) => g.trim()).includes(selectedGenre.toLowerCase())
       );
     }
 

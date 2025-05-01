@@ -12,16 +12,16 @@
     <th>Quantity</th>
     <th>Totalprice</th>
   </tr>
-  <tr *ngFor="let booking of bookings | adminhistory:history ">
+  <tr *ngFor="let booking of bookingHistory | adminhistory:history ">
     <td>{{ booking.bookingId }}</td>
-    <td>{{ booking.Username}}</td>
+    <td>{{ booking.userName}}</td>
     <td>{{ booking.movieName }}</td>
-    <td>{{ booking.time }}</td>
-    <td>{{ booking.date }}</td>
-    <td>{{ booking.Quantity }}</td>
+    <td>{{ booking.showTime }}</td>
+    <td>{{ booking.showDate | date }}</td>
+    <td>{{ booking.numberOfTickets }}</td>
     <td>Rs. {{ booking.totalPrice }}/-</td>
   </tr>
 </table>
 
-<h2 *ngIf="!book">Total Bookings: {{TotalCount}}</h2>
+<h2 *ngIf="!book">Total Bookings: {{bookingHistory.length}}</h2>
 <h1>{{book}}</h1>

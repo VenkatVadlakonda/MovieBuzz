@@ -1,19 +1,19 @@
 
-<section *ngIf="bookingHistory.length > 0; else noHistory" class="booking-history-wrapper">
-    <div *ngFor="let booking of bookingHistory" class="booking-card">
+<section *ngIf="bookings.length > 0; else noHistory" class="booking-history-wrapper">
+    <div *ngFor="let booking of bookings" class="booking-card">
       
       <div class="poster">
-        <img [src]="booking.imageURL" alt="{{booking.movieName}}" />
+        <img [src]="booking.posterImageUrl" alt="{{booking.movieName}}" />
       </div>
   
       <div class="booking-details">
         <h2>{{ booking.movieName }}</h2>
         <p class="genre">{{ booking.genre }}</p>
-        <p class="datetime">{{ booking.time }} | {{ booking.date }}</p>
-        <p><strong>Tickets:</strong> {{ booking.Quantity }}</p>
+        <p class="datetime">{{ booking.showTime }} | {{ booking.showDate | date }}</p>
+        <p><strong>Tickets:</strong> {{ booking.numberOfTickets }}</p>
         <p><strong>Total:</strong> ₹{{ booking.totalPrice }}</p>
       </div>
-  
+
 
       <div class="ticket-meta">
         <h3>M-Ticket</h3>

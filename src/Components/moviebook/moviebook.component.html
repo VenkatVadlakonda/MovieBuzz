@@ -1,6 +1,6 @@
 <!--displays video-->
-<section *ngIf="movieData">
-  <div class="videoUrl">
+<section *ngIf="movieAPI">
+  <div class="videoUrl" *ngIf="trailerurl">
     <iframe
       width="660"
       height="515"
@@ -9,34 +9,34 @@
       frameborder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
-    >
-    </iframe>
+    ></iframe>
   </div>
 
   <!--Selected Movie-->
   <div class="container">
-    <h1>{{ movieData.MovieName }}</h1>
-    <h2>{{ movieData.Genre }}</h2>
+    <h1>{{ movieAPI.movieName }}</h1>
+    <h2>{{ movieAPI.genre }}</h2>
     <h3>About:</h3>
-    <h4>{{ movieData.Description }}</h4>
-    <span>Price: Rs. {{ movieData.Price }}.00</span>
+    <h4>{{ movieAPI.description }}</h4>
+    <span>Price: Rs. {{ movieAPI.price }}.00</span>
     <div>
       <label for="date">Select Date</label>
-      <select [(ngModel)]="selectedDate" class="dropdown">
+      <select [(ngModel)]="selectedDate" (ngModelChange)="onDateChange()" class="dropdown">
         <option *ngFor="let date of showDates" [value]="date">
           {{ date }}
         </option>
       </select>
+      
       <label for="time">Select Time</label>
-      <select [(ngModel)]="selectedTime" class="dropdown">
-        <option
-          *ngFor="let time of movieData?.showTime"
-          [value]="time"
-          [disabled]="isTimeDisabled(time)"
-        >
+      <select [(ngModel)]="selectedTime" (ngModelChange)="onTimeChange()" class="dropdown">
+        <option *ngFor="let time of showTimes" [value]="time" [disabled]="isTimeDisabled(time)">
           {{ time }}
         </option>
       </select>
+
+      <div *ngIf="selectedShow" class="available-seats">
+        Available Seats: {{ selectedShow.availableSeats }}
+      </div>
 
       <div class="btn-control">
         <div class="qty">
@@ -44,7 +44,10 @@
             -
           </button>
           <p class="qty-value">{{ ticketCount }}</p>
-          <button (click)="increaseQuantity()" [disabled]="ticketCount === 6 || ticketCount >= movieData?.AvailableSeats">
+          <button
+            (click)="increaseQuantity()"
+            [disabled]="ticketCount === 6 || !selectedShow || ticketCount >= selectedShow.availableSeats"
+          >
             +
           </button>
         </div>
