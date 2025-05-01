@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit{
       
       if (user) {
         this.authService.login({
-          id: user.id,
+          userId: user.id,
           userName: user.userName,
           password:user.password,
           emailId: user.emailId,
@@ -104,7 +104,7 @@ export class LoginComponent implements OnInit{
         this.router.navigate(['/dashboard']);
       }else if(userapi){
         this.authService.login({
-          ...userapi
+          userapi
         });
         
         this.router.navigate(['/dashboard']);
@@ -116,5 +116,12 @@ export class LoginComponent implements OnInit{
       }
       this.isSubmitting = false;
     }
+  }
+
+  
+  
+  private handleLoginError() {
+    this.loginError = 'Invalid username or password';
+    this.moveButton = !this.moveButton;
   }
 }

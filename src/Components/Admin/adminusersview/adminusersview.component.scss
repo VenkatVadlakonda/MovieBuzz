@@ -23,8 +23,10 @@ tr:hover{
 .search input{
     width: 55%;
     border: none;
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 4px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
+  font-size: 1rem;
 }
 *{
     padding: 10px;

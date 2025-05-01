@@ -22,23 +22,23 @@
       <!--Movie Cards-->
       <div class="movies-grid">
         <nz-card
-          *ngFor="let movie of paginatedMovies | movies:searchMovie:selectedGenre"
+          *ngFor="let movie of paginatedMovies | movies:searchMovie:selectedGenre "
           (click)="onMovieClick(movie)"
-          [nzHoverable]="movie.IsActive"
+          [nzHoverable]="movie.isActive"
           class="movie-card"
-          [class.inactive]="!movie.IsActive"
+          [class.inactive]="!movie.isActive"
           [nzCover]="coverTemplate"
         >
           <ng-template #coverTemplate>
-            <img alt="{{ movie.MovieName }}" src="{{ movie.PosterImageURL }}" height="400px" />
+            <img alt="{{ movie.movieName }}" src="{{ movie.posterImageUrl }}" height="400px" />
           </ng-template>
           <div class="card-name">
-            <nz-card-meta nzTitle="{{ movie.MovieName }}"></nz-card-meta>
-            <span class="age-restriction">{{ movie.AgeRestriction }}+</span>
+            <nz-card-meta nzTitle="{{ movie.movieName }}"></nz-card-meta>
+            <span class="age-restriction">{{ movie.ageRestriction }}+</span>
           </div>
           <div class="card-details">
-            <nz-card-meta nzDescription="{{ movie.Genre }}"></nz-card-meta>
-            <nz-card-meta nzDescription="{{ movie.Duration }}"></nz-card-meta>
+            <nz-card-meta nzDescription="{{ movie.genre }}"></nz-card-meta>
+            <nz-card-meta nzDescription="{{ movie.duration }}"></nz-card-meta>
           </div>
         </nz-card>
       </div>

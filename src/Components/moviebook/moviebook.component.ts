@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Movies } from '../../_models/movies.modal';
+import { MovieAPI, Movies } from '../../_models/movies.modal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MoviesService } from '../../_services/movies.service';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,8 @@ import {
 } from '../../_utils/moviebook.utils';
 import { MoviebookService } from '../../_services/moviebook.service';
 import { AuthService } from '../../_services/auth.service';
+import { showTime } from '../../_models/showtime.modal';
+import { Booking } from '../../_models/booking.modal';
 
 @Component({
   selector: 'app-moviebook',
@@ -21,16 +23,20 @@ import { AuthService } from '../../_services/auth.service';
   styleUrl: './moviebook.component.scss',
 })
 export class MoviebookComponent implements OnInit {
-  movieID: number = 0;
-  movieData: any;
-  trailerurl: SafeResourceUrl = '';
+  movieId: number = 0;
+  movieAPI: MovieAPI | null = null;
+  trailerurl: SafeResourceUrl | null = null;
+  shows: any[] = [];
 
   selectedDate: string = '';
   selectedTime: string = '';
+  selectedShow: showTime | null = null;
   ticketCount: number = 0;
   totalPrice: number = 0;
   showDates: string[] = [];
-  bookingId: number = 200;
+  showTimes: string[] = [];
+  // bookingId: number = 200;
+  newBooking: any;
 
   private router = inject(ActivatedRoute);
   private route = inject(Router);
@@ -40,32 +46,104 @@ export class MoviebookComponent implements OnInit {
   private authService = inject(AuthService);
   private modal = inject(NzModalService);
 
-  //display movie based on ID
   ngOnInit(): void {
-    this.movieID = Number(this.router.snapshot.paramMap.get('id'));
-    this.getMovie();
-    this.showDates = generateShowDates();
-    this.selectedDate = this.showDates[0];
+    this.movieId = Number(this.router.snapshot.paramMap.get('id'));
+    this.loadMovieData();
   }
 
-  //displays the movie based on selected ID
-  getMovie(): void {
-    this.movieService.getAllMovies().subscribe((movies: Movies[]) => {
-      this.movieData = movies.find((movie) => movie.MovieID === this.movieID);
-      if (this.movieData && this.movieData.TrailerURL) {
-        const videoID = extractYouTubeVideoID(this.movieData.TrailerURL);
-        const embed = `https://www.youtube.com/embed/${videoID}`;
-        this.trailerurl = this.safe.bypassSecurityTrustResourceUrl(embed);
-      }
+  loadMovieData(): void {
+    // Get movie details
+    this.movieService.getMovieByID(this.movieId).subscribe({
+      next: (movieResponse) => {
+        if (movieResponse?.success && movieResponse?.data) {
+          this.movieAPI = movieResponse.data;
+          this.processTrailerUrl();
+
+          // Get show times for this movie
+          this.movieService.getShows(this.movieId).subscribe({
+            next: (showsResponse) => {
+              if (showsResponse?.success && showsResponse?.data) {
+                this.shows = Array.isArray(showsResponse.data)
+                  ? showsResponse.data
+                  : [showsResponse.data];
+                this.processShowData();
+                console.log('all shows:', this.shows);
+              }
+            },
+            error: (err) => {
+              console.error('Error fetching shows:', err);
+            },
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching movie:', err);
+        this.route.navigate(['/dashboard']);
+      },
     });
   }
 
+  private processTrailerUrl(): void {
+    if (this.movieAPI?.trailerUrl) {
+      const videoID = extractYouTubeVideoID(this.movieAPI.trailerUrl);
+      if (videoID) {
+        this.trailerurl = this.safe.bypassSecurityTrustResourceUrl(
+          `https://www.youtube.com/embed/${videoID}`
+        );
+      }
+    }
+  }
+
+  private processShowData(): void {
+    // Extract unique dates from shows
+    this.showDates = [...new Set(this.shows.map((show) => show.showDate))];
+
+    // Set default selected date to first available date
+    if (this.showDates.length > 0) {
+      this.selectedDate = this.showDates[0];
+      this.onDateChange();
+    }
+  }
+
+  onDateChange(): void {
+    // Filter shows for selected date
+    const showsForDate = this.shows.filter(
+      (show) => show.showDate === this.selectedDate
+    );
+
+    // Extract times for selected date
+    this.showTimes = showsForDate.map((show) => show.showTime);
+
+    // Reset time selection
+    this.selectedTime = '';
+    this.selectedShow = null;
+    this.ticketCount = 0;
+    this.totalPrice = 0;
+  }
+
+  onTimeChange(): void {
+    // Find the selected show
+    this.selectedShow =
+      this.shows.find(
+        (show) =>
+          show.showDate === this.selectedDate &&
+          show.showTime === this.selectedTime
+      ) || null;
+
+    // Reset ticket count when time changes
+    this.ticketCount = 0;
+    this.totalPrice = 0;
+  }
+
   increaseQuantity(): void {
-    if (this.ticketCount < 6) {
+    if (
+      this.selectedShow &&
+      this.ticketCount < 6 &&
+      this.ticketCount < this.selectedShow.availableSeats
+    ) {
       this.ticketCount++;
       this.calculateTotal();
     }
-    
   }
 
   decreaseQuantity(): void {
@@ -76,15 +154,18 @@ export class MoviebookComponent implements OnInit {
   }
 
   calculateTotal(): void {
-    this.totalPrice = this.ticketCount * (this.movieData?.Price || 0);
+    if (this.movieAPI) {
+      this.totalPrice = this.ticketCount * this.movieAPI.price;
+    }
   }
 
-  //confirmation box before booking ticket
   showBookingSummary(): void {
+    if (!this.selectedShow) return;
+
     this.modal.confirm({
       nzTitle: 'Confirm Booking',
       nzContent: `
-        <h1>Movie:</h1> ${this.movieData.MovieName} <br/>
+        <h1>Movie:</h1> ${this.movieAPI?.movieName} <br/>
         <b>Date:</b> ${this.selectedDate} <br/>
         <b>Time:</b> ${this.selectedTime} <br/>
         <b>Tickets:</b> ${this.ticketCount} <br/>
@@ -94,90 +175,57 @@ export class MoviebookComponent implements OnInit {
     });
   }
 
-  //after successfull booking storing the data
   storeBooking(): void {
+    if (!this.selectedShow || !this.movieAPI) return;
+
     const user = this.authService.getCurrentUser();
-    const remainingSeats = this.movieData.AvailableSeats - this.ticketCount;
+    const remainingSeats = this.selectedShow.availableSeats - this.ticketCount;
+
     if (remainingSeats < 0) {
       alert('Not enough seats available!');
       return;
     }
-    const newBooking = {
-      bookingId: this.bookingService.getNextBookingId(),
-      movieId: this.movieID,
-      movieName: this.movieData.MovieName,
-      genre: this.movieData.Genre,
-      imageURL: this.movieData.PosterImageURL,
-      date: this.selectedDate,
-      time: this.selectedTime,
-      Quantity: this.ticketCount,
+
+    const bookingPayload = {
+      movieId: this.movieAPI.movieId,
+      movieName: this.movieAPI.movieName,
+      genre: this.movieAPI.genre,
+      imageURL: this.movieAPI.posterImageUrl,
+      showDate: this.selectedDate,
+      showTime: this.selectedTime,
+      numberOfTickets: this.ticketCount,
       totalPrice: this.totalPrice,
-      userId: user.id,
-      Username: user.userName,
+      userId: user.userId,
+      userName: user.userName,
+      showId: this.shows[0].showId, // Use selected show's ID
     };
 
-    this.movieService
-      .updateAvaliableSeats(this.movieID, remainingSeats)
-      .subscribe(() => {
-        this.movieData.AvailableSeats = remainingSeats;
-      });
-    this.bookingService.saveBooking(newBooking);
+    console.log('Sending booking:', bookingPayload);
 
-    alert('Booking Successful!');
-    this.route.navigate(['/history']);
-    this.ticketCount = 0;
-    this.selectedDate = '';
-    this.selectedTime = '';
-  }
-
-  //booking a movie
-  bookNow(): void {
-    if (this.ticketCount === 0) {
-      alert('Please select at least 1 ticket');
-      return;
-    }
-    if (this.ticketCount > 6) {
-      alert('Maximum limit reached');
-      return;
-    }
-
-    const remainingSeats = this.movieData.AvailableSeats - this.ticketCount;
-    const user = this.authService.getCurrentUser();
-
-    if (remainingSeats < 0) {
-      alert('Not enough seats available!');
-      return;
-    }
-
-    if (confirm('Do you want to confirm your booking?')) {
-      this.movieService
-        .updateAvaliableSeats(this.movieID, remainingSeats)
-        .subscribe(() => {
-          this.movieData.AvailableSeats = remainingSeats;
-
-          const newBooking = {
-            bookingId: this.bookingService.getNextBookingId(),
-            movieId: this.movieID,
-            movieName: this.movieData.MovieName,
-            genre: this.movieData.Genre,
-            imageURL: this.movieData.PosterImageURL,
-            date: this.selectedDate,
-            time: this.selectedTime,
-            Quantity: this.ticketCount,
-            totalPrice: this.totalPrice,
-            userId: user.id,
-            Username: user.userName,
-          };
-
-          this.bookingService.saveBooking(newBooking);
-
-          alert('Booking successful!');
+    this.bookingService.saveBooking(bookingPayload).subscribe({
+      next: (response) => {
+        console.log('Booking successful:', response);
+        this.modal.success({
+          nzTitle: 'Booking Successful',
+          nzContent: 'Your tickets have been booked successfully!',
+          nzOnOk: () => this.route.navigate(['/history']),
         });
-    }
+      },
+      error: (err) => {
+        console.error('Booking failed:', err);
+        this.modal.error({
+          nzTitle: 'Booking Failed',
+          nzContent:
+            err.error?.message ||
+            'There was an error processing your booking. Please try again.',
+        });
+      },
+    });
   }
 
-  //if the is past it wil disable
   isTimeDisabled(time: string): boolean {
+    if (!this.selectedDate) return false;
+
     const now = new Date();
     now.setSeconds(0);
     now.setMilliseconds(0);
@@ -186,6 +234,7 @@ export class MoviebookComponent implements OnInit {
     const selectedDateTime = new Date(dateTimeString);
 
     if (isNaN(selectedDateTime.getTime())) return false;
+
     const today = new Date();
     const isToday =
       selectedDateTime.getDate() === today.getDate() &&
@@ -193,9 +242,5 @@ export class MoviebookComponent implements OnInit {
       selectedDateTime.getFullYear() === today.getFullYear();
 
     return isToday && selectedDateTime <= now;
-  }
-  getTodayDate(): string {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
   }
 }
