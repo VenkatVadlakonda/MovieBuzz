@@ -4,6 +4,7 @@ import { MoviesService } from '../../../_services/movies.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminmoviesPipe } from "../../../_pipes/adminmovies.pipe";
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-admindashboard',
@@ -46,6 +47,7 @@ export class AdmindashboardComponent implements OnInit {
       showId: 0 
     });
   }
+  addnewShow(){}
 
   onAddMovie(): void {
     this.selectedMovie = {
@@ -66,7 +68,7 @@ export class AdmindashboardComponent implements OnInit {
   onEditMovie(movie: any): void {
     this.movieService.getMovieByID(movie.movieId).subscribe({
       next: (movieDetails: any) => {
-        // Ensure all fields are properly initialized
+        
         const movies=Array.isArray(movieDetails)? movieDetails : (movieDetails?.data || [])
         this.selectedMovie = {
           movieId: movies.movieId,
@@ -81,7 +83,6 @@ export class AdmindashboardComponent implements OnInit {
           isActive: movies.isActive || true
         };
   
-        // Load shows for this movie
         this.movieService.getShowsForMovie(movie.movieId).subscribe({
           next: (showsResponse: any) => {
             const shows = showsResponse.data || showsResponse || [];
@@ -93,7 +94,7 @@ export class AdmindashboardComponent implements OnInit {
               availableSeats: show.availableSeats || 100
             }));
   
-            // Force UI update
+            
             this.cdr.detectChanges();
           },
           error: (err) => {
@@ -121,8 +122,7 @@ export class AdmindashboardComponent implements OnInit {
       const [day, month, year] = dateStr.split('/');
       return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
     }
-    
-    // For other formats, create a Date object
+   
     const date = new Date(dateStr);
     if (isNaN(date.getTime())) return '';
     
@@ -135,12 +135,13 @@ export class AdmindashboardComponent implements OnInit {
     this.isEdit = false;
   }
 
+ 
   saveMovie(movie: any): void {
     if (!this.validateForm()) {
       return;
     }
-
-    const payload = {
+  
+    const movieObj = {
       movie: {
         movieId: this.isEdit ? movie.movieId : 0,
         movieName: movie.movieName,
@@ -153,22 +154,30 @@ export class AdmindashboardComponent implements OnInit {
         trailerUrl: movie.trailerUrl,
         isActive: movie.isActive || true
       },
-      shows: this.showList.map(show => ({
-        showId: show.showId || 0,
-        movieId: this.isEdit ? movie.movieId : 0,
-        showDate: this.formatDateToYYYYMMDD(show.showDate),
-        showTime: show.showTime.trim(),
-        availableSeats: show.availableSeats
-      }))
+      shows: this.showList
+        .filter(show => !this.isEdit||show.showId !== 0) 
+        .map(show => ({
+          showId: show.showId || 0,
+          movieId: this.isEdit ? movie.movieId : 0,
+          showDate: this.formatDateToYYYYMMDD(show.showDate),
+          showTime: show.showTime.trim(),
+          availableSeats: show.availableSeats
+        }))
     };
-
-    console.log('Sending payload:', payload); 
-
+    debugger;
+  
     if (this.isEdit && movie.movieId) {
-      this.movieService.updateMovieAPI(movie.movieId, payload).subscribe({
+      // First update the movie and existing shows
+      this.movieService.updateMovieAPI(movie.movieId, movieObj).subscribe({
         next: () => {
-          this.getMovies();
-          this.onCancel();
+          
+          const newShows = this.showList.filter(show => show.showId === 0);
+          if (newShows.length > 0) {
+            this.addNewShows(movie.movieId, newShows);
+          } else {
+            this.getMovies();
+            this.onCancel();
+          }
         },
         error: (err) => {
           console.error('Update failed', err);
@@ -176,7 +185,8 @@ export class AdmindashboardComponent implements OnInit {
         }
       });
     } else {
-      this.movieService.addMovieAPI(payload).subscribe({
+      
+      this.movieService.addMovieAPI(movieObj).subscribe({
         next: () => {
           this.getMovies();
           this.onCancel();
@@ -188,8 +198,34 @@ export class AdmindashboardComponent implements OnInit {
       });
     }
   }
+
+  private addNewShows(movieId: number, newShows: any[]): void {
+    const showObservables = newShows.map(show => {
+      const showObj= {
+        movieId: movieId,
+        showTime: show.showTime.trim(),
+        showDate: this.formatDateToYYYYMMDD(show.showDate),
+        availableSeats: show.availableSeats
+      };
+      return this.movieService.addShowAPI(showObj);
+    });
+  
+    // Execute all show additions in parallel
+    forkJoin(showObservables).subscribe({
+      next: () => {
+        this.getMovies();
+        this.onCancel();
+      },
+      error: (err) => {
+        console.error('Error adding new shows', err);
+        alert('Movie updated but failed to add some new shows. Please check.');
+        this.getMovies();
+        this.onCancel();
+      }
+    });
+  }
   private validateForm(): boolean {
-    // Validate movie details
+    
     if (!this.selectedMovie.movieName || 
         !this.selectedMovie.genre || 
         !this.selectedMovie.ageRestriction ||
@@ -202,7 +238,7 @@ export class AdmindashboardComponent implements OnInit {
       return false;
     }
 
-    // Validate shows
+   
     if (this.showList.length === 0) {
       alert('Please add at least one show');
       return false;

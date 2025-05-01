@@ -1,11 +1,12 @@
 
 <div class="admin-dashboard">
-  <button class="add-movie-btn" (click)="onAddMovie()">
-    <i class="fa-solid fa-square-plus"></i> Add New Movie
-  </button>
   <span class="search">
     <input type="text" placeholder="Search movies..." [(ngModel)]="search">
   </span>
+  <button class="add-movie-btn" (click)="onAddMovie()">
+    <i class="fa-solid fa-square-plus"></i> Add New Movie
+  </button>
+  
 
   <!-- Add Movie Form -->
   <div class="movie-form" *ngIf="selectedMovie && !isEdit">
