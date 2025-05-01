@@ -19,7 +19,7 @@ export interface Movies{
 }
 
 export interface MovieAPI {
-    movieId: number;
+    movieId?: number;
     movieName: string;
     genre: string;
     ageRestriction: number;
@@ -34,7 +34,7 @@ export interface MovieAPI {
   
   export interface ShowTime {
     showId: number;
-    movieId: number;
+    movieId?: number;
     showTime: string;    
     showDate: string;    
     availableSeats: number;

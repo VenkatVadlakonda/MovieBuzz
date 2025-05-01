@@ -34,3 +34,6 @@
   .movie-table tr:hover {
     background-color: #f9f9f9;
   }
+  .movie-table tr:nth-child(even){
+    background-color: #e2dede;
+  }

@@ -75,6 +75,22 @@ export class MoviesService {
     return this.http.patch(`${this.url}/${movieId}/toggle-status`, {});
   }
 
+  getShowsForMovie(movieId: number): Observable<any> {
+    return this.http.get(`https://localhost:7084/Shows/movie/${movieId}`);
+  }
+
+  addShowAPI(show: any): Observable<any> {
+    return this.http.post('https://localhost:7084/Shows', show);
+  }
+  
+  updateShowAPI(showId: number, show: any): Observable<any> {
+    return this.http.put(`https://localhost:7084/Shows/${showId}`, show);
+  }
+
+  
+
+
+
 
 
  

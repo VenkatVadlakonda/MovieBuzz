@@ -58,6 +58,7 @@ export class MoviebookComponent implements OnInit {
         if (movieResponse?.success && movieResponse?.data) {
           this.movieAPI = movieResponse.data;
           this.processTrailerUrl();
+          console.log(movieResponse)
 
           // Get show times for this movie
           this.movieService.getShows(this.movieId).subscribe({

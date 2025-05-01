@@ -30,7 +30,7 @@
           [nzCover]="coverTemplate"
         >
           <ng-template #coverTemplate>
-            <img alt="{{ movie.movieName }}" src="{{ movie.posterImageUrl }}" height="400px" />
+            <img alt="{{ movie.movieName }}" [src]=movie.posterImageUrl height="400px" />
           </ng-template>
           <div class="card-name">
             <nz-card-meta nzTitle="{{ movie.movieName }}"></nz-card-meta>
