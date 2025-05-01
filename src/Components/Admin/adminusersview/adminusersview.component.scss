@@ -17,8 +17,11 @@
     border-bottom: 1px solid #eee;
   }
   
+  
   .movie-table tr:hover {
     background-color: #f9f9f9;
+  }.movie-table tr:nth-child(even){
+    background-color: #e2dede;
   }
 .search{
     margin-top: 60px;

@@ -88,7 +88,7 @@ export class LoginComponent implements OnInit{
       const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
       const user = users.find((u: User) => u.userName === userName && u.password === password);
       const userapi=this.userData.find((users:User)=>users.userName===userName&& users.password===password)
-      
+      console.log(userapi)
       if (user) {
         this.authService.login({
           userId: user.id,
@@ -116,12 +116,5 @@ export class LoginComponent implements OnInit{
       }
       this.isSubmitting = false;
     }
-  }
-
-  
-  
-  private handleLoginError() {
-    this.loginError = 'Invalid username or password';
-    this.moveButton = !this.moveButton;
   }
 }
