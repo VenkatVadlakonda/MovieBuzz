@@ -1,19 +1,25 @@
-table{
-    width: 100%;  
-}
-tr,th{
-    border-bottom: 1px solid #ddd;
-    
-}
-th,td{
-    padding: 10px;
-    margin: 20px;
+.movie-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .movie-table th {
+    background-color: #4a6baf;
+    color: white;
+    padding: 1rem;
     text-align: left;
-}
-tr:nth-child(odd) {background-color: #ccccd7;}
-tr:hover{
-    background-color: #838398;
-}
+  }
+  
+  .movie-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .movie-table tr:hover {
+    background-color: #f9f9f9;
+  }
 .search{
     margin-top: 60px;
     margin-bottom: 20px;

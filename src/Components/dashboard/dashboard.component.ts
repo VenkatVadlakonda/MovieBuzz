@@ -94,7 +94,7 @@ export class DashboardComponent implements OnInit {
             console.log('User Age:', userAge);
 
             this.movieAPI = moviesArray.filter((movie) => {
-              const restriction = Number(movie.AgeRestriction || 0); // Default to 0 if undefined
+              const restriction = Number(movie.ageRestriction || 0); // Default to 0 if undefined
               return userAge >= restriction;
             });
           } else {
