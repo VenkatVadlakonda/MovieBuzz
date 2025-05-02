@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { UsersService } from './users.service';
+import { remove, session } from '../_utils/moviebook.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class AuthService {
       user: userData, 
     };
     
-    localStorage.setItem('currentSession', JSON.stringify(sessionData));
+    session(sessionData)
     this.userService.loginUser(userData).subscribe({
       next:()=>{
 
@@ -48,7 +49,7 @@ export class AuthService {
   }
   //logout
   logout(redirect:boolean=false) {
-    localStorage.removeItem('currentSession');
+    remove()
     this.currentUserSubject.next(null);
     if(redirect){
       this.router.navigate(['/dashboard'])

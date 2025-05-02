@@ -64,3 +64,52 @@ export function extractYouTubeVideoID(url: string): string | null {
 //   return history.length ? history[history.length - 1].bookingId + 1 : 200;
 // }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
+
+
+const x='currentSession'
+export function session(loginUser:any){
+  localStorage.setItem(x,JSON.stringify(loginUser))
+}
+export function remove(){
+  localStorage.removeItem(x)
+}
+export function dataObj():any{
+  return JSON.parse(localStorage.getItem('currentSession') || '{}')
+}
+
+const y="MovieBuzzUsers"
+export function setData(data:any){
+  const arr=[...users,data]
+  localStorage.setItem(y,JSON.stringify(arr))
+}
+export function getUser():any{
+   return JSON.parse(localStorage.getItem(y)|| '[]')
+}
