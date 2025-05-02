@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit{
     this.userService.getAllUsers().subscribe({
       next: (data: any) => {
         // Handle different response formats
+        console.log("Data from API2:",data)
         if (Array.isArray(data)) {
           this.userData = data;
         } else if (data && Array.isArray(data.data)) {
@@ -88,7 +89,8 @@ export class LoginComponent implements OnInit{
       const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
       const user = users.find((u: User) => u.userName === userName && u.password === password);
       const userapi=this.userData.find((users:User)=>users.userName===userName&& users.password===password)
-      console.log(userapi)
+      console.log("Data form API",userapi)
+      console.log(this.userData)
       if (user) {
         this.authService.login({
           userId: user.id,

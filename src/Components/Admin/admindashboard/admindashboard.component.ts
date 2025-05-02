@@ -250,6 +250,9 @@ export class AdmindashboardComponent implements OnInit {
         return false;
       }
     }
+    if(!this.validateShowTimes()){
+      return false;
+    }
 
     return true;
   }
@@ -262,6 +265,53 @@ export class AdmindashboardComponent implements OnInit {
       return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
     }
     return dateStr;
+  }
+  private validateShowTimes(): boolean {
+    const now = new Date();
+    const currentDate = now.toISOString().split('T')[0];
+    const currentHours = now.getHours();
+    const currentMinutes = now.getMinutes();
+  
+    for (const show of this.showList) {
+      if (!show.showDate || !show.showTime) continue;
+  
+    
+      const showDate = this.formatDateToYYYYMMDD(show.showDate);
+      
+      
+      const timeMatch = show.showTime.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+      if (!timeMatch) {
+        alert(`Invalid time format for show: ${show.showTime}. Please use format like "10:00 AM" or "13:30"`);
+        return false;
+      }
+  
+      let hours = parseInt(timeMatch[1], 10);
+      const minutes = parseInt(timeMatch[2], 10);
+      const period = timeMatch[3]?.toUpperCase();
+  
+      if (period === 'PM' && hours < 12) {
+        hours += 12;
+      } else if (period === 'AM' && hours === 12) {
+        hours = 0;
+      }
+  
+      if (showDate < currentDate) {
+        alert(`Show date ${show.showDate} is in the past. Please select a future date.`);
+        return false;
+      } else if (showDate === currentDate) {
+        if (hours < currentHours || (hours === currentHours && minutes < currentMinutes)) {
+          alert(`Show time ${show.showTime} is in the past for today. Please select a future time.`);
+          return false;
+        }
+      }
+  
+      if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+        alert(`Invalid time: ${show.showTime}. Hours must be 0-23 and minutes 0-59.`);
+        return false;
+      }
+    }
+  
+    return true;
   }
   
   onToggleActive(movie: any): void {
