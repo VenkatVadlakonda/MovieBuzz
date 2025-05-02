@@ -8,7 +8,7 @@ import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { FormsModule } from '@angular/forms';
 import {
   extractYouTubeVideoID,
-  generateShowDates,
+  
 } from '../../_utils/moviebook.utils';
 import { MoviebookService } from '../../_services/moviebook.service';
 import { AuthService } from '../../_services/auth.service';
@@ -195,7 +195,7 @@ export class MoviebookComponent implements OnInit {
       totalPrice: this.totalPrice,
       userId: user.userId,
       userName: user.userName,
-      showId: this.shows[0].showId, // Use selected show's ID
+      showId: this.selectedShow.showId, 
     };
 
     console.log('Sending booking:', bookingPayload);

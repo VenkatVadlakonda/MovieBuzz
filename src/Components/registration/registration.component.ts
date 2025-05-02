@@ -11,6 +11,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { UsersService } from '../../_services/users.service';
 import { User } from '../../_models/user.modal';
+import { setData, users } from '../../_utils/moviebook.utils';
 
 @Component({
   selector: 'app-registration',
@@ -85,7 +86,7 @@ export class RegistrationComponent implements OnInit{
       };
       const addUser={...this.registerForm.value}
 
-      const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
+      
       const isDuplicate = users.some(
         (user: any) =>
           user.userName === newUser.userName ||
@@ -103,10 +104,8 @@ export class RegistrationComponent implements OnInit{
 
       newUser.id =
         users.length > 0 ? Math.max(...users.map((u: any) => u.id)) + 1 : 101;
-      localStorage.setItem(
-        'MovieBuzzUsers',
-        JSON.stringify([...users, newUser])
-      );
+      
+      setData(newUser)
       this.usersAdd.addUsers(addUser).subscribe({
         next:res=>{
           console.log("Registration successfull from API")

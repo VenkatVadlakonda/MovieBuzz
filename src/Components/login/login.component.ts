@@ -11,6 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../_services/auth.service';
 import { User } from '../../_models/user.modal';
 import { UsersService } from '../../_services/users.service';
+import { getUser } from '../../_utils/moviebook.utils';
 
 @Component({
   selector: 'app-login',
@@ -85,8 +86,8 @@ export class LoginComponent implements OnInit{
         return;
       }
 
-      const users = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
-      const user = users.find((u: User) => u.userName === userName && u.password === password);
+      
+      const user = getUser().find((u: User) => u.userName === userName && u.password === password);
       const userapi=this.userData.find((users:User)=>users.userName===userName&& users.password===password)
       console.log(userapi)
       if (user) {

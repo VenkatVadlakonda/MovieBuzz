@@ -5,6 +5,7 @@ import { BookingsHistory } from '../../_models/booking.modal';
 import { MoviesService } from '../../_services/movies.service';
 import { UsersService } from '../../_services/users.service';
 import { AuthService } from '../../_services/auth.service';
+import { dataObj } from '../../_utils/moviebook.utils';
 
 @Component({
   selector: 'app-bookinghistory',
@@ -22,13 +23,9 @@ export class BookinghistoryComponent implements OnInit {
   private auth=inject(AuthService)
 
   ngOnInit(): void {
-    const users = JSON.parse(localStorage.getItem('currentSession') || '{}');
-    const data = localStorage.getItem('bookingHistory');
-    this.bookingHistory = data ? JSON.parse(data) : [];
-    const bookings = data ? JSON.parse(data) : [];
-    
-    this.id=users.user.userId
-    console.log("Users",users,this.id)
+   
+    this.id=dataObj().user.userId
+    console.log("Users",this.id)
    
  
     this.bookingService.getBookings(this.id).subscribe({
@@ -46,11 +43,6 @@ export class BookinghistoryComponent implements OnInit {
       }
     })
    
-
-    
-
-    
-
   }
   getBookingQRCode(booking: any): string {
     const details = {

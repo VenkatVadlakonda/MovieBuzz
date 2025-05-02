@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
   private authService = inject(AuthService);
   private moviesPipe = inject(MoviesPipe);
 
-  genreList: string[] = ['Action', 'Drama', 'Comedy', 'Thriller', 'Romance','Horror','Crime'];
+  genreList: string[] = ['Action', 'Drama', 'Comedy', 'Thriller', 'Romance','Horror','Crime','Mystery'];
   selectedGenre: string = 'All';
   ngOnInit(): void {
     // this.getMoviesData();
