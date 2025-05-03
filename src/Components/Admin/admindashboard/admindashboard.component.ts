@@ -17,7 +17,7 @@ import { MovieAPI } from '../../../_models/movies.modal';
 })
 export class AdmindashboardComponent implements OnInit {
  
-  movies: MovieAPI[] = [];
+  movies: any[] = [];
   search: string = '';
   selectedMovie: any ;
   isEdit = false;
@@ -48,7 +48,7 @@ export class AdmindashboardComponent implements OnInit {
       showId: 0 
     });
   }
-  addnewShow(){}
+
 
   onAddMovie(): void {
     this.selectedMovie = {
@@ -267,22 +267,73 @@ export class AdmindashboardComponent implements OnInit {
     }
     return dateStr;
   }
+  // private validateShowTimes(): boolean {
+  //   const now = new Date();
+  //   const currentDate = now.toISOString().split('T')[0];
+  //   const currentHours = now.getHours();
+  //   const currentMinutes = now.getMinutes();
+  
+  //   for (const show of this.showList) {
+  //     if (!show.showDate || !show.showTime) continue;
+  
+    
+  //     const showDate = this.formatDateToYYYYMMDD(show.showDate);
+      
+      
+  //     const timeMatch = show.showTime.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+  //     if (!timeMatch) {
+  //       alert(`Invalid time format for show: ${show.showTime}. Please use format like "10:00 AM" or "13:30"`);
+  //       return false;
+  //     }
+  
+  //     let hours = parseInt(timeMatch[1], 10);
+  //     const minutes = parseInt(timeMatch[2], 10);
+  //     const period = timeMatch[3]?.toUpperCase();
+  
+  //     if (period === 'PM' && hours < 12) {
+  //       hours += 12;
+  //     } else if (period === 'AM' && hours === 12) {
+  //       hours = 0;
+  //     }
+  
+  //    if(!this.isEdit){
+  //     if (showDate < currentDate) {
+  //       alert(`Show date ${show.showDate} is in the past. Please select a future date.`);
+  //       return false;
+  //     } else if (showDate === currentDate) {
+  //       if (hours < currentHours || (hours === currentHours && minutes < currentMinutes)) {
+  //         alert(`Show time ${show.showTime} is in the past for today. Please select a future time.`);
+  //         return false;
+  //       }
+  //     }
+  //    }
+  
+  //     if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+  //       alert(`Invalid time: ${show.showTime}. Hours must be 0-23 and minutes 0-59.`);
+  //       return false;
+  //     }
+  //   }
+  
+  //   return true;
+  // }
+  
+
   private validateShowTimes(): boolean {
     const now = new Date();
-    const currentDate = now.toISOString().split('T')[0];
+    const currentDate = now.toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
     const currentHours = now.getHours();
     const currentMinutes = now.getMinutes();
   
+    // Loop through the shows to check for conflicts
     for (const show of this.showList) {
       if (!show.showDate || !show.showTime) continue;
   
-    
       const showDate = this.formatDateToYYYYMMDD(show.showDate);
-      
-      
+  
+      // Parse the time in showTime to extract hours and minutes
       const timeMatch = show.showTime.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
       if (!timeMatch) {
-        alert(`Invalid time format for show: ${show.showTime}. Please use format like "10:00 AM" or "13:30"`);
+        alert(`Invalid time format for show: ${show.showTime}. Please use format like "10:00 AM"`);
         return false;
       }
   
@@ -296,25 +347,36 @@ export class AdmindashboardComponent implements OnInit {
         hours = 0;
       }
   
-      // if (showDate < currentDate) {
-      //   alert(`Show date ${show.showDate} is in the past. Please select a future date.`);
-      //   return false;
-      // } else if (showDate === currentDate) {
-      //   if (hours < currentHours || (hours === currentHours && minutes < currentMinutes)) {
-      //     alert(`Show time ${show.showTime} is in the past for today. Please select a future time.`);
-      //     return false;
-      //   }
-      // }
+      // Check if the show time is in the past
+      if (!this.isEdit) {
+        if (showDate < currentDate) {
+          alert(`Show date ${show.showDate} is in the past. Please select a future date.`);
+          return false;
+        } else if (showDate === currentDate) {
+          if (hours < currentHours || (hours === currentHours && minutes < currentMinutes)) {
+            alert(`Show time ${show.showTime} is in the past for today. Please select a future time.`);
+            return false;
+          }
+        }
+      }
   
-      if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
-        alert(`Invalid time: ${show.showTime}. Hours must be 0-23 and minutes 0-59.`);
-        return false;
+ 
+      for (const existingShow of this.showList) {
+        if (existingShow === show) continue; 
+  
+        const existingShowDate = this.formatDateToYYYYMMDD(existingShow.showDate);
+        const existingShowTime = existingShow.showTime.trim();
+
+        if (existingShowDate === showDate && existingShowTime === show.showTime) {
+          alert(`A show is already scheduled for this time (${show.showTime}) on this date (${showDate}). Please select a different time.`);
+          return false;
+        }
       }
     }
   
     return true;
   }
-  
+
   onToggleActive(movie: any): void {
     this.movieService.toggleStatus(movie.movieId).subscribe({
       next: () => this.getMovies(),
