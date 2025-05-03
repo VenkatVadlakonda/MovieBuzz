@@ -1,7 +1,7 @@
 import { MoviesPipe } from './../../_pipes/movies.pipe';
 import { Component, inject, OnInit } from '@angular/core';
 import { MoviesService } from '../../_services/movies.service';
-import { Movies } from '../../_models/movies.modal';
+
 import { CommonModule } from '@angular/common';
 import { catchError, finalize, throwError } from 'rxjs';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
@@ -31,7 +31,7 @@ import { log } from 'ng-zorro-antd/core/logger';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
-  moviesData: Movies[] = [];
+
   movieAPI: any;
   isLoading: boolean = false;
   errorMessage: string | null = null;
@@ -51,10 +51,6 @@ export class DashboardComponent implements OnInit {
     // this.getMoviesData();
     this.getAPIMovies();
   }
-
-
-  //Movies Data
-
   getAPIMovies() {
     this.isLoading = true;
     this.errorMessage = null;
@@ -87,30 +83,37 @@ export class DashboardComponent implements OnInit {
 
           const user = this.authService.getCurrentUser();
           console.log('User:', user);
-          console.log('User DOB:', user?.dateOfBirth);
+          
+          // Handle case where user or user.data is null/undefined
+          if (!user || !user.data) {
+            console.warn('No user data available - showing all movies');
+            this.movieAPI = moviesArray;
+            return;
+          }
 
-          if (user && user.dateOfBirth) {
-            const userAge = this.getUserAge(user.dateOfBirth);
+          console.log('User DOB:', user.data.dateOfBirth);
+
+          if (user.data.dateOfBirth) {
+            const userAge = this.getUserAge(user.data.dateOfBirth);
             console.log('User Age:', userAge);
 
             this.movieAPI = moviesArray.filter((movie) => {
-              const restriction = Number(movie.ageRestriction || 0); // Default to 0 if undefined
+              const restriction = Number(movie.ageRestriction || 0);
               return userAge >= restriction;
             });
           } else {
             this.movieAPI = moviesArray;
           }
 
-          console.log('Filtered Movies:', this.movieAPI); // Log the final result
+          console.log('Filtered Movies:', this.movieAPI);
         },
         error: (err) => {
           console.error('Error:', err);
           this.errorMessage = err.message || 'Failed to fetch movies';
-          this.movieAPI = []; // Ensure it's always an array
+          this.movieAPI = [];
         },
       });
   }
-  
 
   //pagination logic for page display 4 movie cards
   get paginatedMovies(): any[] {

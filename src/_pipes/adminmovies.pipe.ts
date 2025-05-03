@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Movies } from '../_models/movies.modal';
+
 
 @Pipe({
   name: 'adminmovies',

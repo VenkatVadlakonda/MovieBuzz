@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { UsersService } from './users.service';
-import { remove, session } from '../_utils/moviebook.utils';
+import { remove, session, userDataAPI } from '../_utils/moviebook.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -13,30 +13,39 @@ export class AuthService {
   private router=inject(Router)
   private userService=inject(UsersService)
 
-  constructor() {
-    const session = localStorage.getItem('currentSession');
-    if (session) {
-      this.currentUserSubject.next(JSON.parse(session).user);
-    }
+  // constructor() {
+  //   const session = localStorage.getItem('currentSession');
+  //   if (session) {
+  //     this.currentUserSubject.next(JSON.parse(session));
+  //   }
     
+  // }
+  constructor() {
+    const sessionData = localStorage.getItem('currentSession');
+    if (sessionData) {
+      try {
+        const parsed = JSON.parse(sessionData);
+        if (parsed.expiresAt && parsed.expiresAt > Date.now()) {
+          this.currentUserSubject.next(parsed.user);
+        } else {
+          console.warn('Session expired');
+          remove();
+        }
+      } catch (e) {
+        console.error('Failed to parse session data:', e);
+        remove();
+      }
+    }
   }
+  
 
   //user login, login session open for 30mins and if user logs in display user UI if admin , admin UI
   login(userData: any) {
-    const sessionData = {
-      user: userData, 
-    };
     
-    session(sessionData)
-    this.userService.loginUser(userData).subscribe({
-      next:()=>{
-
-        console.log("Login Successfull",userData)
-      },
-      error:(error)=>{
-        console.log("Error Occurried",error)
-      }
-    })
+    console.log("UserData:",userData)
+    
+    session(userData)
+    
     
     this.currentUserSubject.next(userData);
 
@@ -71,4 +80,5 @@ export class AuthService {
   isAdmin() {
     return this.currentUserSubject.value?.isAdmin;
   }
+  
 }

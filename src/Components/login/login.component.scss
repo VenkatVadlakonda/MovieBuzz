@@ -3,9 +3,11 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  
   // background-color: #1f1f2e;
   background-color: #eaeaf3;
   color: white;
+  padding-bottom:50px ;
 }
 .password-wrapper {
   position: relative;
@@ -30,6 +32,7 @@
   background-color: #2a2a3d;
   border-radius: 10px;
   overflow: hidden;
+  
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
 }
 
@@ -99,7 +102,7 @@
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.1s ease;
     position: relative;
   }
   .moveLeft {
@@ -109,3 +112,105 @@
   .moveRight {
     transform: translateX(200px);
   }
+  
+  @media (max-width: 992px) {
+    .container {
+      flex-direction: row; /* Keep side-by-side layout */
+    }
+    
+    .poster img {
+      max-width: 300px;
+    }
+    
+    .login-box {
+      padding: 30px;
+      width: 350px;
+    }
+    
+    .signin-btn {
+      width: 50%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      max-width: 500px;
+    }
+    
+    .poster img {
+      max-width: 100%;
+      max-height: 250px;
+    }
+    
+    .login-box {
+      width: auto;
+      padding: 25px;
+    }
+    
+    .signin-btn {
+      width: 60%;
+    }
+  }
+
+  @media (max-width: 576px) {
+    :host {
+      padding: 20px;
+      align-items: flex-start;
+    }
+    
+    .container {
+      width: 100%;
+    }
+    
+    .login-box {
+      padding: 20px;
+      
+      h2 {
+        font-size: 24px;
+      }
+    }
+    
+    .signin-btn {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .login-box {
+      padding: 15px;
+      
+      input {
+        padding: 10px;
+      }
+    }
+    
+    .password-wrapper .toggle-password {
+      right: 8px;
+    }
+  }
+ 
+  
+  @media (max-width: 600px) {
+    :host {
+      padding: 20px;
+    }
+  
+    .container {
+      box-shadow: none;
+      border-radius: 0;
+    }
+  
+    .login-box {
+      padding: 20px;
+    }
+  
+    .signin-btn {
+      width: 100%;
+    }
+  
+    .poster {
+      display: none; /* Hide image on very small screens for cleaner UX */
+    }
+  }
+  

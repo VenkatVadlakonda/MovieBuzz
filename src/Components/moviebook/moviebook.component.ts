@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MovieAPI, Movies } from '../../_models/movies.modal';
+import { MovieAPI } from '../../_models/movies.modal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MoviesService } from '../../_services/movies.service';
 import { CommonModule } from '@angular/common';
@@ -97,7 +97,18 @@ export class MoviebookComponent implements OnInit {
 
   private processShowData(): void {
 
-    this.showDates = [...new Set(this.shows.map((show) => show.showDate))];
+    const today = new Date().setHours(0, 0, 0, 0)
+    console.log("--Today's Date:",today)
+    this.showDates = [
+      ...new Set(
+        this.shows
+          .map((show) => show.showDate)
+          .filter((dateStr) => {
+            const showDate = new Date(dateStr).setHours(0, 0, 0, 0)
+            return showDate >= today;
+          })
+      ),
+    ];
 
     if (this.showDates.length > 0) {
       this.selectedDate = this.showDates[0];
@@ -177,6 +188,7 @@ export class MoviebookComponent implements OnInit {
     if (!this.selectedShow || !this.movieAPI) return;
 
     const user = this.authService.getCurrentUser();
+    console.log("user from authservice:-------------------",user)
     const remainingSeats = this.selectedShow.availableSeats - this.ticketCount;
 
     if (remainingSeats < 0) {
@@ -193,8 +205,8 @@ export class MoviebookComponent implements OnInit {
       showTime: this.selectedTime,
       numberOfTickets: this.ticketCount,
       totalPrice: this.totalPrice,
-      userId: user.userId,
-      userName: user.userName,
+      userId: user.data?.userId,
+      userName: user.data?.userName,
       showId: this.selectedShow.showId, 
     };
 
