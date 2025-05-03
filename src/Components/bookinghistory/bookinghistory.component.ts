@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
-import { BookingsHistory } from '../../_models/booking.modal';
+
 import { MoviesService } from '../../_services/movies.service';
 import { UsersService } from '../../_services/users.service';
 import { AuthService } from '../../_services/auth.service';
-import { dataObj } from '../../_utils/moviebook.utils';
+import { userDataAPI } from '../../_utils/moviebook.utils';
 
 @Component({
   selector: 'app-bookinghistory',
@@ -14,48 +14,49 @@ import { dataObj } from '../../_utils/moviebook.utils';
   styleUrl: './bookinghistory.component.scss',
 })
 export class BookinghistoryComponent implements OnInit {
-  bookingHistory: BookingsHistory[] = [];
-  id:number=0
 
-  bookings:any;
+  id: number = 0;
+  userName: string = '';
+  bookings: any;
+  isLoading: boolean = false;
 
-  private bookingService=inject(MoviesService)
-  private auth=inject(AuthService)
+  private bookingService = inject(MoviesService);
+  private auth = inject(AuthService);
 
   ngOnInit(): void {
-   
-    this.id=dataObj().user.userId
-    console.log("Users",this.id)
-   
- 
+    const user = this.auth.getCurrentUser();
+    this.id = user?.data?.userId;
+    this.userName = user?.data?.userName || 'User';
+
+    this.isLoading = true;
     this.bookingService.getBookings(this.id).subscribe({
       next: (data: any) => {
-        
         if (Array.isArray(data)) {
           this.bookings = data;
         } else if (data && data.data) {
           this.bookings = data.data;
         }
-        
       },
       error: (err) => {
         console.error('Error fetching users:', err);
+      },
+      complete: () => {
+        this.isLoading = false;
       }
-    })
-   
+    });
   }
+
   getBookingQRCode(booking: any): string {
     const details = {
-      UserName: this.bookings.userName || '',
-      Movie: this.bookings.movieName || '',
-      Genre: this.bookings.genre || '',
-      Date: this.bookings.showDate || '',
-      Time: this.bookings.showTime || '',
-      Tickets: this.bookings.numberOfTickets || 0,
-      Total: this.bookings.totalPrice  || 0,
-      BookingID: this.bookings.bookingId  || '',
+      UserName: booking.userName || '',
+      Movie: booking.movieName || '',
+      Genre: booking.genre || '',
+      Date: booking.showDate || '',
+      Time: booking.showTime || '',
+      Tickets: booking.numberOfTickets || 0,
+      Total: booking.totalPrice || 0,
+      BookingID: booking.bookingId || '',
     };
-
     return JSON.stringify(details, null, 2);
   }
 }

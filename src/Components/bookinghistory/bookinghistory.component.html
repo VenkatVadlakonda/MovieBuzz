@@ -1,11 +1,18 @@
+<!-- Loader -->
+<div *ngIf="isLoading;else data">
+  <div id="preloader">
+    <div id="loader"></div>
+  </div>
+</div>
 
-<section *ngIf="bookings.length > 0; else noHistory" class="booking-history-wrapper">
+<!-- Bookings -->
+
+<ng-template #data>
+  <section *ngIf="bookings?.length > 0; else noHistory" class="booking-history-wrapper">
     <div *ngFor="let booking of bookings" class="booking-card">
-      
       <div class="poster">
         <img [src]="booking.posterImageUrl" alt="{{booking.movieName}}" />
       </div>
-  
       <div class="booking-details">
         <h2>{{ booking.movieName }}</h2>
         <p class="genre">{{ booking.genre }}</p>
@@ -13,21 +20,19 @@
         <p><strong>Tickets:</strong> {{ booking.numberOfTickets }}</p>
         <p><strong>Total:</strong> ₹{{ booking.totalPrice }}</p>
       </div>
-
-
       <div class="ticket-meta">
         <h3>M-Ticket</h3>
         <p>Booking ID: {{ booking.bookingId }}</p>
-        
         <nz-qrcode [nzValue]="getBookingQRCode(booking)" nzColor="black" nzSize="180"></nz-qrcode>
       </div>
-      
     </div>
   </section>
   
   <ng-template #noHistory>
-    <div class="empty-history">
-      <p>No bookings yet. Book a movie and come back here!</p>
+    <div class="no-movies">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsun2Itqqj5J5vo1uARm0CiAyphEQxkhaZgw&s" alt="No Bookings" />
+      <p>No bookings found {{ userName }}. Book a movie and come back here!</p>
     </div>
   </ng-template>
-  
+</ng-template>
+

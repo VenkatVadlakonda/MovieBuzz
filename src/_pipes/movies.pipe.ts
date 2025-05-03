@@ -1,5 +1,5 @@
 import { Injectable, Pipe, PipeTransform } from '@angular/core';
-import { MovieAPI, Movies } from '../_models/movies.modal';
+import { MovieAPI } from '../_models/movies.modal';
 
 @Pipe({
   name: 'movies',

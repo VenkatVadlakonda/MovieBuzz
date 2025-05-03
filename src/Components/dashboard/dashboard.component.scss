@@ -1,23 +1,32 @@
+
 nz-spin {
   display: inline-block;
   margin-right: 16px;
 }
+
 nz-card {
   box-shadow: 0 3px 6px;
 }
+
 .search {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px auto;
   text-align: center;
+
+  input {
+    width: 35%;
+    padding: 10px;
+    border-radius: 5px;
+
+    @media (max-width: 768px) {
+      width: 80%;
+    }
+  }
 }
-.search input {
-  width: 35%;
-  padding: 10px;
-  border-radius: 5px;
-}
+
 .card-details {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 nz-pagination {
@@ -28,7 +37,7 @@ nz-pagination {
 }
 
 .movies-container {
-  padding: 10px;
+  padding-bottom: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,19 +47,24 @@ nz-pagination {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
-
   width: 100%;
-  margin-left: 80px;
+  margin: 0 auto;
+  padding: 0 10px;
   max-width: 1200px;
 
-  @media (min-width: 600px) {
-    grid-template-columns: repeat(3, 1fr);
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 601px) and (max-width: 899px) {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   @media (min-width: 900px) {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
 .movie-card {
   width: 100%;
   transition: transform 0.3s ease;
@@ -82,14 +96,22 @@ nz-pagination {
     margin-bottom: 4px;
   }
 }
+
 span {
   margin-left: 10px;
   border-radius: 5px;
 }
+
 select {
   padding: 10px;
+
+  @media (max-width: 768px) {
+    width: 30%;
+    margin-top: 10px;
+  }
 }
 
+/* Preloader */
 #preloader {
   position: fixed;
   top: 0;
@@ -97,6 +119,7 @@ select {
   width: 100%;
   height: 100%;
 }
+
 #loader {
   display: block;
   position: relative;
@@ -108,62 +131,63 @@ select {
   border-radius: 50%;
   border: 3px solid transparent;
   border-top-color: #9370db;
-  -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
-#loader:before {
+
+#loader:before,
+#loader:after {
   content: "";
   position: absolute;
+  border: 3px solid transparent;
+  border-radius: 50%;
+}
+
+#loader:before {
   top: 5px;
   left: 5px;
   right: 5px;
   bottom: 5px;
-  border-radius: 50%;
-  border: 3px solid transparent;
   border-top-color: #ba55d3;
-  -webkit-animation: spin 3s linear infinite;
   animation: spin 3s linear infinite;
 }
+
 #loader:after {
-  content: "";
-  position: absolute;
   top: 15px;
   left: 15px;
   right: 15px;
   bottom: 15px;
-  border-radius: 50%;
-  border: 3px solid transparent;
   border-top-color: #ff00ff;
-  -webkit-animation: spin 1.5s linear infinite;
   animation: spin 1.5s linear infinite;
 }
+
 .inactive {
   filter: blur(2px);
-  pointer-events: auto; 
+  pointer-events: auto;
   cursor: not-allowed;
 }
 
-@-webkit-keyframes spin {
+@keyframes spin {
   0% {
-    -webkit-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
-    -webkit-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
-@keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    transform: rotate(0deg);
+.no-movies {
+  text-align: center;
+  padding: 50px;
+  color: #999;
+
+  img {
+    max-width: 240px;
+    margin-bottom: 20px;
+    opacity: 0.7;
   }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    transform: rotate(360deg);
+
+  p {
+    font-size: 20px;
+    font-weight: 500;
   }
 }

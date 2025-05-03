@@ -1,114 +1,210 @@
-
-
 @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .booking-history-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 30px 40px;
-    
-    margin: auto;
-  }
-  
-  .booking-card {
-    display: flex;
-    background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    padding: 24px;
-    gap: 30px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-  
+  from {
     opacity: 0;
-    animation: fadeInUp 0.6s ease forwards;
-    animation-delay: 0.1s;
-  
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    }
+    transform: translateY(30px);
   }
-  
-  .poster img {
-    width: 240px;
-    height: 360px;
-    border-radius: 12px;
-    object-fit: cover;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.booking-history-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.booking-card {
+  display: flex;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  gap: 30px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+  animation-delay: 0.1s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+  }
+}
+
+.poster img {
+  width: 240px;
+  height: 360px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+
+  @media (max-width: 768px) {
+    width: 180px;
+    height: 280px;
+  }
+}
+
+.booking-details {
+  flex: 1;
+  min-width: 320px;
+
+  h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: #2c3e50;
+  }
+
+  .genre {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+
+  .datetime {
+    font-size: 18px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px;
+    color: #333;
+    margin: 8px 0;
+    line-height: 1.5;
+  }
+}
+
+.ticket-meta {
+  min-width: 200px;
+  text-align: center;
+  border-left: 2px dashed #ccc;
+  padding-left: 20px;
+
+  @media (max-width: 768px) {
+    border-left: none;
+    padding-left: 0;
+    margin-top: 20px;
+  }
+
+  h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 15px;
+    color: #666;
+    margin: 4px 0;
+  }
+
+  nz-qrcode {
+    margin-top: 14px;
     transition: transform 0.3s ease;
-  
+
     &:hover {
-      transform: scale(1.03);
+      transform: scale(1.08);
     }
   }
-  
-  .booking-details {
-    flex: 1;
-    min-width: 320px;
-  
-    h2 {
-      font-size: 28px;
-      margin-bottom: 10px;
-      color: #111;
-    }
-  
-    .genre {
-      font-size: 18px;
-      color: #666;
-      margin-bottom: 12px;
-      font-weight: 400;
-    }
-  
-    .datetime {
-      font-size: 18px;
-      margin-bottom: 12px;
-      font-weight: 500;
-      color: #444;
-    }
-  
-    p {
-      font-size: 18px;
-      margin: 10px 0;
-      color: #333;
-    }
+}
+.no-movies {
+  text-align: center;
+  padding: 50px;
+  color: #999;
+
+  img {
+    max-width: 240px;
+    margin-bottom: 20px;
+    opacity: 0.7;
   }
-  
-  .ticket-meta {
-    min-width: 200px;
-    text-align: center;
-  
-    h3 {
-      font-size: 22px;
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
-  
-    p {
-      font-size: 16px;
-      margin: 6px 0;
-      color: #555;
-    }
-  
-    nz-qrcode {
-      margin-top: 12px;
-      transition: transform 0.3s ease;
-  
-      &:hover {
-        transform: scale(1.05);
-      }
-    }
+
+  p {
+    font-size: 20px;
+    font-weight: 500;
   }
-  
+}
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#loader {
+  display: block;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #9370db;
+  animation: spin 2s linear infinite;
+}
+
+#loader:before,
+#loader:after {
+  content: "";
+  position: absolute;
+  border: 3px solid transparent;
+  border-radius: 50%;
+}
+
+#loader:before {
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-top-color: #ba55d3;
+  animation: spin 3s linear infinite;
+}
+
+#loader:after {
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border-top-color: #ff00ff;
+  animation: spin 1.5s linear infinite;
+}
+
+.inactive {
+  filter: blur(2px);
+  pointer-events: auto;
+  cursor: not-allowed;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

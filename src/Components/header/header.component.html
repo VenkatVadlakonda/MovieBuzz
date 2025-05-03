@@ -3,8 +3,11 @@
   <div class="masking-container">
     <h1 class="masked-text" routerLink="/dashboard">MovieBuzz</h1>
   </div>
+  <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuActive" aria-label="Toggle menu">
+    <span class="menuicon"></span>
+  </button>
 
-  <nav>
+  <nav [class.active]="isMenuActive">
     <ul>
       <li>
         <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>

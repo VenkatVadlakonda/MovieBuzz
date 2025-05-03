@@ -13,9 +13,9 @@
         <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="error-message">
           <i class="fas fa-exclamation-circle"></i> First Name is required 
         </div>
-        <!-- <div *ngIf="registerForm.get('firstname')?.errors?.['minlength']" class="error-message">
+        <div *ngIf="registerForm.get('firstName')?.errors?.['minlength']" class="error-message">
           <i class="fas fa-exclamation-circle"></i> Min 4 characters required
-        </div> -->
+        </div>
       </div>
   
       <div class="form-group">
@@ -28,9 +28,9 @@
         <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="error-message">
           <i class="fas fa-exclamation-circle"></i> Last Name is required 
         </div>
-        <!-- <div *ngIf="registerForm.get('lastname')?.errors?.['minlength']" class="error-message">
+        <div *ngIf="registerForm.get('lastName')?.errors?.['minlength']" class="error-message">
           <i class="fas fa-exclamation-circle"></i> Min 4 characters required
-        </div> -->
+        </div>
       </div>
     </div>
   
@@ -110,6 +110,9 @@
         </span>
         <span *ngIf="registerForm.get('userName')?.errors?.['maxlength']">
           <i class="fas fa-exclamation-circle"></i> Must be less than 30 characters
+        </span>
+        <span *ngIf="registerForm.get('userName')?.errors?.['pattern']">
+          <i class="fas fa-exclamation-circle"></i> Username must start with a alphabet
         </span>
       </div>
     </div>

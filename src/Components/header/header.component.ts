@@ -38,13 +38,20 @@ export class HeaderComponent implements OnInit,OnDestroy{
   updateAuthStatus(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
     this.isAdminUser = this.authService.isAdmin();
-    this.userName = this.authService.getCurrentUser()?.userName || '';
+    this.userName = this.authService.getCurrentUser()?.data.userName || '';
   }
 
   logOut(): void {
     this.authService.logout();
     this.router.navigate(['/dashboard']);
   }
+  // In your component class
+isMenuActive = false;
+
+toggleMenu() {
+  this.isMenuActive = !this.isMenuActive;
+}
+  
   
 
 

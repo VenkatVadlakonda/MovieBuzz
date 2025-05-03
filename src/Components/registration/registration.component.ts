@@ -11,7 +11,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { UsersService } from '../../_services/users.service';
 import { User } from '../../_models/user.modal';
-import { setData, users } from '../../_utils/moviebook.utils';
+// import { setData, users } from '../../_utils/moviebook.utils';
 
 @Component({
   selector: 'app-registration',
@@ -37,8 +37,8 @@ export class RegistrationComponent implements OnInit{
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+      firstName: ['', [Validators.required,Validators.minLength(4),Validators.pattern(/^[A-Za-z]+$/)]],
+      lastName: ['', [Validators.required,Validators.minLength(4),Validators.pattern(/^[A-Za-z]+$/)]],
       dateOfBirth: ['', [Validators.required, this.dobValidator.bind(this)]],
       emailId: [
         '',
@@ -51,10 +51,11 @@ export class RegistrationComponent implements OnInit{
           Validators.required,
           Validators.minLength(4),
           Validators.maxLength(30),
+          Validators.pattern(/^[A-Za-z][A-Za-z0-9@._\-!#$%^&*()]*$/)
         ],
       ],
       password
-      : ['', Validators.required],
+      : ['', [Validators.required,Validators.pattern(/^\S+$/)]],
     });
   }
   ngOnInit(): void {
@@ -87,25 +88,15 @@ export class RegistrationComponent implements OnInit{
       const addUser={...this.registerForm.value}
 
       
-      const isDuplicate = users.some(
-        (user: any) =>
-          user.userName === newUser.userName ||
-          user.emailId === newUser.emailId ||
-          user.phoneNo === newUser.phoneNo
-      );
       const isDup=this.apiData.some(
         user=>user.userName===addUser.userName ||  user.emailId === newUser.emailId ||  user.phoneNo === newUser.phoneNo
       )
 
-      if (isDuplicate || isDup) {
+      if ( isDup) {
         alert('Username or email or phone number already exists!');
         return;
       }
 
-      newUser.id =
-        users.length > 0 ? Math.max(...users.map((u: any) => u.id)) + 1 : 101;
-      
-      setData(newUser)
       this.usersAdd.addUsers(addUser).subscribe({
         next:res=>{
           console.log("Registration successfull from API")
@@ -141,6 +132,11 @@ export class RegistrationComponent implements OnInit{
       specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
       capital: /[A-Z]/.test(password),
     };
+    if (/\s/.test(password)) {
+      // You can set a custom flag or show an error message
+      this.passwordValid.length = false; // or any other way to invalidate
+      alert("No enter spaces in password")
+    }
   }
 
   isPasswordValid() {

@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { Movies } from '../../../_models/movies.modal';
+
 import { MoviesService } from '../../../_services/movies.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminmoviesPipe } from "../../../_pipes/adminmovies.pipe";
 import { forkJoin } from 'rxjs';
+import { MovieAPI } from '../../../_models/movies.modal';
 
 @Component({
   selector: 'app-admindashboard',
@@ -16,7 +17,7 @@ import { forkJoin } from 'rxjs';
 })
 export class AdmindashboardComponent implements OnInit {
  
-  movies: any[] = [];
+  movies: MovieAPI[] = [];
   search: string = '';
   selectedMovie: any ;
   isEdit = false;
@@ -295,15 +296,15 @@ export class AdmindashboardComponent implements OnInit {
         hours = 0;
       }
   
-      if (showDate < currentDate) {
-        alert(`Show date ${show.showDate} is in the past. Please select a future date.`);
-        return false;
-      } else if (showDate === currentDate) {
-        if (hours < currentHours || (hours === currentHours && minutes < currentMinutes)) {
-          alert(`Show time ${show.showTime} is in the past for today. Please select a future time.`);
-          return false;
-        }
-      }
+      // if (showDate < currentDate) {
+      //   alert(`Show date ${show.showDate} is in the past. Please select a future date.`);
+      //   return false;
+      // } else if (showDate === currentDate) {
+      //   if (hours < currentHours || (hours === currentHours && minutes < currentMinutes)) {
+      //     alert(`Show time ${show.showTime} is in the past for today. Please select a future time.`);
+      //     return false;
+      //   }
+      // }
   
       if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
         alert(`Invalid time: ${show.showTime}. Hours must be 0-23 and minutes 0-59.`);

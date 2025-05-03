@@ -11,7 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../_services/auth.service';
 import { User } from '../../_models/user.modal';
 import { UsersService } from '../../_services/users.service';
-import { getUser } from '../../_utils/moviebook.utils';
+
 
 @Component({
   selector: 'app-login',
@@ -20,15 +20,117 @@ import { getUser } from '../../_utils/moviebook.utils';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit{
-  loginForm: FormGroup;
-  passwordFocused:boolean = false;
-  showPassword:boolean = false; 
-  moveButton:boolean = false;
-  loginError:string = '';
-  isSubmitting:boolean = false;
-  userData:User[]=[]
+  // loginForm: FormGroup;
+  // passwordFocused:boolean = false;
+  // showPassword:boolean = false; 
+  // moveButton:boolean = false;
+  // loginError:string = '';
+  // isSubmitting:boolean = false;
+  // userData:User[]=[]
 
-  private userService=inject(UsersService)
+  // private userService=inject(UsersService)
+
+  // constructor(
+  //   private fb: FormBuilder,
+  //   private router: Router,
+  //   private authService: AuthService
+  // ) {
+  //   this.loginForm = this.fb.group({
+  //     userName: ['', [Validators.required, Validators.minLength(3)]],
+  //     password: ['', [Validators.required, Validators.minLength(8)]]
+  //   });
+  // }
+
+  // ngOnInit(): void {
+  //   this.userService.getAllUsers().subscribe({
+  //     next: (data: any) => {
+  //       // Handle different response formats
+  //       console.log("All USers from API:",data)
+  //       if (Array.isArray(data)) {
+  //         this.userData = data;
+  //       } else if (data && Array.isArray(data.data)) {
+  //         this.userData = data.data;
+  //       } else {
+  //         console.error('Unexpected API response format:', data);
+  //         this.userData = [];
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching users:', err);
+  //       this.userData = [];
+  //     }
+  //   });
+  // }
+
+  // onHover() {
+  //   if (this.loginForm.invalid) {
+  //     this.moveButton = !this.moveButton;
+  //   }
+  // }
+  // togglePasswordVisibility() {
+  //   this.showPassword = !this.showPassword;
+  // }
+
+  // //on submit if user user UI if admin adminUI
+  // onSubmit() {
+  //   if (this.loginForm.valid && !this.isSubmitting) {
+  //     this.isSubmitting = true;
+  //     const { userName, password } = this.loginForm.value;
+      
+  //     if (userName === 'Admin' && password === 'Admin@123') {
+  //       this.authService.login({
+  //         userName: 'Admin',
+  //         isAdmin: true
+  //       });
+  //       alert("Admin Login Successfull")
+  //       this.router.navigate(['/admin']);
+  //       return;
+  //     }
+
+      
+  //     // const user = getUser().find((u: User) => u.userName === userName && u.password === password);
+  //     const userapi=this.userData.find((users:User)=>users.userName===userName&& users.password===password)
+  //     console.log("this is userapi:",userapi)
+  //     //  if (true) {
+  //     // //   this.authService.login({
+  //     // //     userId: user.id,
+  //     // //     userName: user.userName,
+  //     // //     password:user.password,
+  //     // //     emailId: user.emailId,
+  //     // //     isAdmin: false,
+  //     // //     dateOfBirth:user.dateOfBirth,
+  //     // //     firstName:user.firstName,
+  //     // //     lastName:user.lastName
+  //     // //   });
+  //     //   // alert("Login Successfull")
+  //     //   this.router.navigate(['/dashboard']);
+  //     // }else 
+  //     if(userapi){
+  //       this.authService.login({
+  //         userName,password
+  //       });
+        
+  //       this.router.navigate(['/dashboard']);
+  //     }
+  //      else {
+  //       alert("Username and password not exists")
+  //       this.loginError = 'Invalid username or password';
+  //       this.moveButton = !this.moveButton;
+  //     }
+  //     this.isSubmitting = false;
+  //   }
+  // }
+
+  loginForm: FormGroup;
+  passwordFocused: boolean = false;
+  showPassword: boolean = false;
+  moveButton: boolean = false;
+  loginError: string = '';
+  isSubmitting: boolean = false;
+  isUsersLoaded: boolean = false;
+  userData: User[] = [];
+
+  private userService = inject(UsersService);
 
   constructor(
     private fb: FormBuilder,
@@ -37,14 +139,14 @@ export class LoginComponent implements OnInit{
   ) {
     this.loginForm = this.fb.group({
       userName: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
   ngOnInit(): void {
     this.userService.getAllUsers().subscribe({
       next: (data: any) => {
-        // Handle different response formats
+        console.log('All Users from API:', data);
         if (Array.isArray(data)) {
           this.userData = data;
         } else if (data && Array.isArray(data.data)) {
@@ -53,11 +155,13 @@ export class LoginComponent implements OnInit{
           console.error('Unexpected API response format:', data);
           this.userData = [];
         }
+        this.isUsersLoaded = true;
       },
       error: (err) => {
         console.error('Error fetching users:', err);
         this.userData = [];
-      }
+        this.isUsersLoaded = true; // Still set to true to allow login attempt
+      },
     });
   }
 
@@ -66,56 +170,94 @@ export class LoginComponent implements OnInit{
       this.moveButton = !this.moveButton;
     }
   }
+
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
-  //on submit if user user UI if admin adminUI
+  // onSubmit() {
+  //   if (!this.isUsersLoaded) {
+  //     alert('Please wait, user data is still loading...');
+  //     return;
+  //   }
+
+  //   if (this.loginForm.valid && !this.isSubmitting) {
+  //     this.isSubmitting = true;
+  //     const { userName, password } = this.loginForm.value;
+
+  //     // Admin login check
+  //     if (userName === 'Admin' && password === 'Admin@123') {
+  //       this.authService.login({
+  //         userName: 'Admin',
+  //         isAdmin: true,
+  //       });
+  //       alert('Admin Login Successful');
+  //       this.router.navigate(['/admin']);
+  //       return;
+  //     }
+
+  //     // Regular user check
+  //     const userapi = this.userData.find(
+  //       (user: User) => user.userName === userName && user.password === password
+  //     );
+
+  //     console.log('User matched:', userapi);
+
+  //     if (userapi) {
+  //       this.authService.login({
+  //         userId: userapi.userId,
+  //         userName: userapi.userName,
+  //         emailId: userapi.emailId,
+  //         isAdmin: false,
+  //         dateOfBirth: userapi.dateOfBirth,
+  //         firstName: userapi.firstName,
+  //         lastName: userapi.lastName,
+  //       });
+  //       alert('Login Successful');
+  //       this.router.navigate(['/dashboard']);
+  //     } else {
+  //       this.loginError = 'Invalid username or password';
+  //       alert('Username or password is incorrect');
+  //       this.moveButton = !this.moveButton;
+  //     }
+
+  //     this.isSubmitting = false;
+  //   }
+  // }
+
   onSubmit() {
     if (this.loginForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
       const { userName, password } = this.loginForm.value;
-      
+  
       if (userName === 'Admin' && password === 'Admin@123') {
-        this.authService.login({
-          userName: 'Admin',
-          isAdmin: true
-        });
-        alert("Admin Login Successfull")
+        this.authService.login({ userName: 'Admin', isAdmin: true });
+        alert('Admin Login Successful');
         this.router.navigate(['/admin']);
         return;
       }
-
-      
-      const user = getUser().find((u: User) => u.userName === userName && u.password === password);
-      const userapi=this.userData.find((users:User)=>users.userName===userName&& users.password===password)
-      console.log(userapi)
-      if (user) {
-        this.authService.login({
-          userId: user.id,
-          userName: user.userName,
-          password:user.password,
-          emailId: user.emailId,
-          isAdmin: false,
-          dateOfBirth:user.dateOfBirth,
-          firstName:user.firstName,
-          lastName:user.lastName
-        });
-        alert("Login Successfull")
-        this.router.navigate(['/dashboard']);
-      }else if(userapi){
-        this.authService.login({
-          userapi
-        });
-        
-        this.router.navigate(['/dashboard']);
-      }
-       else {
-        alert("Username and password not exists")
-        this.loginError = 'Invalid username or password';
-        this.moveButton = !this.moveButton;
-      }
-      this.isSubmitting = false;
+  
+      this.userService.loginUser({ userName, password }).subscribe({
+        next: (userFromApi) => {
+          if (userFromApi) {
+            this.authService.login(userFromApi); // This will store in localStorage too
+            alert('Login Successful');
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.loginError = 'Invalid credentials';
+            alert('Username or password is incorrect');
+            this.moveButton = !this.moveButton;
+          }
+          this.isSubmitting = false;
+        },
+        error: (err) => {
+          console.error('Login failed:', err);
+          this.loginError = 'Login failed';
+          alert('Invalid credentials');
+          this.isSubmitting = false;
+        }
+      });
     }
   }
+  
 }

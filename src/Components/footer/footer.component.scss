@@ -1,39 +1,130 @@
-footer{
-    
+footer {
     background-color: #1F1F2E;
+    position: fixed;
     bottom: 0;
     width: 100%;
     color: #FFFFFF;
     display: flex;
     justify-content: space-between;
-    
-}
-button{
-    color: none;
-}
-.Icons{
+    align-items: center;
+  }
+  
+  button {
+    background: none;
+    border: none;
+   
+    cursor: pointer;
+    color: white;
+  }
+  
+  .Icons {
     display: flex;
-    gap: 30px;
-    font-size:x-large;
-}
-.footer-content{
+    gap: 20px;
+    font-size: x-large;
+    
+    a {
+      color: white;
+      transition: transform 0.3s ease;
+      
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+  
+  .footer-content {
     display: flex;
-    gap: 30px;
+    gap: 40px;
     
-    
-}
-i{
+    a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      
+      &:hover {
+        color: #ff4b5c;
+      }
+    }
+  }
+  
+  i {
     margin-right: 10px;
     margin-top: 10px;
-    
-}
-
-h3{
-    
+  }
+  
+  h3 {
     margin-top: 10px;
     margin-left: 10px;
-   
-    padding: 5px;
+    padding: 1px;
+    font-size: 1rem;
+  }
+  
+  
+  @media (max-width: 992px) {
+    .footer-content {
+      gap: 30px;
+    }
     
+    .Icons {
+      gap: 15px;
+      font-size: large;
+    }
+    
+    h3 {
+      font-size: 0.9rem;
+    }
+  }
+  
 
-}
+  @media (max-width: 768px) {
+    footer {
+      flex-direction: column;
+      padding: 10px;
+      position: relative; 
+    }
+    
+    .footer-content {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+    
+    .Icons {
+      margin-top: 10px;
+    }
+    
+    h3 {
+      margin: 5px 0;
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .footer-content {
+      gap: 10px;
+      font-size: 0.8rem;
+    }
+    
+    .Icons {
+      gap: 10px;
+      font-size: medium;
+    }
+    
+    i {
+      margin-right: 5px;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    .footer-content {
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .Icons {
+      gap: 8px;
+    }
+  }

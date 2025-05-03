@@ -1,4 +1,4 @@
-import { Booking, BookingsHistory } from './../_models/booking.modal';
+import { Booking } from './../_models/booking.modal';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
