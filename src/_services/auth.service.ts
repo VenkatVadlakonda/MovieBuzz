@@ -13,13 +13,6 @@ export class AuthService {
   private router=inject(Router)
   private userService=inject(UsersService)
 
-  // constructor() {
-  //   const session = localStorage.getItem('currentSession');
-  //   if (session) {
-  //     this.currentUserSubject.next(JSON.parse(session));
-  //   }
-    
-  // }
   constructor() {
     const sessionData = localStorage.getItem('currentSession');
     if (sessionData) {

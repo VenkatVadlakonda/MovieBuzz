@@ -1,7 +1,7 @@
 
 <div class="admin-dashboard">
   <span class="search">
-    <input type="text" placeholder="Search movies..." [(ngModel)]="search">
+    <input type="text" placeholder="Search movies or Genere" [(ngModel)]="search">
   </span>
   <button class="add-movie-btn" (click)="onAddMovie()">
     <i class="fa-solid fa-square-plus"></i> Add New Movie
@@ -16,45 +16,45 @@
       <!-- Movie Details -->
       <div class="form-group">
         <label>Movie Name</label>
-        <input class="form-input" [(ngModel)]="selectedMovie.movieName" name="name" required>
+        <input class="form-input" [(ngModel)]="selectedMovie.movieName" placeholder="Enter a movie name" name="name" required>
       </div>
       
       <div class="form-group">
         <label>Genre</label>
-        <input class="form-input" [(ngModel)]="selectedMovie.genre" name="genre" required>
+        <input class="form-input" [(ngModel)]="selectedMovie.genre" placeholder="Enter genre (Comma separated)" name="genre" required>
       </div>
       
       <div class="form-row">
         <div class="form-group">
           <label>Age Restriction</label>
-          <input type="number" class="form-input" [(ngModel)]="selectedMovie.ageRestriction" name="age" required>
+          <input type="number" class="form-input" [(ngModel)]="selectedMovie.ageRestriction" placeholder="Enter age restriction" name="age" required>
         </div>
         
         <div class="form-group">
           <label>Duration (minutes)</label>
-          <input type="number" class="form-input" [(ngModel)]="selectedMovie.duration" name="duration" required>
+          <input type="number" class="form-input" [(ngModel)]="selectedMovie.duration" placeholder="Enter duration" name="duration" required>
         </div>
         
         <div class="form-group">
           <label>Price</label>
-          <input type="number" class="form-input" [(ngModel)]="selectedMovie.price" name="price" required>
+          <input type="number" class="form-input" [(ngModel)]="selectedMovie.price" placeholder="Enter price" name="price" required>
         </div>
       </div>
       
       <div class="form-group">
         <label>Description</label>
-        <textarea class="form-textarea" [(ngModel)]="selectedMovie.description" name="desc" required></textarea>
+        <textarea class="form-textarea" [(ngModel)]="selectedMovie.description" placeholder="Enter description" name="desc" required></textarea>
       </div>
       
       <div class="form-row">
         <div class="form-group">
           <label>Poster URL</label>
-          <input class="form-input" [(ngModel)]="selectedMovie.posterImageUrl" name="poster" required>
+          <input class="form-input" [(ngModel)]="selectedMovie.posterImageUrl" placeholder="Enter img url *(https://)" name="poster" required>
         </div>
         
         <div class="form-group">
           <label>Trailer URL</label>
-          <input class="form-input" [(ngModel)]="selectedMovie.trailerUrl" name="trailer" required>
+          <input class="form-input" [(ngModel)]="selectedMovie.trailerUrl" placeholder="Enter video url" name="trailer" required>
         </div>
       </div>
       
@@ -76,7 +76,7 @@
           
           <div class="form-group">
             <label>Show Time</label>
-            <input type="text" class="form-input" [(ngModel)]="show.showTime" [name]="'showTime' + i" required>
+            <input type="text" class="form-input" [(ngModel)]="show.showTime" placeholder="Example: 11:00 AM" [name]="'showTime' + i" required>
           </div>
           
           <div class="form-group">
@@ -91,8 +91,8 @@
       </button>
       
       <div class="form-actions">
-        <button type="submit" class="submit-btn">Add Movie</button>
-        <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="submit-btn"><i class="fa-solid fa-square-plus"></i> Add Movie</button>
+        <button type="button" class="cancel-btn" (click)="onCancel()">X</button>
       </div>
     </form>
   </div>
@@ -172,6 +172,7 @@
           <input type="text" 
                  class="form-input" 
                  [(ngModel)]="show.showTime" 
+                 placeholder="showTime Example(11:00 PM)"
                  [name]="'showTime' + i" 
                  required>
         </div>
@@ -193,8 +194,8 @@
     </button>
     
     <div class="form-actions">
-      <button type="submit" class="submit-btn">Update Movie</button>
-      <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="submit-btn">Update</button>
+      <button type="button" class="cancel-btn" (click)="onCancel()">X</button>
     </div>
   </form>
 </div>
