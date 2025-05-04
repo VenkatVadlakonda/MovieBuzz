@@ -1,4 +1,5 @@
 export interface User {
+  role: string;
 fullName: any;
   firstName: string;
   lastName: string;

@@ -13,28 +13,39 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './adminusersview.component.scss'
 })
 export class AdminusersviewComponent implements OnInit{
-  TotalUsers:number=0
-  AllUsers:any;
-  search:string=''
-  users:User[] = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
-  private userServices=inject(UsersService)
-  ngOnInit():void{
-    this.TotalUsers=this.users.length
+  TotalUsers: number = 0;
+  AllUsers: any;
+  search: string = '';
+  count: boolean = false;
+  u: string = '';
+  isLoading: boolean = true;
+  users: User[] = JSON.parse(localStorage.getItem('MovieBuzzUsers') || '[]');
+  private userServices = inject(UsersService);
+
+  ngOnInit(): void {
+    this.TotalUsers = this.users.length;
     this.userServices.getAllUsers().subscribe({
       next: (data: any) => {
-        
         if (Array.isArray(data)) {
           this.AllUsers = data;
         } else if (data && data.data) {
           this.AllUsers = data.data;
         }
         this.TotalUsers = this.AllUsers.length;
+        this.isLoading = false;
+
+        if (!this.AllUsers || this.AllUsers.length <= 1) {
+          this.count = true;
+          this.u = 'No users found';
+        }
       },
       error: (err) => {
         console.error('Error fetching users:', err);
+        this.isLoading = false;
+        this.count = true;
+        this.u = 'Error fetching users';
       }
     });
-
   }
 
 }

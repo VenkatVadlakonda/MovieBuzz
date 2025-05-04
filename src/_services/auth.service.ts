@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { UsersService } from './users.service';
 import { remove, session, userDataAPI } from '../_utils/moviebook.utils';
+import { User } from '../_models/user.modal';
 
 @Injectable({
   providedIn: 'root'
@@ -31,23 +32,13 @@ export class AuthService {
     }
   }
   
-
-  //user login, login session open for 30mins and if user logs in display user UI if admin , admin UI
   login(userData: any) {
-    
-    console.log("UserData:",userData)
-    
-    session(userData)
-    
-    
+    console.log("UserData in AuthService:", userData);
+     
+   session(userData);
     this.currentUserSubject.next(userData);
-
-    if(userData.isAdmin){
-       this.router.navigate(['/admin-dashboard'])
-    }
-    else{
-      this.router.navigate(['/dashboard'])
-    }
+    const role = (userData.role || '').toLowerCase();
+    this.router.navigate([role === 'admin' ? '/admin-dashboard' : '/dashboard']);
   }
   //logout
   logout(redirect:boolean=false) {
@@ -70,8 +61,9 @@ export class AuthService {
     return !!this.currentUserSubject.value;
   }
 
-  isAdmin() {
-    return this.currentUserSubject.value?.isAdmin;
+  isAdmin(): boolean {
+    const user = this.currentUserSubject.value;
+    return user ? (user.role?.toLowerCase() === 'admin' || user.isAdmin === true) : false;
   }
   
 }

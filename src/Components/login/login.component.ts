@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit{
       error: (err) => {
         console.error('Error fetching users:', err);
         this.userData = [];
-        this.isUsersLoaded = true; // Still set to true to allow login attempt
+        this.isUsersLoaded = true; 
       },
     });
   }
@@ -79,34 +79,56 @@ export class LoginComponent implements OnInit{
       this.isSubmitting = true;
       const { userName, password } = this.loginForm.value;
   
-      if (userName === 'Admin' && password === 'Admin@123') {
-        this.authService.login({ userName: 'Admin', isAdmin: true });
-        alert('Admin Login Successful');
-        this.router.navigate(['/admin']);
-        return;
-      }
-  
       this.userService.loginUser({ userName, password }).subscribe({
-        next: (userFromApi) => {
-          if (userFromApi) {
-            this.authService.login(userFromApi); // This will store in localStorage too
-            alert('Login Successful');
-            this.router.navigate(['/dashboard']);
+        next: (response) => {
+          console.log("API Response:", response);
+          if (response.hasOwnProperty('isAdmin')) {
+           
+            if (response.userName.toLowerCase() === 'admin' && password === 'admin123') {
+              const adminUser = {
+                userName: response.userName,
+                role: 'admin',
+                isAdmin: true
+              };
+              this.authService.login(adminUser);
+              alert('Admin Login Successful');
+              this.router.navigate(['/admin-dashboard']);
+            } else {
+              this.handleLoginError('Invalid admin credentials');
+            }
+          } 
+          else if (response.success && response.data) {
+         
+            const userData = response.data;
+            const role = userData.role?.toLowerCase();
+            
+            if (role === 'user') {
+              this.authService.login(userData);
+              alert('Login Successful');
+              this.router.navigate(['/dashboard']);
+            } else {
+              this.handleLoginError('Invalid user role');
+            }
           } else {
-            this.loginError = 'Invalid credentials';
-            alert('Username or password is incorrect');
-            this.moveButton = !this.moveButton;
+            this.handleLoginError(response.message || 'Invalid credentials');
           }
+          
           this.isSubmitting = false;
         },
         error: (err) => {
           console.error('Login failed:', err);
-          this.loginError = 'Login failed';
-          alert('Invalid credentials');
+          this.handleLoginError(err.error?.message || 'Login failed. Please try again.');
           this.isSubmitting = false;
         }
       });
     }
+  }
+  
+  
+  private handleLoginError(message: string) {
+    this.loginError = message;
+    alert(message);
+    this.moveButton = !this.moveButton;
   }
   
 }

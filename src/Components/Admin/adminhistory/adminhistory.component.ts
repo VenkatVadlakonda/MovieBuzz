@@ -13,17 +13,17 @@ import { MoviesService } from '../../../_services/movies.service';
   styleUrl: './adminhistory.component.scss',
 })
 export class AdminhistoryComponent implements OnInit {
-  book: any;
+  book: string = '';
   history: string = '';
- 
   TotalCount: number = 0;
-  count:boolean=false
-  bookingHistory: Booking[]=[];
+  count: boolean = false;
+  isLoading: boolean = true;
+
+  bookingHistory: Booking[] = [];
 
   private adminService = inject(MoviesService);
+
   ngOnInit(): void {
-    
-    
     this.adminService.getAllBookingsForAdmin().subscribe({
       next: (data: any) => {
         if (Array.isArray(data)) {
@@ -31,15 +31,21 @@ export class AdminhistoryComponent implements OnInit {
         } else if (data && data.data) {
           this.bookingHistory = data.data;
         }
+
+        this.TotalCount = this.bookingHistory.length;
+        this.isLoading = false;
+
+        if (this.TotalCount === 0) {
+          this.count = true;
+          this.book = 'No Bookings Found';
+        }
       },
       error: (err) => {
         console.error('Error fetching users:', err);
+        this.isLoading = false;
+        this.count = true;
+        this.book = 'Error fetching bookings';
       },
     });
-    this.TotalCount=this.bookingHistory.length
-    if (this.TotalCount == 0) {
-      this.count=true
-      this.book = 'No Bookings Found';
-    }
   }
 }

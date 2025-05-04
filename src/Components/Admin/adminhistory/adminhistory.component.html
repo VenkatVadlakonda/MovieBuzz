@@ -1,27 +1,40 @@
-<!--Booking history of all users-->
-<div class="search">
-  <input type="text" placeholder="search for user or movie" [(ngModel)]="history" />
+<div *ngIf="isLoading">  
+  <div id="preloader">
+    <div id="loader"></div>
+  </div>
 </div>
-<table class="movie-table">
-  <tr>
-    <th>BookingID</th>
-    <th>UserName</th>
-    <th>MovieName</th>
-    <th>Show Time</th>
-    <th>Booking Date</th>
-    <th>Quantity</th>
-    <th>Totalprice</th>
-  </tr>
-  <tr *ngFor="let booking of bookingHistory | adminhistory:history ">
-    <td>{{ booking.bookingId }}</td>
-    <td>{{ booking.userName}}</td>
-    <td>{{ booking.movieName }}</td>
-    <td>{{ booking.showTime }}</td>
-    <td>{{ booking.showDate | date }}</td>
-    <td>{{ booking.numberOfTickets }}</td>
-    <td>Rs. {{ booking.totalPrice }}/-</td>
-  </tr>
-</table>
 
-<h2>Total Movies Booked: {{bookingHistory.length}}</h2>
-<h1 *ngIf="!count">{{book}}</h1>
+<div *ngIf="!isLoading && !count">
+  <div class="search">
+    <input type="text" placeholder="search for user or movie" [(ngModel)]="history" />
+  </div>
+
+  <table class="movie-table">
+    <tr>
+      <th>BookingID</th>
+      <th>UserName</th>
+      <th>MovieName</th>
+      <th>Show Time</th>
+      <th>Booking Date</th>
+      <th>Quantity</th>
+      <th>Totalprice</th>
+    </tr>
+    <tr *ngFor="let booking of bookingHistory | adminhistory:history">
+      <td>{{ booking.bookingId }}</td>
+      <td>{{ booking.userName }}</td>
+      <td>{{ booking.movieName }}</td>
+      <td>{{ booking.showTime }}</td>
+      <td>{{ booking.showDate | date }}</td>
+      <td>{{ booking.numberOfTickets }}</td>
+      <td>Rs. {{ booking.totalPrice }}/-</td>
+    </tr>
+  </table>
+
+  <h2>Total Movies Booked: {{ bookingHistory.length }}</h2>
+</div>
+
+
+<div *ngIf="!isLoading && count" class="no-movies">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7ui9D78o_ayqpjfztGl0ZREA5OjxWm4BD3Q&s" alt="No booking found">
+  <p>{{book}}</p>
+</div>

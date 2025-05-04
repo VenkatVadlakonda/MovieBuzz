@@ -40,13 +40,13 @@
 
       <div class="btn-control">
         <div class="qty">
-          <button (click)="decreaseQuantity()" [disabled]="ticketCount === 0">
+          <button (click)="decreaseQuantity()" >
             -
           </button>
           <p class="qty-value">{{ ticketCount }}</p>
           <button
             (click)="increaseQuantity()"
-            [disabled]="ticketCount === 6 || !selectedShow || ticketCount >= selectedShow.availableSeats"
+            [disabled]=" !selectedShow || ticketCount >= selectedShow.availableSeats"
           >
             +
           </button>
@@ -55,7 +55,7 @@
         <button
           class="book-btn"
           (click)="showBookingSummary()"
-          [disabled]="!selectedDate || !selectedTime || ticketCount === 0"
+          
         >
           Book Now
         </button>

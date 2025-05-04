@@ -12,7 +12,9 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { Router } from '@angular/router';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { AuthService } from '../../_services/auth.service';
-import { log } from 'ng-zorro-antd/core/logger';
+
+import { getUserAge } from '../../_utils/dashboard.utils';
+import { Movies } from '../../_models/movies.modal';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,7 +34,7 @@ import { log } from 'ng-zorro-antd/core/logger';
 })
 export class DashboardComponent implements OnInit {
 
-  movieAPI: any;
+  movieAPI: Movies[]=[];
   isLoading: boolean = false;
   errorMessage: string | null = null;
   searchMovie: string = '';
@@ -48,7 +50,7 @@ export class DashboardComponent implements OnInit {
   genreList: string[] = ['Action', 'Drama', 'Comedy', 'Thriller', 'Romance','Horror','Crime','Mystery'];
   selectedGenre: string = 'All';
   ngOnInit(): void {
-    // this.getMoviesData();
+    
     this.getAPIMovies();
   }
   getAPIMovies() {
@@ -86,7 +88,7 @@ export class DashboardComponent implements OnInit {
           
           // Handle case where user or user.data is null/undefined
           if (!user || !user.data) {
-            console.warn('No user data available - showing all movies');
+            console.log('No user data available - showing all movies');
             this.movieAPI = moviesArray;
             return;
           }
@@ -94,7 +96,7 @@ export class DashboardComponent implements OnInit {
           console.log('User DOB:', user.data.dateOfBirth);
 
           if (user.data.dateOfBirth) {
-            const userAge = this.getUserAge(user.data.dateOfBirth);
+            const userAge = getUserAge(user.data.dateOfBirth);
             console.log('User Age:', userAge);
 
             this.movieAPI = moviesArray.filter((movie) => {
@@ -146,18 +148,5 @@ export class DashboardComponent implements OnInit {
     } else {
       this.router.navigate(['/movie', movie.movieId]);
     }
-  }
-
-  //age filtering
-  getUserAge(dob: string): number {
-    const dateOfBirth = new Date(dob);
-    const today = new Date();
-    const month = today.getMonth() - dateOfBirth.getMonth();
-    let age = today.getFullYear() - dateOfBirth.getFullYear();
-
-    if (month < 0 || (month == 0 && today.getDate() < dateOfBirth.getDate())) {
-      age--;
-    }
-    return age;
   }
 }

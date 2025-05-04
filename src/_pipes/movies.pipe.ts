@@ -1,5 +1,5 @@
 import { Injectable, Pipe, PipeTransform } from '@angular/core';
-import { MovieAPI } from '../_models/movies.modal';
+import {  Movies } from '../_models/movies.modal';
 
 @Pipe({
   name: 'movies',
@@ -8,7 +8,7 @@ import { MovieAPI } from '../_models/movies.modal';
 @Injectable({ providedIn: 'root' }) 
 export class MoviesPipe implements PipeTransform {
 
-  transform(movieAPI: MovieAPI[], searchMovie: string,selectedGenre?:string|null): MovieAPI[] {
+  transform(movieAPI: Movies[], searchMovie: string,selectedGenre?:string|null): Movies[] {
     if (!movieAPI) return [];
 
     let filtered = movieAPI;

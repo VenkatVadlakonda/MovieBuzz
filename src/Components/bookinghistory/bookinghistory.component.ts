@@ -6,6 +6,7 @@ import { MoviesService } from '../../_services/movies.service';
 import { UsersService } from '../../_services/users.service';
 import { AuthService } from '../../_services/auth.service';
 import { userDataAPI } from '../../_utils/moviebook.utils';
+import { Booking } from '../../_models/booking.modal';
 
 @Component({
   selector: 'app-bookinghistory',
@@ -17,7 +18,7 @@ export class BookinghistoryComponent implements OnInit {
 
   id: number = 0;
   userName: string = '';
-  bookings: any;
+  bookings: Booking[]=[];
   isLoading: boolean = false;
 
   private bookingService = inject(MoviesService);
@@ -25,8 +26,9 @@ export class BookinghistoryComponent implements OnInit {
 
   ngOnInit(): void {
     const user = this.auth.getCurrentUser();
-    this.id = user?.data?.userId;
-    this.userName = user?.data?.userName || 'User';
+    console.log("current user bookin",user)
+    this.id = user.userId;
+    this.userName = user.userName || 'User';
 
     this.isLoading = true;
     this.bookingService.getBookings(this.id).subscribe({
