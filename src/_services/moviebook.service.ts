@@ -7,33 +7,10 @@ import { catchError, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class MoviebookService {
-  //storing booking data in localstorage
+ 
   constructor(private bookingsService:MoviesService){}
-  // saveBooking(booking: Booking){
-  //   // const history = JSON.parse(localStorage.getItem('bookingHistory') || '[]');
-  //   // history.push(booking);
-  //   // localStorage.setItem('bookingHistory', JSON.stringify(history));
-  //   return this.bookingsService.bookingMovie(booking).subscribe({
-  //     next:(data)=>{
-  //       console.log(data);
-        
-  //     },
-  //     error:(error)=>{
-  //       console.log("Error Occured",error)
-  //     }
-  //   })
-  // }
-
-  // getBookingHistory(): any[] {
-  //   return JSON.parse(localStorage.getItem('bookingHistory') || '[]');
-  // }
-
-  // getNextBookingId(): number {
-  //   const history = this.getBookingHistory();
-  //   return history.length ? history[history.length - 1].bookingId + 1 : 200;
-  // }
-
-  saveBooking(booking: any): Observable<any> {
+  
+  saveBooking(booking: Booking): Observable<Booking> {
     return this.bookingsService.bookingMovie(booking).pipe(
       catchError(error => {
         console.error("Error Occurred", error);

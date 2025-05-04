@@ -19,11 +19,11 @@ export class UsersService {
     const reg = 'https://localhost:7084/Users/register';
     return this.http.post<User>(reg, user);
   }
-  loginUser(user: any): Observable<any> {
-    if (user.userName === 'Admin') {
+  loginUser(user: { userName: string; password: string }): Observable<any> {
+    if (user.userName === 'admin') {
       return of({...user, isAdmin: true}); 
     }
-    return this.http.post<User>('https://localhost:7084/Users/login', user);
+    return this.http.post<any>('https://localhost:7084/Users/login', user);
   }
 
   

@@ -13,4 +13,5 @@ export interface Booking {
     userId: number;
     userName: string;
     showId?: number;
+    imageURL:any;
   }

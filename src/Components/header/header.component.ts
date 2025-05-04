@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit,OnDestroy{
   updateAuthStatus(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
     this.isAdminUser = this.authService.isAdmin();
-    this.userName = this.authService.getCurrentUser()?.data.userName || '';
+    this.userName = this.authService.getCurrentUser()?.userName || '';
   }
 
   logOut(): void {

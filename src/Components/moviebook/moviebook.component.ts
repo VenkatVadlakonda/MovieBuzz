@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MovieAPI } from '../../_models/movies.modal';
+import { Movies, ShowTime } from '../../_models/movies.modal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MoviesService } from '../../_services/movies.service';
 import { CommonModule } from '@angular/common';
@@ -12,7 +12,7 @@ import {
 } from '../../_utils/moviebook.utils';
 import { MoviebookService } from '../../_services/moviebook.service';
 import { AuthService } from '../../_services/auth.service';
-import { showTime } from '../../_models/showtime.modal';
+// import { showTime } from '../../_models/showtime.modal';
 import { Booking } from '../../_models/booking.modal';
 
 @Component({
@@ -24,13 +24,13 @@ import { Booking } from '../../_models/booking.modal';
 })
 export class MoviebookComponent implements OnInit {
   movieId: number = 0;
-  movieAPI: MovieAPI | null = null;
+  movieAPI: any | null = null;
   trailerurl: SafeResourceUrl | null = null;
   shows: any[] = [];
 
   selectedDate: string = '';
   selectedTime: string = '';
-  selectedShow: showTime | null = null;
+  selectedShow: ShowTime | null = null;
   ticketCount: number = 0;
   totalPrice: number = 0;
   showDates: string[] = [];
@@ -145,6 +145,12 @@ export class MoviebookComponent implements OnInit {
   }
 
   increaseQuantity(): void {
+    if (this.ticketCount >= 6) {
+      alert('You can book a maximum of 6 tickets only.');
+      return;
+    }
+  
+    
     if (
       this.selectedShow &&
       this.ticketCount < 6 &&
@@ -156,6 +162,10 @@ export class MoviebookComponent implements OnInit {
   }
 
   decreaseQuantity(): void {
+    if (this.ticketCount <= 0) {
+      alert('Ticket count cannot be less than 0.');
+      return;
+    }
     if (this.ticketCount > 0) {
       this.ticketCount--;
       this.calculateTotal();
@@ -169,7 +179,14 @@ export class MoviebookComponent implements OnInit {
   }
 
   showBookingSummary(): void {
-    if (!this.selectedShow) return;
+    if (!this.selectedShow || !this.selectedDate){
+      alert("Select a showTime to proceed")
+      return
+    };
+    if(this.ticketCount==0){
+      alert("Book atleast one Ticket")
+      return
+    }
 
     this.modal.confirm({
       nzTitle: 'Confirm Booking',
@@ -196,7 +213,7 @@ export class MoviebookComponent implements OnInit {
       return;
     }
 
-    const bookingPayload = {
+    const bookingPayload:Booking= {
       movieId: this.movieAPI.movieId,
       movieName: this.movieAPI.movieName,
       genre: this.movieAPI.genre,
@@ -205,9 +222,12 @@ export class MoviebookComponent implements OnInit {
       showTime: this.selectedTime,
       numberOfTickets: this.ticketCount,
       totalPrice: this.totalPrice,
-      userId: user.data?.userId,
-      userName: user.data?.userName,
-      showId: this.selectedShow.showId, 
+      userId: user?.userId,
+      userName: user?.userName,
+      showId: this.selectedShow.showId,
+      bookingId: 0,
+      posterImageUrl: '',
+      quantity: 0
     };
 
     console.log('Sending booking:', bookingPayload);

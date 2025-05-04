@@ -1,5 +1,5 @@
 
-export interface MovieAPI {
+export interface Movies {
     movieId?: number;
     movieName: string;
     genre: string;
