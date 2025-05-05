@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit{
           console.log("API Response:", response);
           if (response.hasOwnProperty('isAdmin')) {
            
-            if (response.userName.toLowerCase() === 'admin' && password === 'admin123') {
+            if (response.userName  && response.password==='Admin@123' ) {
               const adminUser = {
                 userName: response.userName,
                 role: 'admin',

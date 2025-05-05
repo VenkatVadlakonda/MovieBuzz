@@ -31,6 +31,7 @@ export function formatDateToYYYYMMDD(dateStr: string): string {
     const currentDate = now.toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
     const currentHours = now.getHours();
     const currentMinutes = now.getMinutes();
+    const futureDate=new Date("2025-05-31").toISOString().split('T')[0]
   
     // Loop through the shows to check for conflicts
     for (const show of showList) {
@@ -57,7 +58,7 @@ export function formatDateToYYYYMMDD(dateStr: string): string {
   
       // Check if the show time is in the past
       if (!isEdit) {
-        if (showDate < currentDate) {
+        if (showDate < currentDate ||showDate>futureDate) {
           alert(`Show date ${show.showDate} is in the past. Please select a future date.`);
           return false;
         } else if (showDate === currentDate) {

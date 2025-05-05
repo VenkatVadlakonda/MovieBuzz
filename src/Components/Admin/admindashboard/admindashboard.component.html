@@ -4,16 +4,16 @@
   </div>
 </div>
 <div class="admin-dashboard">
-  <span class="search" *ngIf="!isLoading && !c">
+  <span class="search" *ngIf="!isLoading">
     <input type="text" placeholder="Search movies or Genere" [(ngModel)]="search">
   </span>
-  <button class="add-movie-btn" (click)="onAddMovie()" *ngIf="!isLoading && !c">
+  <button class="add-movie-btn" (click)="onAddMovie()" *ngIf="!isLoading">
     <i class="fa-solid fa-square-plus"></i> Add New Movie
   </button>
   
 
   <!-- Add Movie Form -->
-  <div class="movie-form" *ngIf="selectedMovie && !isEdit && !isLoading && !c">
+  <div class="movie-form" *ngIf="selectedMovie && !isEdit && !isLoading">
     <form (ngSubmit)="saveMovie(selectedMovie)">
       <h2>Add New Movie</h2>
       

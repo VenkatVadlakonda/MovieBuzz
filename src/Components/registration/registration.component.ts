@@ -38,7 +38,7 @@ export class RegistrationComponent implements OnInit{
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required,Validators.minLength(4),Validators.pattern(/^[A-Za-z]+$/)]],
-      lastName: ['', [Validators.required,Validators.minLength(4),Validators.pattern(/^[A-Za-z]+$/)]],
+      lastName: ['', [Validators.required,Validators.pattern(/^[A-Za-z]+$/)]],
       dateOfBirth: ['', [Validators.required, this.dobValidator.bind(this)]],
       emailId: [
         '',
