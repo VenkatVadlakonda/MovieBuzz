@@ -161,6 +161,7 @@ select {
 }
 
 .inactive {
+  display: none;
   filter: blur(2px);
   pointer-events: auto;
   cursor: not-allowed;
