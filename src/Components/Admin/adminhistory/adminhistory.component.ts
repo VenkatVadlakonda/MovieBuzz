@@ -42,6 +42,7 @@ export class AdminhistoryComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching users:', err);
+        alert(err.error?.message)
         this.isLoading = false;
         this.count = true;
         this.book = 'Error fetching bookings';

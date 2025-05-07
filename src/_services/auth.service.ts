@@ -18,11 +18,11 @@ export class AuthService {
     const sessionData = localStorage.getItem('currentSession');
     if (sessionData) {
       try {
-        const parsed = JSON.parse(sessionData);
-        if (parsed.expiresAt && parsed.expiresAt > Date.now()) {
-          this.currentUserSubject.next(parsed.user);
+        const session = JSON.parse(sessionData);
+        if (session.expiresAt && session.expiresAt > Date.now()) {
+          this.currentUserSubject.next(session.user);
         } else {
-          console.warn('Session expired');
+          alert('Session expired');
           remove();
         }
       } catch (e) {

@@ -66,6 +66,7 @@
 
   span{
     display: none;
+    
   }
 }
 span{
@@ -103,9 +104,10 @@ span{
 
 .sidebar nav a {
   padding: 10px 15px;
-  color: yellow;
+  color: white;
   text-decoration: none;
   font-size: 14px;
+  font-weight: 500;
   width: 100%; 
   text-align: center; 
 }

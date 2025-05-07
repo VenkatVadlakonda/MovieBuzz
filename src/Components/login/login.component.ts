@@ -58,6 +58,7 @@ export class LoginComponent implements OnInit{
       },
       error: (err) => {
         console.error('Error fetching users:', err);
+        alert(err.error?.message)
         this.userData = [];
         this.isUsersLoaded = true; 
       },

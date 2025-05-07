@@ -7,10 +7,11 @@ import { UsersService } from '../../_services/users.service';
 import { AuthService } from '../../_services/auth.service';
 import { userDataAPI } from '../../_utils/moviebook.utils';
 import { Booking } from '../../_models/booking.modal';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 @Component({
   selector: 'app-bookinghistory',
-  imports: [CommonModule, NzQRCodeModule],
+  imports: [CommonModule, NzQRCodeModule,NzPaginationModule],
   templateUrl: './bookinghistory.component.html',
   styleUrl: './bookinghistory.component.scss',
 })
@@ -20,6 +21,8 @@ export class BookinghistoryComponent implements OnInit {
   userName: string = '';
   bookings: Booking[]=[];
   isLoading: boolean = false;
+  currentPage: number = 1;
+  pageSize: number = 2;
 
   private bookingService = inject(MoviesService);
   private auth = inject(AuthService);
@@ -41,6 +44,7 @@ export class BookinghistoryComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching users:', err);
+        alert(err.error?.message)
       },
       complete: () => {
         this.isLoading = false;
@@ -60,5 +64,13 @@ export class BookinghistoryComponent implements OnInit {
       BookingID: booking.bookingId || '',
     };
     return JSON.stringify(details, null, 2);
+  }
+  get paginatedMovies(): any[] {
+    
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.bookings.reverse().slice(startIndex, startIndex + this.pageSize);
+  }
+  get totalMovies(): number {
+    return this.bookings.length;
   }
 }
