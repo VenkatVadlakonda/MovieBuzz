@@ -73,6 +73,7 @@ export class RegistrationComponent implements OnInit{
       },
       error: (err) => {
         console.error('Error fetching users:', err);
+        alert(err.error?.message)
         this.apiData = [];
       }
     });
@@ -102,6 +103,7 @@ export class RegistrationComponent implements OnInit{
           console.log("Registration successfull from API")
         },
         error:(err)=>{
+          alert(err.error?.message)
           if(err.status===400 && err.error=="User already exists"){
             alert("Username or email or phoneno alredy exists")
           }else{

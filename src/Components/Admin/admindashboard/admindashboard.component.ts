@@ -1,12 +1,19 @@
+import { routes } from './../../../app/app.routes';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 import { MoviesService } from '../../../_services/movies.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AdminmoviesPipe } from "../../../_pipes/adminmovies.pipe";
+import { AdminmoviesPipe } from '../../../_pipes/adminmovies.pipe';
 import { forkJoin } from 'rxjs';
-import {  Movies } from '../../../_models/movies.modal';
-import { formatDateForInput, formatDateToYYYYMMDD, validateShowTimes } from '../../../_utils/admindashboard.utils';
+import { Movies } from '../../../_models/movies.modal';
+import {
+  formatDateForInput,
+  formatDateToYYYYMMDD,
+  validateShowTimes,
+} from '../../../_utils/admindashboard.utils';
+import { errorContext } from 'rxjs/internal/util/errorContext';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admindashboard',
@@ -17,40 +24,51 @@ import { formatDateForInput, formatDateToYYYYMMDD, validateShowTimes } from '../
   styleUrl: './admindashboard.component.scss',
 })
 export class AdmindashboardComponent implements OnInit {
- 
   movies: Movies[] = [];
   search: string = '';
-  selectedMovie: any ;
-  isEdit:boolean = false;
+  selectedMovie: any;
+  isEdit: boolean = false;
   showList: any[] = [];
-  display:string=''
-  c:boolean=false
-  count:number=0
+  display: string = '';
+  c: boolean = false;
+  count: number = 0;
   isLoading: boolean = false;
-  constructor(private movieService: MoviesService,private cdr: ChangeDetectorRef) {}
+  constructor(
+    private movieService: MoviesService,
+    private cdr: ChangeDetectorRef,
+    private route: Router
+  ) {}
 
   ngOnInit(): void {
     this.getMovies();
   }
 
   getMovies(): void {
-    this.isLoading=true
+    this.isLoading = true;
     this.movieService.getMoviesAPI().subscribe({
       next: (data: any) => {
-        this.movies = Array.isArray(data) ? data : (data?.data || []);
-        this.count=this.movies.length
-        this.isLoading=false
-        if(this.count==0){
-          this.c=true
-          this.display="No Movies Found"
+        this.movies = Array.isArray(data) ? data : data?.data || [];
+        this.count = this.movies.length;
+        this.isLoading = false;
+        if (this.count == 0) {
+          this.c = true;
+          this.display = 'No Movies Found';
         }
       },
       error: (err) => {
         console.error('Error fetching movies:', err);
-        this.isLoading=false
-        this.c=true
-        this.display="Error Fetching Movies"
-      }
+        const backendErrors = err.error?.errors;
+
+        if (backendErrors) {
+          const messages = Object.values(backendErrors).flat();
+          alert(messages.join('\n'));
+        } else {
+          alert(err.error?.title || 'Something went wrong');
+        }
+        this.isLoading = false;
+        this.c = true;
+        this.display = 'Error Fetching Movies';
+      },
     });
   }
 
@@ -59,10 +77,9 @@ export class AdmindashboardComponent implements OnInit {
       showDate: '',
       showTime: '',
       availableSeats: 100,
-      showId: 0 
+      showId: 0,
     });
   }
-
 
   onAddMovie(): void {
     this.selectedMovie = {
@@ -73,31 +90,32 @@ export class AdmindashboardComponent implements OnInit {
       description: '',
       price: 0,
       posterImageUrl: '',
-      trailerUrl: ''
+      trailerUrl: '',
     };
     this.showList = [];
-    this.addShow(); 
+    this.addShow();
     this.isEdit = false;
   }
 
   onEditMovie(movie: any): void {
     this.movieService.getMovieByID(movie.movieId).subscribe({
       next: (movieDetails: any) => {
-        
-        const movies=Array.isArray(movieDetails)? movieDetails : (movieDetails?.data || [])
+        const movies = Array.isArray(movieDetails)
+          ? movieDetails
+          : movieDetails?.data || [];
         this.selectedMovie = {
           movieId: movies.movieId,
-          movieName: movies.movieName || '',
-          genre: movies.genre || '',
-          ageRestriction: movies.ageRestriction || null,
-          duration: movies.duration || null,
-          description: movies.description || '',
-          price: movies.price || 0,
-          posterImageUrl: movies.posterImageUrl || '',
-          trailerUrl: movies.trailerUrl || '',
-          isActive: movies.isActive || true
+          movieName: movies.movieName,
+          genre: movies.genre,
+          ageRestriction: movies.ageRestriction,
+          duration: movies.duration,
+          description: movies.description,
+          price: movies.price,
+          posterImageUrl: movies.posterImageUrl,
+          trailerUrl: movies.trailerUrl,
+          isActive: movies.isActive || true,
         };
-  
+
         this.movieService.getShowsForMovie(movie.movieId).subscribe({
           next: (showsResponse: any) => {
             const shows = showsResponse.data || showsResponse || [];
@@ -105,27 +123,42 @@ export class AdmindashboardComponent implements OnInit {
               showId: show.showId,
               movieId: show.movieId,
               showDate: formatDateForInput(show.showDate),
-              showTime: show.showTime || '',
-              availableSeats: show.availableSeats || 100
+              showTime: show.showTime,
+              availableSeats: show.availableSeats || 100,
             }));
-  
-            
+
             this.cdr.detectChanges();
           },
           error: (err) => {
             console.error('Error loading shows:', err);
+            const backendErrors = err.error?.errors;
+
+            if (backendErrors) {
+              const messages = Object.values(backendErrors).flat();
+              alert(messages.join('\n'));
+            } else {
+              alert(err.error?.title || 'Something went wrong');
+            }
             this.showList = [];
-          }
+          },
         });
-  
+
         this.isEdit = true;
       },
       error: (err) => {
         console.error('Error loading movie details:', err);
-      }
+        const backendErrors = err.error?.errors;
+
+        if (backendErrors) {
+          const messages = Object.values(backendErrors).flat();
+          alert(messages.join('\n'));
+        } else {
+          alert(err.error?.title || 'Something went wrong');
+        }
+      },
     });
   }
- 
+
   onCancel(): void {
     this.selectedMovie = null;
     this.showList = [];
@@ -136,7 +169,7 @@ export class AdmindashboardComponent implements OnInit {
     if (!this.validateForm()) {
       return;
     }
-  
+
     const movieObj = {
       movie: {
         movieId: this.isEdit ? movie.movieId : 0,
@@ -148,26 +181,24 @@ export class AdmindashboardComponent implements OnInit {
         price: movie.price,
         posterImageUrl: movie.posterImageUrl,
         trailerUrl: movie.trailerUrl,
-        isActive: movie.isActive || true
+        isActive: movie.isActive || true,
       },
       shows: this.showList
-        .filter(show => !this.isEdit||show.showId !== 0) 
-        .map(show => ({
+        .filter((show) => !this.isEdit || show.showId !== 0)
+        .map((show) => ({
           showId: show.showId || 0,
           movieId: this.isEdit ? movie.movieId : 0,
           showDate: formatDateToYYYYMMDD(show.showDate),
           showTime: show.showTime.trim(),
-          availableSeats: show.availableSeats
-        }))
+          availableSeats: show.availableSeats,
+        })),
     };
     debugger;
-  
+
     if (this.isEdit && movie.movieId) {
-      // First update the movie and existing shows
       this.movieService.updateMovieAPI(movie.movieId, movieObj).subscribe({
         next: () => {
-          
-          const newShows = this.showList.filter(show => show.showId === 0);
+          const newShows = this.showList.filter((show) => show.showId === 0);
           if (newShows.length > 0) {
             this.addNewShows(movie.movieId, newShows);
           } else {
@@ -177,11 +208,17 @@ export class AdmindashboardComponent implements OnInit {
         },
         error: (err) => {
           console.error('Update failed', err);
-          alert('Failed to update movie. Please try again.');
-        }
+          const backendErrors = err.error?.errors;
+
+          if (backendErrors) {
+            const messages = Object.values(backendErrors).flat();
+            alert(messages.join('\n'));
+          } else {
+            alert(err.error?.title || 'Something went wrong');
+          }
+        },
       });
     } else {
-      
       this.movieService.addMovieAPI(movieObj).subscribe({
         next: () => {
           this.getMovies();
@@ -189,24 +226,23 @@ export class AdmindashboardComponent implements OnInit {
         },
         error: (err) => {
           console.error('Add failed', err);
-          alert('Failed to add movie. Please try again.');
-        }
+          alert(err.error?.message);
+        },
       });
     }
   }
 
   private addNewShows(movieId: number, newShows: any[]): void {
-    const showObservables = newShows.map(show => {
-      const showObj= {
+    const showObservables = newShows.map((show) => {
+      const showObj = {
         movieId: movieId,
         showTime: show.showTime.trim(),
         showDate: formatDateToYYYYMMDD(show.showDate),
-        availableSeats: show.availableSeats
+        availableSeats: show.availableSeats,
       };
       return this.movieService.addShowAPI(showObj);
     });
-  
-    // Execute all show additions in parallel
+
     forkJoin(showObservables).subscribe({
       next: () => {
         this.getMovies();
@@ -214,22 +250,30 @@ export class AdmindashboardComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error adding new shows', err);
-        alert('Movie updated but failed to add some new shows. Please check.');
+        const backendErrors = err.error?.errors;
+
+        if (backendErrors) {
+          const messages = Object.values(backendErrors).flat();
+          alert(messages.join('\n'));
+        } else {
+          alert(err.error?.title || 'Something went wrong');
+        }
         this.getMovies();
         this.onCancel();
-      }
+      },
     });
   }
   private validateForm(): boolean {
-    
-    if (!this.selectedMovie.movieName || 
-        !this.selectedMovie.genre || 
-        !this.selectedMovie.ageRestriction ||
-        !this.selectedMovie.duration ||
-        !this.selectedMovie.description ||
-        !this.selectedMovie.price ||
-        !this.selectedMovie.posterImageUrl ||
-        !this.selectedMovie.trailerUrl) {
+    if (
+      !this.selectedMovie.movieName ||
+      !this.selectedMovie.genre ||
+      !this.selectedMovie.ageRestriction ||
+      !this.selectedMovie.duration ||
+      !this.selectedMovie.description ||
+      !this.selectedMovie.price ||
+      !this.selectedMovie.posterImageUrl ||
+      !this.selectedMovie.trailerUrl
+    ) {
       alert('Please fill all movie details');
       return false;
     }
@@ -245,17 +289,31 @@ export class AdmindashboardComponent implements OnInit {
         return false;
       }
     }
-    if(!validateShowTimes(this.showList, this.isEdit)){
+    if (!validateShowTimes(this.showList, this.isEdit)) {
       return false;
     }
 
     return true;
   }
-  
+
   onToggleActive(movie: any): void {
-    this.movieService.toggleStatus(movie.movieId).subscribe({
-      next: () => this.getMovies(),
-      error: (err) => console.error('Toggle status failed', err),
-    });
+    const action = movie.isActive ? 'inactive' : 'active';
+    const confirmation = confirm(`Do you want to ${action} this movie?`);
+  
+    if (confirmation) {
+      this.movieService.toggleStatus(movie.movieId).subscribe({
+        next: () => this.getMovies(),
+        error: (err) => {
+          const backendErrors = err.error?.errors;
+          if (backendErrors) {
+            const messages = Object.values(backendErrors).flat();
+            alert(messages.join('\n'));
+          } else {
+            alert(err.error?.title || 'Something went wrong');
+          }
+        },
+      });
+    }
   }
+  
 }

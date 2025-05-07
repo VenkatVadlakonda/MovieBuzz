@@ -73,12 +73,14 @@ export class MoviebookComponent implements OnInit {
             },
             error: (err) => {
               console.error('Error fetching shows:', err);
+              alert(err.error?.message)
             },
           });
         }
       },
       error: (err) => {
         console.error('Error fetching movie:', err);
+        alert(err.error?.message)
         this.route.navigate(['/dashboard']);
       },
     });

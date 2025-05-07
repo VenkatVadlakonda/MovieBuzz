@@ -9,7 +9,7 @@
 
 <ng-template #data>
   <section *ngIf="bookings.length > 0; else noHistory" class="booking-history-wrapper">
-    <div *ngFor="let booking of bookings" class="booking-card">
+    <div *ngFor="let booking of paginatedMovies" class="booking-card">
       <div class="poster">
         <img [src]="booking.posterImageUrl" alt="{{booking.movieName}}" />
       </div>
@@ -25,7 +25,15 @@
         <p>Booking ID: {{ booking.bookingId }}</p>
         <nz-qrcode [nzValue]="getBookingQRCode(booking)" nzColor="black" nzSize="180"></nz-qrcode>
       </div>
+      
     </div>
+    <nz-pagination
+    [nzPageSize]="pageSize"
+    [nzTotal]="totalMovies"
+    [(nzPageIndex)]="currentPage"
+    [nzShowSizeChanger]="false"
+    class="pagination"
+  ></nz-pagination>
   </section>
   
   <ng-template #noHistory>

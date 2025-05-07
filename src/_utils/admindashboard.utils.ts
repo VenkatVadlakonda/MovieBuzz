@@ -28,18 +28,18 @@ export function formatDateToYYYYMMDD(dateStr: string): string {
 
   export function validateShowTimes(showList: any,isEdit: boolean): boolean {
     const now = new Date();
-    const currentDate = now.toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
+    const currentDate = now.toISOString().split('T')[0]; 
     const currentHours = now.getHours();
     const currentMinutes = now.getMinutes();
     const futureDate=new Date("2025-05-31").toISOString().split('T')[0]
   
-    // Loop through the shows to check for conflicts
+
     for (const show of showList) {
       if (!show.showDate || !show.showTime) continue;
   
       const showDate = formatDateToYYYYMMDD(show.showDate);
   
-      // Parse the time in showTime to extract hours and minutes
+  
       const timeMatch = show.showTime.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
       if (!timeMatch) {
         alert(`Invalid time format for show: ${show.showTime}. Please use format like "10:00 AM"`);
@@ -56,7 +56,7 @@ export function formatDateToYYYYMMDD(dateStr: string): string {
         hours = 0;
       }
   
-      // Check if the show time is in the past
+    
       if (!isEdit) {
         if (showDate < currentDate ||showDate>futureDate) {
           alert(`Show date ${show.showDate} is in the past. Please select a future date.`);
