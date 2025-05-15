@@ -33,13 +33,12 @@ import { Movies } from '../../_models/movies.modal';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
-
-  movieAPI: Movies[]=[];
+  movieAPI: Movies[] = [];
   isLoading: boolean = false;
   errorMessage: string | null = null;
   searchMovie: string = '';
   currentPage: number = 1;
-  pageSize: number = 4;
+  pageSize: number = 5;
 
   //injecting services
   private movieService = inject(MoviesService);
@@ -47,10 +46,9 @@ export class DashboardComponent implements OnInit {
   private authService = inject(AuthService);
   private moviesPipe = inject(MoviesPipe);
 
-  genreList: string[] = ['Action', 'Drama', 'Comedy', 'Thriller', 'Romance','Horror','Crime','Mystery'];
+  genreList: any[] = [];
   selectedGenre: string = 'All';
   ngOnInit(): void {
-    
     this.getAPIMovies();
   }
   getAPIMovies() {
@@ -75,18 +73,40 @@ export class DashboardComponent implements OnInit {
           let moviesArray: any[] = [];
 
           if (Array.isArray(data)) {
-            moviesArray = data.filter(data=>data.isActive=data.isActive);
+            moviesArray = data.filter(
+              (data) => (data.isActive = data.isActive)
+            );
           } else if (data && Array.isArray(data.data)) {
-            moviesArray = data.data.filter((data:any)=>data.isActive=data.isActive);
+            moviesArray = data.data.filter(
+              (data: any) => (data.isActive = data.isActive)
+            );
           } else if (data && typeof data === 'object') {
-            moviesArray = [data.filter((data:any)=>data.isActive=data.isActive)];
+            moviesArray = [
+              data.filter((data: any) => (data.isActive = data.isActive)),
+            ];
           }
-          console.log('Movie', moviesArray.filter(data=>data.isActive=data.isActive));
+          console.log(
+            'Movie',
+            moviesArray.filter((data) => (data.isActive = data.isActive))
+          );
 
           const user = this.authService.getCurrentUser();
           console.log('User:', user);
-          
-         
+          this.genreList = [
+            ...new Set(
+              moviesArray
+                .filter(
+                  (movie) =>
+                    typeof movie.genre === 'string' && movie.genre.trim() !== ''
+                )
+                .flatMap((movie) =>
+                  movie.genre.split(',').map((g: string) => g.trim())
+                )
+            ),
+          ];
+
+          console.log('hello', this.genreList);
+
           if (!user || !user.data) {
             console.log('No user data available');
             this.movieAPI = moviesArray;
@@ -103,7 +123,7 @@ export class DashboardComponent implements OnInit {
           //     const restriction = Number(movie.ageRestriction || 0);
           //     return userAge >= restriction;
           //   });
-          // } 
+          // }
           // else {
           //   this.movieAPI = moviesArray;
           // }
@@ -112,7 +132,7 @@ export class DashboardComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error:', err);
-          alert(err.error?.message)
+          alert(err.error?.message);
           this.errorMessage = err.message || 'Failed to fetch movies';
           this.movieAPI = [];
         },

@@ -57,14 +57,12 @@ export class AdmindashboardComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching movies:', err);
-        const backendErrors = err.error?.errors;
+        alert(err.error?.errors)
+        alert(err.error?.message)
+        // const backendErrors = err.error?.errors;
 
-        if (backendErrors) {
-          const messages = Object.values(backendErrors).flat();
-          alert(messages.join('\n'));
-        } else {
-          alert(err.error?.title || 'Something went wrong');
-        }
+
+        
         this.isLoading = false;
         this.c = true;
         this.display = 'Error Fetching Movies';
@@ -98,6 +96,7 @@ export class AdmindashboardComponent implements OnInit {
   }
 
   onEditMovie(movie: any): void {
+    
     this.movieService.getMovieByID(movie.movieId).subscribe({
       next: (movieDetails: any) => {
         const movies = Array.isArray(movieDetails)
@@ -132,6 +131,8 @@ export class AdmindashboardComponent implements OnInit {
           error: (err) => {
             console.error('Error loading shows:', err);
             const backendErrors = err.error?.errors;
+            alert(err.error.message)
+            alert(err.error?.errors)
 
             if (backendErrors) {
               const messages = Object.values(backendErrors).flat();
@@ -148,6 +149,7 @@ export class AdmindashboardComponent implements OnInit {
       error: (err) => {
         console.error('Error loading movie details:', err);
         const backendErrors = err.error?.errors;
+        alert(err.error.message)
 
         if (backendErrors) {
           const messages = Object.values(backendErrors).flat();
@@ -166,6 +168,7 @@ export class AdmindashboardComponent implements OnInit {
   }
 
   saveMovie(movie: any): void {
+    
     if (!this.validateForm()) {
       return;
     }
@@ -193,7 +196,7 @@ export class AdmindashboardComponent implements OnInit {
           availableSeats: show.availableSeats,
         })),
     };
-    debugger;
+    
 
     if (this.isEdit && movie.movieId) {
       this.movieService.updateMovieAPI(movie.movieId, movieObj).subscribe({
@@ -209,6 +212,8 @@ export class AdmindashboardComponent implements OnInit {
         error: (err) => {
           console.error('Update failed', err);
           const backendErrors = err.error?.errors;
+          console.log(err.error?.errors)
+          alert(err.error?.errors)
 
           if (backendErrors) {
             const messages = Object.values(backendErrors).flat();
@@ -226,13 +231,22 @@ export class AdmindashboardComponent implements OnInit {
         },
         error: (err) => {
           console.error('Add failed', err);
-          alert(err.error?.message);
+          const backendErrors = err.error?.errors;
+          alert(err.error.message)
+          
+          if (backendErrors) {
+            const messages = Object.values(backendErrors);
+            alert(messages.join('\n'));
+          } else {
+            alert(err.error?.message);
+          }
         },
       });
     }
   }
 
   private addNewShows(movieId: number, newShows: any[]): void {
+    debugger
     const showObservables = newShows.map((show) => {
       const showObj = {
         movieId: movieId,
@@ -249,15 +263,9 @@ export class AdmindashboardComponent implements OnInit {
         this.onCancel();
       },
       error: (err) => {
-        console.error('Error adding new shows', err);
-        const backendErrors = err.error?.errors;
+        alert(err.error.message)
+        alert(err.error?.errors.ShowDate)
 
-        if (backendErrors) {
-          const messages = Object.values(backendErrors).flat();
-          alert(messages.join('\n'));
-        } else {
-          alert(err.error?.title || 'Something went wrong');
-        }
         this.getMovies();
         this.onCancel();
       },
@@ -304,13 +312,7 @@ export class AdmindashboardComponent implements OnInit {
       this.movieService.toggleStatus(movie.movieId).subscribe({
         next: () => this.getMovies(),
         error: (err) => {
-          const backendErrors = err.error?.errors;
-          if (backendErrors) {
-            const messages = Object.values(backendErrors).flat();
-            alert(messages.join('\n'));
-          } else {
-            alert(err.error?.title || 'Something went wrong');
-          }
+          alert(err.error?.message)
         },
       });
     }
