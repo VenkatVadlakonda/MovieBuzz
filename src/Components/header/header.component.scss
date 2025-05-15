@@ -3,10 +3,11 @@ header {
   position: relative;
   justify-content: space-between;
   align-items: center;
-  padding: 2px;
+
   background-color: #1f1f2e;
   color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  
 
   flex-wrap: wrap;
 
@@ -19,7 +20,7 @@ header {
 
     .masked-text {
       font-weight: bold;
-
+      margin-left: 18px;
       color: transparent;
       background-image: url("https://images.unsplash.com/photo-1732535725600-f805d8b33c9c?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
       background-size: 200%;
@@ -59,6 +60,7 @@ header {
           cursor: pointer;
           font-weight: bold;
           font-size: large;
+          margin-right: 10px;
 
           &:hover {
             color: #ff4b5c;
@@ -189,7 +191,7 @@ nav {
   
   .nav-links li a {
     display: block;
-    padding: 15px 20px;
+    // padding: 10px 10px;
     
     &.active {
       border-bottom: none;
