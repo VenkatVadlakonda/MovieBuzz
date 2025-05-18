@@ -47,7 +47,8 @@ export const routes: Routes = [
   },
   {
     path:'history',
-    loadComponent:()=>import('../Components/bookinghistory/bookinghistory.component').then(history=>history.BookinghistoryComponent),
+    component:BookinghistoryComponent,
+    // loadComponent:()=>import('../Components/bookinghistory/bookinghistory.component').then(history=>history.BookinghistoryComponent),
     canActivate:[authGuard]
   },
   {

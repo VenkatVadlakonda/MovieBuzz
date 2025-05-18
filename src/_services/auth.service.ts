@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { UsersService } from './users.service';
 import { remove, session, userDataAPI } from '../_utils/moviebook.utils';
-import { User } from '../_models/user.modal';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,31 +14,14 @@ export class AuthService {
   private router=inject(Router)
   private userService=inject(UsersService)
 
-  constructor() {
-    const sessionData = localStorage.getItem('currentSession');
-    if (sessionData) {
-      try {
-        const session = JSON.parse(sessionData);
-        if (session.expiresAt && session.expiresAt > Date.now()) {
-          this.currentUserSubject.next(session.user);
-        } else {
-          alert('Session expired');
-          remove();
-        }
-      } catch (e) {
-        console.error('Failed to parse session data:', e);
-        remove();
-      }
-    }
-  }
   
   login(userData: any) {
     console.log("UserData in AuthService:", userData);
      
    session(userData);
     this.currentUserSubject.next(userData);
-    const role = (userData.role || '').toLowerCase();
-    this.router.navigate([role === 'admin' ? '/admin-dashboard' : '/dashboard']);
+    // const role = (userData.data.user.role || '').toLowerCase();
+    // this.router.navigate([role === 'admin' ? '/admin-dashboard' : '/dashboard']);
   }
   //logout
   logout(redirect:boolean=false) {
@@ -54,16 +37,33 @@ export class AuthService {
 
   //get logged user object
   getCurrentUser() {
-    return this.currentUserSubject.value;
+    return this.currentUserSubject.value?.data?.user;
   }
 
   isLoggedIn() {
-    return !!this.currentUserSubject.value;
+    return !!this.currentUserSubject.value?.data?.token;
   }
 
   isAdmin(): boolean {
     const user = this.currentUserSubject.value;
-    return user ? (user.role?.toLowerCase() === 'admin' || user.isAdmin === true) : false;
+    return user ? (user.data.user?.role === 'Admin') : false;
+  }
+//   getToken(): string  {
+//     debugger
+//   const currentUser = this.currentUserSubject.value;
+  
+//   console.log("current:",currentUser.data.token)
+//   return currentUser.data.token || null;
+// }
+  getToken(): string | null {
+  const session = this.currentUserSubject.value;
+
+  if (session?.data.token) {
+    console.log("token bhai:",session.data.token)
+    return session.data.token;
   }
   
+
+  return null;
+}
 }

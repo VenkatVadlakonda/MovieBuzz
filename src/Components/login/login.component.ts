@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit{
       },
       error: (err) => {
         console.error('Error fetching users:', err);
-        alert(err.error?.message)
+        // alert(err.error?.message)
         this.userData = [];
         this.isUsersLoaded = true; 
       },
@@ -83,37 +83,24 @@ export class LoginComponent implements OnInit{
       this.userService.loginUser({ userName, password }).subscribe({
         next: (response) => {
           console.log("API Response:", response);
-          if (response.hasOwnProperty('isAdmin')) {
-           
-            if (response.userName  && response.password==='Admin@123' ) {
-              const adminUser = {
-                userName: response.userName,
-                role: 'admin',
-                isAdmin: true
-              };
-              this.authService.login(adminUser);
-              alert('Admin Login Successful');
-              this.router.navigate(['/admin-dashboard']);
-            } else {
-              this.handleLoginError('Invalid admin credentials');
-            }
-          } 
-          else if (response.success && response.data) {
-         
-            const userData = response.data;
-            const role = userData.role?.toLowerCase();
-            
-            if (role === 'user') {
-              this.authService.login(userData);
-              alert('Login Successful');
-              this.router.navigate(['/dashboard']);
-            } else {
-              this.handleLoginError('Invalid user role');
-            }
-          } else {
-            this.handleLoginError(response.message || 'Invalid credentials');
-          }
-          
+          if (response.success && response.data) {
+  const userData = response;
+  const role = userData.data.user.role;
+  
+
+  if (role === 'Admin') {
+    this.authService.login(userData);
+    alert('Admin Login Successful');
+    this.router.navigate(['/admin-dashboard']);
+  } else if (role === 'User') {
+    this.authService.login(userData);
+    alert('Login Successful');
+    this.router.navigate(['/dashboard']);
+  } else {
+    this.handleLoginError('Invalid user role');
+  }
+}
+
           this.isSubmitting = false;
         },
         error: (err) => {
@@ -128,7 +115,7 @@ export class LoginComponent implements OnInit{
   
   private handleLoginError(message: string) {
     this.loginError = message;
-    alert(message);
+    // alert(message);
     this.moveButton = !this.moveButton;
   }
   
