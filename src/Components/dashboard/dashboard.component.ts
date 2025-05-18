@@ -51,67 +51,156 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getAPIMovies();
   }
-  getAPIMovies() {
-  this.isLoading = true;
-  this.errorMessage = null;
+//   getAPIMovies() {
+//   this.isLoading = true;
+//   this.errorMessage = null;
 
-  this.movieService
-    .getMoviesAPI()
-    .pipe(
-      catchError((error) => {
-        console.error('Error Occurred:', error);
-        this.errorMessage = 'Failed to fetch the Movies Data';
-        return throwError(() => new Error(error));
-      }),
-      finalize(() => {
-        this.isLoading = false;
-      })
-    )
-    .subscribe({
-      next: (data: any) => {
-        console.log('API Response:', data);
+//   this.movieService
+//     .getMoviesAPI()
+//     .pipe(
+//       catchError((error) => {
+//         console.error('Error Occurred:', error);
+//         this.errorMessage = 'Failed to fetch the Movies Data';
+//         return throwError(() => new Error(error));
+//       }),
+//       finalize(() => {
+//         this.isLoading = false;
+//       })
+//     )
+//     .subscribe({
+//       next: (data: any) => {
+//         console.log('API Response:', data);
 
-        let moviesArray: any[] = [];
+//         let moviesArray: any[] = [];
 
-        // ✅ Filter only if it's an array
-        if (data && Array.isArray(data.data)) {
-          moviesArray = data.data.filter(
-            (movie: any) => movie.isActive === true
-          );
-        }
+//         // ✅ Filter only if it's an array
+//         if (data && Array.isArray(data.data)) {
+//           moviesArray = data.data.filter(
+//             (movie: any) => movie.isActive === true
+//           );
+//         }
 
-        const user = this.authService.getCurrentUser();
-        console.log('User:', user);
+//         const user = this.authService.getCurrentUser();
+//         console.log('User:', user);
 
-        this.genreList = [
-          ...new Set(
-            moviesArray
-              .filter(
-                (movie) =>
-                  typeof movie.genre === 'string' && movie.genre.trim() !== ''
-              )
-              .flatMap((movie) =>
-                movie.genre.split(',').map((g: string) => g.trim())
-              )
-          ),
-        ];
+//         this.genreList = [
+//           ...new Set(
+//             moviesArray
+//               .filter(
+//                 (movie) =>
+//                   typeof movie.genre === 'string' && movie.genre.trim() !== ''
+//               )
+//               .flatMap((movie) =>
+//                 movie.genre.split(',').map((g: string) => g.trim())
+//               )
+//           ),
+//         ];
 
-        // ✅ For now, skip age filtering
-        this.movieAPI = moviesArray;
+//         // ✅ For now, skip age filtering
+//         this.movieAPI = moviesArray;
 
-        console.log('Filtered Movies:', this.movieAPI);
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        alert(err.error?.message || 'Failed to fetch movies');
-        this.errorMessage = err.message;
-        this.movieAPI = [];
-      },
-    });
-}
+//         console.log('Filtered Movies:', this.movieAPI);
+//       },
+//       error: (err) => {
+//         console.error('Error:', err);
+//         alert(err.error?.message || 'Failed to fetch movies');
+//         this.errorMessage = err.message;
+//         this.movieAPI = [];
+//       },
+//     });
+// }
 
 
   //pagination logic for page to display 4 movie cards
+  getAPIMovies() {
+    this.isLoading = true;
+    this.errorMessage = null;
+    this.movieService
+      .getMoviesAPI()
+      .pipe(
+        catchError((error) => {
+          console.error('Error Occurred:', error);
+          this.errorMessage = 'Failed to fetch the Movies Data';
+          return throwError(() => new Error(error));
+        }),
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe({
+        next: (data: any) => {
+          console.log('API Response:', data);
+
+          let moviesArray: any[] = [];
+
+          if (Array.isArray(data)) {
+            moviesArray = data.filter(
+              (data) => (data.isActive == data.isActive)
+            );
+          } else if (data && Array.isArray(data.data)) {
+            moviesArray = data.data.filter(
+              (data: any) => (data.isActive == data.isActive)
+            );
+          } else if (data && typeof data === 'object') {
+            moviesArray = [
+              data.filter((data: any) => (data.isActive == data.isActive)),
+            ];
+          }
+          console.log(
+            'Movie',
+            moviesArray.filter((data) => (data.isActive == data.isActive))
+          );
+
+          const user = this.authService.getCurrentUser();
+          console.log('User:', user);
+          this.genreList = [
+            ...new Set(
+              moviesArray
+                .filter(
+                  (movie) =>
+                    typeof movie.genre === 'string' && movie.genre.trim() !== ''
+                )
+                .flatMap((movie) =>
+                  movie.genre.split(',').map((g: string) => g.trim())
+                )
+            ),
+          ];
+
+          console.log('hello', this.genreList);
+
+          if (!user || !user.data) {
+            console.log('No user data available');
+            this.movieAPI = moviesArray;
+            return;
+          }
+
+          console.log('User DOB:', user.data.dateOfBirth);
+
+          // if (user.data.dateOfBirth) {
+          //   const userAge = getUserAge(user.data.dateOfBirth);
+          //   console.log('User Age:', userAge);
+
+          //   this.movieAPI = moviesArray.filter((movie) => {
+          //     const restriction = Number(movie.ageRestriction || 0);
+          //     return userAge >= restriction;
+          //   });
+          // }
+          // else {
+          //   this.movieAPI = moviesArray;
+          // }
+
+          console.log('Filtered Movies:', this.movieAPI);
+        },
+        error: (err) => {
+          console.error('Error:', err);
+          alert(err.error?.message);
+          this.errorMessage = err.message || 'Failed to fetch movies';
+          this.movieAPI = [];
+        },
+      });
+  }
+
+
   get paginatedMovies(): any[] {
     const filtered = this.moviesPipe.transform(
       this.movieAPI,

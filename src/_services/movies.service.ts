@@ -44,7 +44,7 @@ export class MoviesService {
     return this.http.post<Movies>(`${this.url}/with-shows`, movieShows);
   }
 
-  updateMovieAPI(movieId: number, movieShows: any): Observable<Movies> {
+  updateMovieAPI(movieId: number, movieShows: any): Observable<Movies> {  
     return this.http.put<Movies>(`${this.url}/with-shows/${movieId}`, movieShows);
   }
 
@@ -63,9 +63,9 @@ export class MoviesService {
   updateShowAPI(showId: number, show: any): Observable<any> {
     return this.http.put(`https://localhost:7084/Shows/${showId}`, show);
   }
-  getAllShows():Observable<ShowTime>{
-    return this.http.get<ShowTime>("https://localhost:7084/Shows")
-  }
+  // getAllShows():Observable<ShowTime>{
+  //   return this.http.get<ShowTime>("https://localhost:7084/Shows")
+  // }
 
   
 
