@@ -73,7 +73,7 @@ export class RegistrationComponent implements OnInit{
       },
       error: (err) => {
         console.error('Error fetching users:', err);
-        alert(err.error?.message)
+        // alert(err.error?.message)
         this.apiData = [];
       }
     });

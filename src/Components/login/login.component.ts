@@ -85,6 +85,7 @@ export class LoginComponent implements OnInit{
           console.log("API Response:", response);
           if (response.success && response.data) {
   const userData = response;
+  console.log("userdata bhai:",userData)
   const role = userData.data.user.role;
   
 

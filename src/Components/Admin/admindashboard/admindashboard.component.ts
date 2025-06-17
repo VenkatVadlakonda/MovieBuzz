@@ -57,8 +57,8 @@ export class AdmindashboardComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching movies:', err);
-        alert(err.error?.errors)
-        alert(err.error?.message)
+        // alert(err.error?.errors)
+        alert(err.error.message)
         // const backendErrors = err.error?.errors;
 
 
